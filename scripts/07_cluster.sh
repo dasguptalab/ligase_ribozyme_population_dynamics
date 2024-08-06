@@ -2,10 +2,10 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N cluster_jobOutput
+#$ -N RNA_cluster_jobOutput
 
 # script to cluster sequences using clustalo
-# usage: qsub 08_cluster.sh 
+# usage: qsub 07_cluster.sh 
 
 # load the egapx software module (contains nextflow)
 module load bio/2.0
@@ -23,7 +23,7 @@ cd $clusterOut
 echo "Beginning analysis..."
 
 # filter to keep sequences with matching up- and down-stream sequences
-clustalo -v -i $clusterOut"/aligned.fasta" -o $clusterOut"/clustered.fasta"
+clustalo -threads 32 -v -i $clusterOut"/combined.fasta" -o $clusterOut"/clustered.fasta"
 
 # status message
 echo "Analysis complete!"
