@@ -8,9 +8,6 @@
 # script to align sequences using muscle
 # usage: qsub 07_align.sh
 
-# load the egapx software module (contains nextflow)
-#module load bio/2.0
-
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths.txt" | tr -d " " | sed "s/outputs://g")
 
