@@ -9,4 +9,8 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed
 # set directory for inputs
 formatOut=$outputsPath"/formatted"
 
-cat $clusterOut"/combined.fasta" | sed "s/^>/>$(printf '%.0s~' {0..37})/g" | awk 'length($0) > 36' | sed "s/~//g" > $clusterOut"/combined.flt.fasta"
+# filter to keep reads > 36 residues
+cat $clusterOut"/combined.fasta" | sed "s/^>/>$(printf '%.0s~' {0..36})/g" | awk 'length($0) > 36' | sed "s/~//g" | grep -B1 --no-group-separator -v ">" > $clusterOut"/combined.flt.fmt.fasta"
+
+# filter to keep reads = 40 residues
+cat $clusterOut"/combined.fasta" | sed "s/^>/>$(printf '%.0s~' {0..39})/g" | awk 'length($0) > 39' | sed "s/~//g" | awk 'length($0) < 41' | grep -B1 --no-group-separator -v ">" > $clusterOut"/combined.flt40.fmt.fasta"

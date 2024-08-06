@@ -6,13 +6,18 @@
 #$ -pe smp 32
 
 # script to cluster sequences using clustalo
-# usage: qsub 08_cluster.sh 
+# usage: qsub 08_cluster.sh inputReads
+# usage ex: qsub 08_cluster.sh combined.flt.fmt.fasta
+# usage ex: qsub 08_cluster.sh combined.flt40.fmt.fasta
 
 # load the software module
 module load bio
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+
+# retrieve input reads file name
+inputReads=$1
 
 # set directory for inputs
 formatOut=$outputsPath"/formatted"
@@ -33,7 +38,7 @@ cd $clusterOut
 echo "Beginning analysis..."
 
 # filter to keep sequences with matching up- and down-stream sequences
-clustalo --threads=32 -v -i $formatOut"/combined.flt.fasta" -o $clusterOut"/clustered.fasta"
+clustalo --threads=32 -v -i $formatOut"/"$inputReads -o $clusterOut"/"$inputReads
 
 # status message
 echo "Analysis complete!"
