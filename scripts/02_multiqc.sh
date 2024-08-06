@@ -10,7 +10,7 @@
 analysisType=$1
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve directory for analysis
 qcOut=$outputsPath"/qc_"$analysisType

@@ -8,11 +8,11 @@
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
 
 # retrieve paired reads absolute path for alignment
-readPath=$(grep "pairedReads:" ../"inputs/inputPaths.txt" | tr -d " " | sed "s/pairedReads://g")
+readPath=$(grep "pairedReads:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/pairedReads://g")
 # retrieve adapter absolute path for alignment
-adapterPath=$(grep "adapter:" ../"inputs/inputPaths.txt" | tr -d " " | sed "s/adapter://g")
+adapterPath=$(grep "adapter:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/adapter://g")
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # make a new directory for analysis
 trimOut=$outputsPath"/trimmed"

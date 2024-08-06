@@ -4,7 +4,7 @@
 # usage: bash 05_formatReads.sh 
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # set trimming directory
 filterOut=$outputsPath"/filtered"

@@ -4,19 +4,19 @@
 # usage: bash 06_analyzeReads.sh 
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
-# set trimming directory
-clusterOut=$outputsPath"/clustered"
+# set inputs directory
+formatOut=$outputsPath"/formatted"
 
 # move to the new directory
-cd $clusterOut
+cd $formatOut
 
 # print read lengths
-cat $clusterOut"/combined.fasta" | awk 'NR % 2 == 0 {print length($0)}' | sort -n | uniq -c > $clusterOut"/read_lengths.txt"
+cat $formatOut"/combined.fasta" | awk 'NR % 2 == 0 {print length($0)}' | sort -n | uniq -c > $formatOut"/read_lengths.txt"
 
 # print read counts
-cat $clusterOut"/combined.fasta" | awk 'NR % 2 == 0' | sort -n | uniq -c | sort -rk1 > $clusterOut"/read_counts.txt"
+cat $formatOut"/combined.fasta" | awk 'NR % 2 == 0' | sort -n | uniq -c | sort -rk1 > $formatOut"/read_counts.txt"
 
 # status message
 echo "Analysis complete!"
