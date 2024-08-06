@@ -26,10 +26,10 @@ formatOut=$outputsPath"/formatted"
 clusterOut=$outputsPath"/clustered"
 mkdir $clusterOut
 # check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $clusterOut directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $clusterOut directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 # move to the new directory
 cd $clusterOut
