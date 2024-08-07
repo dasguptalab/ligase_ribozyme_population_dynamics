@@ -1,3 +1,1 @@
-pairedReads: /Users/bamflappy/PfrenderLab/RNA_evolution/data/raw
-adapter: /Users/bamflappy/PfrenderLab/RNA_evolution/data/adapters/NEBnext_adaptors.fa
 outputs: /scratch365/ebrooks5/RNA_evolution/outputs
