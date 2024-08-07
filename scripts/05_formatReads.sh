@@ -29,7 +29,7 @@ for f1 in $filterOut"/"*; do
 	# get sequence run name
 	newName=$(basename $f1 | sed "s/_L001_p.*\.flt\.fq//g")
 	# re-format sequences
-	cat $f1 | cut -d" " -f1 | awk 'NR%4==1 || NR%4==2' | sed "s/^@.*/>$newName/g" >> $formatOut"/combined.fasta"
+	cat $f1 | cut -d" " -f1 | awk 'NR%4==1 || NR%4==2' | sed "s/^@.*/>$newName/g" >> $formatOut"/combined.fmt.fasta"
 done
 
 # status message

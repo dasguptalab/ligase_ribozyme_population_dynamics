@@ -13,10 +13,10 @@ formatOut=$outputsPath"/formatted"
 cd $formatOut
 
 # print read lengths
-cat $formatOut"/combined.fasta" | awk 'NR % 2 == 0 {print length($0)}' | sort -n | uniq -c > $formatOut"/read_lengths.txt"
+cat $formatOut"/combined.fmt.fasta" | awk 'NR % 2 == 0 {print length($0)}' | sort -n | uniq -c > $formatOut"/read_lengths.txt"
 
 # print read counts
-cat $formatOut"/combined.fasta" | awk 'NR % 2 == 0' | sort -n | uniq -c | sort -rk1 > $formatOut"/read_counts.txt"
+cat $formatOut"/combined.fmt.fasta" | awk 'NR % 2 == 0' | sort -n | uniq -c | sort -rk1 > $formatOut"/read_counts.txt"
 
 # status message
 echo "Analysis complete!"
