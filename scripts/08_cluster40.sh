@@ -2,11 +2,11 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N RNA_cluster_jobOutput
+#$ -N RNA_cluster40_jobOutput
 #$ -pe smp 32
 
 # script to cluster sequences using clustalo
-# usage: qsub 08_cluster.sh
+# usage: qsub 08_cluster40.sh 
 
 # load the software module
 module load bio
@@ -18,7 +18,7 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 formatOut=$outputsPath"/formatted"
 
 # make a new directory for analysis
-clusterOut=$outputsPath"/clustered"
+clusterOut=$outputsPath"/clustered40"
 mkdir $clusterOut
 # check if the folder already exists
 #if [ $? -ne 0 ]; then
@@ -33,7 +33,7 @@ cd $clusterOut
 echo "Beginning analysis..."
 
 # filter to keep sequences with matching up- and down-stream sequences
-clustalo --threads=32 -v -i $formatOut"/combined.flt.fmt.fasta" -o $clusterOut"/clustered.flt.fmt.fasta"
+clustalo --threads=32 -v -i $formatOut"/combined.flt40.fmt.fasta" -o $clusterOut"/clustered.flt40.fmt.fasta"
 
 # status message
 echo "Analysis complete!"
