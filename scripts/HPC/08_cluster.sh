@@ -6,11 +6,15 @@
 #$ -pe smp 32
 
 # script to cluster sequences using clustalo
-# usage: qsub 08b_cluster.sh
+# usage: qsub 08_cluster.sh inputFile
+# usage ex: qsub 08_cluster.sh combined.flt40.fmt.fasta
+# usage ex: qsub 08_cluster.sh combined.flt.fmt.fasta
 
 # load the software module
-#module load bio
 module load bio/0724
+
+# retrieve input file
+inputFile=$1
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
@@ -18,8 +22,11 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 # set directory for inputs
 formatOut=$outputsPath"/formatted"
 
+# clean up input file name
+nameTag=$(echo $inputFile | sed "s/\.fasta//g" | sed "s/\./_/g")
+
 # make a new directory for analysis
-clusterOut=$outputsPath"/clustered"
+clusterOut=$outputsPath"/clustered_"$nameTag
 mkdir $clusterOut
 # check if the folder already exists
 #if [ $? -ne 0 ]; then
@@ -31,11 +38,10 @@ mkdir $clusterOut
 cd $clusterOut
 
 # status message
-echo "Beginning analysis $formatOut/combined.flt.fmt.fasta ..."
+echo "Beginning analysis of $nameTag ..."
 
 # filter to keep sequences with matching up- and down-stream sequences
-#clustalo --threads=32 -v -i $formatOut"/combined.flt.fmt.fasta" -o $clusterOut"/clustered.flt.fmt.fasta"
-clustalo --threads=$NSLOTS -v -i $formatOut"/combined.flt.fmt.fasta" -o $clusterOut"/clustered.flt.fmt.fasta"
+clustalo --threads=$NSLOTS -v -i $formatOut"/"$inputFile -o $clusterOut"/clustered_"$inputFile
 
 # status message
 echo "Analysis complete!"
