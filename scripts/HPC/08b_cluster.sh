@@ -9,10 +9,11 @@
 # usage: qsub 08b_cluster.sh
 
 # load the software module
-module load bio
+#module load bio
+module load bio/0724
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set directory for inputs
 formatOut=$outputsPath"/formatted"
@@ -30,10 +31,11 @@ mkdir $clusterOut
 cd $clusterOut
 
 # status message
-echo "Beginning analysis..."
+echo "Beginning analysis $formatOut/combined.flt.fmt.fasta ..."
 
 # filter to keep sequences with matching up- and down-stream sequences
-clustalo --threads=32 -v -i $formatOut"/combined.flt.fmt.fasta" -o $clusterOut"/clustered.flt.fmt.fasta"
+#clustalo --threads=32 -v -i $formatOut"/combined.flt.fmt.fasta" -o $clusterOut"/clustered.flt.fmt.fasta"
+clustalo --threads=$NSLOTS -v -i $formatOut"/combined.flt.fmt.fasta" -o $clusterOut"/clustered.flt.fmt.fasta"
 
 # status message
 echo "Analysis complete!"
