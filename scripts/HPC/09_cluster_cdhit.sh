@@ -2,17 +2,12 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N RNA_cluster_clustalo_jobOutput
-#$ -pe smp 8
+#$ -N RNA_cluster_cdhit_jobOutput
 
-# script to cluster sequences using clustalo
-# usage: qsub 09_cluster_clustalo.sh inputFile
-# usage ex: qsub 09_cluster_clustalo.sh combined_noDoped_r1.flt.fmt.fasta
-# usage ex: qsub 09_cluster_clustalo.sh combined_noDoped_r1.flt40.fmt.fasta
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*_r*; do qsub 09_cluster_clustalo.sh $i; done
-
-# load the software module
-module load bio/0724
+# script to cluster sequences using cd-hit
+# usage: qsub 09_cluster_cdhit.sh inputFile
+# usage ex: qsub 09_cluster_cdhit.sh combined_noDoped.flt.fmt.fasta
+# usage ex: qsub 09_cluster_cdhit.sh combined_noDoped.flt40.fmt.fasta
 
 # retrieve input file
 inputFile=$1
@@ -27,7 +22,7 @@ formatOut=$outputsPath"/formatted"
 nameTag=$(echo $inputFile | sed "s/\.fasta//g" | sed "s/\./_/g")
 
 # make a new directory for analysis
-clusterOut=$outputsPath"/clustered_"$nameTag
+clusterOut=$outputsPath"/clustered_cdhit_"$nameTag
 mkdir $clusterOut
 # check if the folder already exists
 #if [ $? -ne 0 ]; then
@@ -41,8 +36,8 @@ cd $clusterOut
 # status message
 echo "Beginning analysis of $nameTag ..."
 
-# filter to keep sequences with matching up- and down-stream sequences
-clustalo --threads=$NSLOTS -v -i $formatOut"/"$inputFile -o $clusterOut"/clustered_"$inputFile
+# cluster sequences by similarity
+cd-hit-para.pl --Q 64 --T "SGE" -i $formatOut"/"$inputFile -o $clusterOut"/clustered_"$inputFile --R $clusterOut"/restart.log"
 
 # status message
 echo "Analysis complete!"
