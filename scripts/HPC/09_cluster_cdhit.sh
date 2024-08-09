@@ -12,6 +12,9 @@
 # retrieve input file
 inputFile=$1
 
+# retrieve software path
+softwarePath=$(grep "software_cdhit:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/software_cdhit://g")
+
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
@@ -37,7 +40,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # cluster sequences by similarity
-cd-hit-para.pl --Q 64 --T "SGE" -i $formatOut"/"$inputFile -o $clusterOut"/clustered_"$inputFile --R $clusterOut"/restart.log"
+$softwarePath"/"cd-hit-para.pl --Q 64 --T "SGE" -i $formatOut"/"$inputFile -o $clusterOut"/clustered_"$inputFile --R $clusterOut"/restart.log"
 
 # status message
 echo "Analysis complete!"

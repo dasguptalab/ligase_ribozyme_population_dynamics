@@ -1,1 +1,2 @@
+software_cdhit: /afs/crc.nd.edu/user/e/ebrooks5/cdhit
 outputs: /scratch365/ebrooks5/RNA_evolution/outputs
