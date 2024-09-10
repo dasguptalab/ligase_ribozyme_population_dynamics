@@ -6,7 +6,7 @@
 #$ -pe smp 8
 
 # script to perform merging of paired end reads into single reads
-# usage: bash 03_merge.sh
+# usage: qsub 03_merge.sh
 
 # retrieve input analysis type
 analysisType=$1
@@ -36,7 +36,7 @@ cd $softwarePath
 echo "Processing..."
 
 # loop through all forward and reverse reads and merge each pair into a single read
-for f1 in $readPath"/"*"_pForward\.fq\.gz"; do
+for f1 in $readPath"/"*_pForward\.fq\.gz; do
 	# trim extension from current file name
 	curSample=$(echo $f1 | sed 's/_pForward\.fq\.gz//')
 	# set paired file name
