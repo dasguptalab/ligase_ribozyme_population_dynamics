@@ -7,6 +7,7 @@
 
 # script to perform merging of paired end reads into single reads
 # usage: qsub 03_merge.sh
+## job 
 
 # retrieve input analysis type
 analysisType=$1
@@ -45,7 +46,7 @@ for f1 in $readPath"/"*_pForward\.fq\.gz; do
 	sampleTag=$(basename $f1 | sed 's/_pForward\.fq\.gz//')
 	# status message
 	echo "Processing $sampleTag"
-	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/stiched_reads.fa" -m 20 -p 0 -l $mergeOut"/log_stitching_results.txt" -f $mergeOut"/stiched_reads_failed.fa" -j $mergeOut"/log_formatted_alignments.txt" -q 33 -u 40
+	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fa" -m 20 -p 0 -l $mergeOut"/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/"$sampleTag"_stiched_reads_failed.fa" -j $mergeOut"/"$sampleTag"_log_formatted_alignments.txt" -q 33 -u 40
 	# status message
 	echo "$sampleTag processed!"
 done
