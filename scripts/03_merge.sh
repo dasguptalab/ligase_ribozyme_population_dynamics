@@ -6,27 +6,41 @@
 # retrieve input analysis type
 analysisType=$1
 
-# retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+# retrieve software absolute path
+softwarePath=$(grep "software_NGmerge:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/software_NGmerge://g")
 
-#Make a new directory for analysis
-qcOut=$outputsPath"/qc_"$analysisType
-mkdir $qcOut
-#Check if the folder already exists
+# retrieve analysis outputs absolute path
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+
+# make a new directory for analysis
+mergeOut=$outputsPath"/merged"
+mkdir $mergeOut
+# check if the folder already exists
 if [ $? -ne 0 ]; then
-	echo "The $qcOut directory already exsists... please remove before proceeding."
+	echo "The $mergeOut directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
-#Move to the new directory
-cd $qcOut
+# move to the software directory
+cd $softwarePath
 
 # status message
 echo "Processing..."
 
-# perform merging
-#fastqc $readPath"/"* -o $qcOut
-NGmerge -v -n 8 -1 <file> -2 <file> -o <file> -o stiched_reads.fa -m 20 -p 0 -l log_stitching_results.txt -f stiched_reads_failed.fa -j log_formatted_alignments.txt -q 33 -u 40 -t ' '
+# loop through all forward and reverse reads and merge each pair into a single read
+for f1 in $readPath"/"*"_pForward\.fq\.gz"; do
+	# trim extension from current file name
+	curSample=$(echo $f1 | sed 's/_pForward\.fq\.gz//')
+	# set paired file name
+	f2=$curSample"_pReverse.fq.gz"
+	# trim to sample tag
+	sampleTag=$(basename $f1 | sed 's/_pForward\.fq\.gz//')
+	# status message
+	echo "Processing $sampleTag"
+	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/stiched_reads.fa" -m 20 -p 0 -l $mergeOut"/log_stitching_results.txt" -f $mergeOut"/stiched_reads_failed.fa" -j $mergeOut"/log_formatted_alignments.txt" -q 33 -u 40 -t ' '
+	# status message
+	echo "$sampleTag processed!"
+done
 
 #Print status message
 echo "Analysis complete!"
