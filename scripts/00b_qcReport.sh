@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # script to perform fastqc quality control of paired end reads
-# usage: bash 02_multiqc.sh analysisType
-# usage ex: bash 02_multiqc.sh raw
-# usage ex: bash 02_multiqc.sh trimmed
-# usage ex: bash 02_multiqc.sh filtered
+# usage: bash 00b_qcReport.sh analysisType
+# usage ex: bash 00b_qcReport.sh raw
+# usage ex: bash 00b_qcReport.sh trimmed
+# usage ex: bash 00b_qcReport.sh filtered
 
 # retrieve input analysis type
 analysisType=$1

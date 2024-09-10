@@ -7,7 +7,7 @@
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # set trimming directory
-filterOut=$outputsPath"/filtered"
+filterOut=$outputsPath"/filteredByRegion"
 
 # make a new directory for analysis
 formatOut=$outputsPath"/formatted"

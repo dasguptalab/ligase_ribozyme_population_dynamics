@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
-# usage: bash 04_filterReads.sh 
+# usage: bash 04_filterByRegionLength.sh 
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
@@ -14,7 +14,7 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed
 trimOut=$outputsPath"/trimmed"
 
 # make a new directory for analysis
-filterOut=$outputsPath"/filtered"
+filterOut=$outputsPath"/filteredByRegionLength"
 mkdir $filterOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -38,7 +38,8 @@ for f1 in $trimOut"/"*_p*\.fq; do
 	# status message
 	echo "Processing $sampleTag"
 	# filter to keep sequences with matching up- and down-stream sequences
-	cat $f1 | grep -E -B1 -A2 "^GGACAGCG.*CGCTGTCC.*" | grep -v "^--$" | sed "s/^GGACAGCG//g" | sed "s/CGCTGTCC.*$//g" > $filterOut"/"$sampleTag".flt.fq"
+	#cat $f1 | grep -E -B1 -A2 "^.*GGACAGCG.{40}CGCTGTCC.*" | grep -v "^--$" | sed "s/^.*GGACAGCG//g" | sed "s/CGCTGTCC.*$//g" > $filterOut"/"$sampleTag".flt.fq"
+	cat $f1 | grep -E -B1 "^.*GGACAGCG.{40}CGCTGTCC.*" | grep -v "^--$" | sed "s/^.*GGACAGCG//g" | sed "s/CGCTGTCC.*$//g" > $filterOut"/"$sampleTag".flt.fq"
 	# status message
 	echo "$sampleTag processed!"
 done
