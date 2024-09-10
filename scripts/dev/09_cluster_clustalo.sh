@@ -1,21 +1,24 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N RNA_cluster_clustalo_jobOutput
+#$ -pe smp 8
 
 # script to cluster sequences using clustalo
-# usage: bash 09_cluster.sh inputFile
-# usage ex: bash 09_cluster.sh combined.flt.fmt.fasta
-# usage ex: bash 09_cluster.sh combined_doped.flt.fmt.fasta
-# usage ex: bash 09_cluster.sh combined_noDoped.flt.fmt.fasta
-# usage ex: bash 09_cluster.sh combined_noDoped_r1.flt.fmt.fasta
-# usage ex: bash 09_cluster.sh combined.flt40.fmt.fasta
-# usage ex: bash 09_cluster.sh combined_doped.flt40.fmt.fasta
-# usage ex: bash 09_cluster.sh combined_noDoped.flt40.fmt.fasta
-# usage ex: bash 09_cluster.sh combined_noDoped_r1.flt40.fmt.fasta
+# usage: qsub 09_cluster_clustalo.sh inputFile
+# usage ex: qsub 09_cluster_clustalo.sh combined_noDoped_r1.flt.fmt.fasta
+# usage ex: qsub 09_cluster_clustalo.sh combined_noDoped_r1.flt40.fmt.fasta
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*_r*; do qsub 09_cluster_clustalo.sh $i; done
+
+# load the software module
+module load bio/0724
 
 # retrieve input file
 inputFile=$1
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set directory for inputs
 formatOut=$outputsPath"/formatted"
@@ -39,7 +42,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # filter to keep sequences with matching up- and down-stream sequences
-clustalo -v -i $formatOut"/"$inputFile -o $clusterOut"/clustered_"$inputFile
+clustalo --threads=$NSLOTS -v -i $formatOut"/"$inputFile -o $clusterOut"/clustered_"$inputFile
 
 # status message
 echo "Analysis complete!"

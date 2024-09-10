@@ -3,13 +3,14 @@
 #$ -m abe
 #$ -r n
 #$ -N RNA_cluster_cdhit_jobOutput
+#$ -pe smp 63
 
 # script to cluster sequences using cd-hit
 # usage: qsub 09_cluster_cdhit.sh inputFile
 # usage ex: qsub 09_cluster_cdhit.sh combined_noDoped.flt.fmt.fasta
-## job 
+## job 750107
 # usage ex: qsub 09_cluster_cdhit.sh combined_noDoped.flt40.fmt.fasta
-## job 750090 -> run1
+## job 750105
 
 # retrieve input file
 inputFile=$1
@@ -42,7 +43,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # cluster sequences by similarity
-$softwarePath"/"cd-hit-para.pl --Q 64 --T "SGE" -i $formatOut"/"$inputFile -o $clusterOut"/clustered_"$inputFile --R $clusterOut"/restart.log"
+$softwarePath"/"cd-hit -T 63 -sc 1 -sf 1 -i $formatOut"/"$inputFile -o $clusterOut"/clustered_"$inputFile
 
 # status message
 echo "Analysis complete!"

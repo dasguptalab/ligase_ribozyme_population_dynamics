@@ -1,4 +1,9 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N RNA_merge_NGmerge_jobOutput
+#$ -pe smp 8
 
 # script to perform merging of paired end reads into single reads
 # usage: bash 03_merge.sh
@@ -11,6 +16,9 @@ softwarePath=$(grep "software_NGmerge:" ../"inputs/inputPaths_HPC.txt" | tr -d "
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+
+# retrieve trimmed reads path
+readPath=$outputsPath"/trimmed"
 
 # make a new directory for analysis
 mergeOut=$outputsPath"/merged"
@@ -37,7 +45,7 @@ for f1 in $readPath"/"*"_pForward\.fq\.gz"; do
 	sampleTag=$(basename $f1 | sed 's/_pForward\.fq\.gz//')
 	# status message
 	echo "Processing $sampleTag"
-	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/stiched_reads.fa" -m 20 -p 0 -l $mergeOut"/log_stitching_results.txt" -f $mergeOut"/stiched_reads_failed.fa" -j $mergeOut"/log_formatted_alignments.txt" -q 33 -u 40 -t ' '
+	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/stiched_reads.fa" -m 20 -p 0 -l $mergeOut"/log_stitching_results.txt" -f $mergeOut"/stiched_reads_failed.fa" -j $mergeOut"/log_formatted_alignments.txt" -q 33 -u 40
 	# status message
 	echo "$sampleTag processed!"
 done
