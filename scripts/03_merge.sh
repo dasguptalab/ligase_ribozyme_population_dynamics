@@ -4,10 +4,15 @@
 #$ -r n
 #$ -N RNA_merge_NGmerge_jobOutput
 #$ -pe smp 8
+#$ -q largemem
 
 # script to perform merging of paired end reads into single reads
 # usage: qsub 03_merge.sh
-## job 
+## job 807481
+
+# primer: GGCUAAGG -> GGCTAAGG
+# library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
+# target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
 
 # retrieve input analysis type
 analysisType=$1
@@ -46,7 +51,7 @@ for f1 in $readPath"/"*_pForward\.fq\.gz; do
 	sampleTag=$(basename $f1 | sed 's/_pForward\.fq\.gz//')
 	# status message
 	echo "Processing $sampleTag"
-	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fa" -m 20 -p 0 -l $mergeOut"/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/"$sampleTag"_stiched_reads_failed.fa" -j $mergeOut"/"$sampleTag"_log_formatted_alignments.txt" -q 33 -u 40
+	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fa" -m 8 -p 0 -d -e 8 -l $mergeOut"/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/"$sampleTag"_stiched_reads_failed.fa" -j $mergeOut"/"$sampleTag"_log_formatted_alignments.txt" -q 33 -u 40
 	# status message
 	echo "$sampleTag processed!"
 done
