@@ -2,24 +2,13 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N RNA_cluster_500_clustalo_jobOutput
+#$ -N RNA_cluster_maxnumseq_clustalo_jobOutput
 #$ -pe smp 8
 
-# script to cluster sequences using clustalo and --cluster-size=500
-# usage: qsub 07b_cluster.sh inputFile
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 07b_cluster.sh $i; done
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07b_cluster.sh "${fileList[$i]}"; done
-## job 814062
-## job 814063
-## job 814064
-## job 814065
-## job 814066
-## job 814067
-## job 814068
-## job 814069
-## job 814070
-## job 814071
-## job 814072
+# script to cluster sequences using clustalo and --maxnumseq=1300000
+# usage: qsub 07c_cluster.sh inputFile
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 07c_cluster.sh $i; done
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07c_cluster.sh "${fileList[$i]}"; done
 
 # load the software module
 module load bio/0724
@@ -34,7 +23,7 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 
 # make a new directory for analysis
-clusterOut=$outputsPath"/clustered_size_500_"$nameTag
+clusterOut=$outputsPath"/clustered_maxnumseq_1300000_"$nameTag
 mkdir $clusterOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -49,7 +38,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # filter to keep sequences with matching up- and down-stream sequences
-clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --cluster-size=500
+clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --maxnumseq=1300000
 
 # status message
 echo "Analysis complete!"

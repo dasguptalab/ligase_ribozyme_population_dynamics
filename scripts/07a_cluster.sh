@@ -9,8 +9,8 @@
 # usage: qsub 07a_cluster.sh inputFile
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 07a_cluster.sh $i; done
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07a_cluster.sh "${fileList[$i]}"; done
-## job 814037
-## job 814038
+## job 814037 -> Couldn't allocate MPI memory
+## job 814038 -> Couldn't allocate MPI memory
 ## job 814039
 ## job 814040
 ## job 814041
