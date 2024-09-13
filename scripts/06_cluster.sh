@@ -17,13 +17,10 @@ module load bio/0724
 inputFile=$1
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-
-# set directory for inputs
-inputsPath=$(dirname $inputFile)
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # clean up input file name
-nameTag=$(echo $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
+nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 
 # make a new directory for analysis
 clusterOut=$outputsPath"/clustered_"$nameTag
@@ -41,7 +38,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # filter to keep sequences with matching up- and down-stream sequences
-clustalo --threads=$NSLOTS -v -i $inputsPath"/"$inputFile -o $clusterOut"/clustered_"$inputFile
+clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag
 
 # status message
 echo "Analysis complete!"
