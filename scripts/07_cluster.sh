@@ -6,7 +6,7 @@
 #$ -pe smp 8
 
 # script to cluster sequences using clustalo
-# usage: qsub 06_cluster.sh inputFile
+# usage: qsub 07_cluster.sh inputFile
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/filtered_combined/*; do qsub 06_cluster.sh $i; done
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/filtered_combined/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06_cluster.sh "${fileList[$i]}"; done
 
