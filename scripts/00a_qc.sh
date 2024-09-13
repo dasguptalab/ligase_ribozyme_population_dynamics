@@ -4,7 +4,8 @@
 # usage: bash 00a_qc.sh analysisType
 # usage ex: bash 00a_qc.sh raw
 # usage ex: bash 00a_qc.sh trimmed
-# usage ex: bash 00a_qc.sh filtered
+# usage ex: bash 00a_qc.sh merged
+# usage ex: bash 00a_qc.sh combined
 
 # retrieve input analysis type
 analysisType=$1
@@ -16,16 +17,10 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed
 if [[ $analysisType == "raw" ]]; then
 	# retrieve raw paired reads absolute path for alignment
 	readPath=$(grep "pairedReads:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/pairedReads://g")
-elif [[ $analysisType == "trimmed" ]]; then
-	# retrieve trimmed reads path
-	readPath=$outputsPath"/trimmed"
-elif [[ $analysisType == "filtered" ]]; then
-	# retrieve filtered reads path
-	readPath=$outputsPath"/filtered"
+else 
+	# set reads path
+	readPath=$outputsPath"/"$analysisType
 fi
-
-# create output results directory
-#mkdir $outputsPath
 
 #Make a new directory for analysis
 qcOut=$outputsPath"/qc_"$analysisType
@@ -40,7 +35,7 @@ fi
 cd $qcOut
 
 # status message
-echo "Processing..."
+echo "Beginning analysis..."
 
 # perform QC
 fastqc $readPath"/"* -o $qcOut

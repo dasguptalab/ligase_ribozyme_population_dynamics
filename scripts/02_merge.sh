@@ -9,6 +9,7 @@
 # script to perform merging of paired end reads into single reads
 # usage: qsub 03_merge.sh
 ## job 807481
+## job 808607
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
@@ -23,8 +24,8 @@ softwarePath=$(grep "software_NGmerge:" ../"inputs/inputPaths_HPC.txt" | tr -d "
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
-# retrieve trimmed reads path
-readPath=$outputsPath"/trimmed"
+# retrieve the inputs path
+inputsPath=$outputsPath"/trimmed"
 
 # make a new directory for analysis
 mergeOut=$outputsPath"/merged"
@@ -35,6 +36,9 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
+# create output logs directory
+mkdir $mergeOut"/logs"
+
 # move to the software directory
 cd $softwarePath
 
@@ -42,7 +46,7 @@ cd $softwarePath
 echo "Processing..."
 
 # loop through all forward and reverse reads and merge each pair into a single read
-for f1 in $readPath"/"*_pForward\.fq\.gz; do
+for f1 in $inputsPath"/"*_pForward\.fq\.gz; do
 	# trim extension from current file name
 	curSample=$(echo $f1 | sed 's/_pForward\.fq\.gz//')
 	# set paired file name
@@ -51,10 +55,14 @@ for f1 in $readPath"/"*_pForward\.fq\.gz; do
 	sampleTag=$(basename $f1 | sed 's/_pForward\.fq\.gz//')
 	# status message
 	echo "Processing $sampleTag"
-	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fa" -m 8 -p 0 -d -e 8 -l $mergeOut"/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/"$sampleTag"_stiched_reads_failed.fa" -j $mergeOut"/"$sampleTag"_log_formatted_alignments.txt" -q 33 -u 40
+	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fq" -m 8 -p 0 -d -e 8 -l $mergeOut"/logs/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/logs/"$sampleTag"_stiched_reads_failed.fq" -j $mergeOut"/logs/"$sampleTag"_log_formatted_alignments.txt" -q 33 -u 40
 	# status message
 	echo "$sampleTag processed!"
 done
+
+# unzip all paired reads
+gunzip $mergeOut"/"*\.fq\.gz
+gunzip $mergeOut"/logs/"*\.fastq\.gz
 
 #Print status message
 echo "Analysis complete!"

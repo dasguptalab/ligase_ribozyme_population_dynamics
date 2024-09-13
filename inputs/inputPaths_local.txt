@@ -1,3 +1,3 @@
 pairedReads: /Volumes/MyPassport/bamflappy/PfrenderLab/RNA_evolution_Sep2024/data/raw
 adapter: /Volumes/MyPassport/bamflappy/PfrenderLab/RNA_evolution_Sep2024/data/adapters/NEBnext_adaptors.fa
-outputs: /Volumes/MyPassport/bamflappy/PfrenderLab/RNA_evolution_Sep2024/outputs
+outputs: /Users/bamflappy/PfrenderLab/RNA_evolution/outputs

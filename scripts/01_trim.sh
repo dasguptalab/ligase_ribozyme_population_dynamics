@@ -8,7 +8,7 @@
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
 
 # retrieve paired reads absolute path for alignment
-readPath=$(grep "pairedReads:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/pairedReads://g")
+inputsPath=$(grep "pairedReads:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/pairedReads://g")
 # retrieve adapter absolute path for alignment
 adapterPath=$(grep "adapter:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/adapter://g")
 # retrieve analysis outputs absolute path
@@ -34,7 +34,7 @@ score=33
 echo "Beginning analysis..."
 
 # loop through all forward and reverse reads and run trimmomatic on each pair
-for f1 in $readPath"/"*_R1_001\.fastq\.gz; do
+for f1 in $inputsPath"/"*_R1_001\.fastq\.gz; do
 	# trim extension from current file name
 	curSample=$(echo $f1 | sed 's/_R1_001\.fastq\.gz//')
 	# set paired file name
