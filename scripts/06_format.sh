@@ -15,17 +15,9 @@ inputFile=$1
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
-# clean up input file name
-nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
-
 # make a new directory for analysis
-formatOut=$outputsPath"/formatted_subset_"$nameTag
+formatOut=$outputsPath"/formatted_subset"
 mkdir $formatOut
-# check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $formatOut directory already exsists... please remove before proceeding."
-	exit 1
-fi
 
 # move to the new directory
 cd $formatOut
