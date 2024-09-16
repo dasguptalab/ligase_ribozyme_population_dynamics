@@ -9,17 +9,17 @@
 # usage: qsub 07b_cluster.sh inputFile
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 07b_cluster.sh $i; done
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07b_cluster.sh "${fileList[$i]}"; done
-## job 814062
-## job 814063
-## job 814064
-## job 814065
-## job 814066
-## job 814067
-## job 814068
-## job 814069
-## job 814070
-## job 814071
-## job 814072
+## job 814062 -> FATAL: Memory allocation for distance matrix failed
+## job 814063 -> FATAL: Memory allocation for distance matrix failed
+## job 814064 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_size_500_r6_S6_L001_combined_fmt/clustered_r6_S6_L001_combined_fmt
+## job 814065 
+## job 814066 -> /opt/sge/crc/spool/d32cepyc217/job_scripts/814066: line 41: 87054 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --cluster-size=500
+## job 814067 -> /opt/sge/crc/spool/d32cepyc193/job_scripts/814067: line 41: 2721579 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --cluster-size=500
+## job 814068 -> /opt/sge/crc/spool/d32cepyc229/job_scripts/814068: line 41: 2345811 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --cluster-size=500
+## job 814069 -> /opt/sge/crc/spool/d32cepyc195/job_scripts/814069: line 41: 674954 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --cluster-size=500
+## job 814070 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_size_500_doped21-r3_S12_L001_combined_fmt/clustered_doped21-r3_S12_L001_combined_fmt
+## job 814071 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_size_500_doped21-r2_S11_L001_combined_fmt/clustered_doped21-r2_S11_L001_combined_fmt
+## job 814072 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_size_500_doped21-r1_S10_L001_combined_fmt/clustered_doped21-r1_S10_L001_combined_fmt
 
 # load the software module
 module load bio/0724

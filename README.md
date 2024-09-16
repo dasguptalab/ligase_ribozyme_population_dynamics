@@ -11,13 +11,16 @@ Repository for analyzing RNA sequences from in vitro selection-amplification to 
 2. merge the trimmed paired reads for each run using NGmerge
 3. filter trimmed unpaired forward and reverse, merged paired, failed merged forward and reverse reads by structure to keep only those that contain the constant up- (GGACAGCG) and down-stream (CGCTGTCC) regions with 40 bp in-between, then retain only the 40 bp in-between region using BASH
 4. combine filtered read files with trimmed unpaired reads and make sure there are no duplicate reads using BASH
-5. reproduce "Progress of in vitro selection"
+5. before clustering, remove sequences that appear less than 10 times and re-format read headers
+6. cluster read sequences for each run
+
+7. reproduce "Progress of in vitro selection"
 - total sequences
 - high quality sequences
 - unique sequences
 - diversity (%)
 - number of sequence families
-6. reproduce "Different classes of ribozymes after clustering" from the run 8 data
+8. reproduce "Different classes of ribozymes after clustering" from the run 8 data
 
 ## Progress of in vitro selection - Update (12 September 2024)
 

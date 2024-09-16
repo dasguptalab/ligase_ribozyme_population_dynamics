@@ -9,6 +9,17 @@
 # usage: qsub 07c_cluster.sh inputFile
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 07c_cluster.sh $i; done
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07c_cluster.sh "${fileList[$i]}"; done
+## job 814075 -> FATAL: Memory allocation for distance matrix failed
+## job 814076 -> FATAL: Memory allocation for distance matrix failed
+## job 814077 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_maxnumseq_1300000_r6_S6_L001_combined_fmt/clustered_r6_S6_L001_combined_fmt
+## job 814078
+## job 814079 -> /opt/sge/crc/spool/d32cepyc245/job_scripts/814079: line 41: 1293623 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --maxnumseq=1300000
+## job 814081 -> /opt/sge/crc/spool/d32cepyc229/job_scripts/814081: line 41: 2429763 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --maxnumseq=1300000
+## job 814082 -> /opt/sge/crc/spool/d32cepyc207/job_scripts/814082: line 41: 2186459 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --maxnumseq=1300000
+## job 814083 -> /opt/sge/crc/spool/d32cepyc193/job_scripts/814083: line 41: 2886212 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --maxnumseq=1300000
+## job 814084 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_maxnumseq_1300000_doped21-r3_S12_L001_combined_fmt/clustered_doped21-r3_S12_L001_combined_fmt
+## job 814085 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_maxnumseq_1300000_doped21-r2_S11_L001_combined_fmt/clustered_doped21-r2_S11_L001_combined_fmt
+## job 814086 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_maxnumseq_1300000_doped21-r1_S10_L001_combined_fmt/clustered_doped21-r1_S10_L001_combined_fmt
 
 # load the software module
 module load bio/0724
