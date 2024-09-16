@@ -6,7 +6,8 @@
 #$ -q largemem
 
 # script to subset sequences and format headers
-# usage: bash 06_format.sh inputFile
+# usage: qsub 06_format.sh inputFile
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/filtered_combined/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06_format.sh "${fileList[$i]}"; done
 
 # retrieve input file
 inputFile=$1
@@ -14,11 +15,11 @@ inputFile=$1
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
-# set trimming directory
-inputsPath=$outputsPath"/filtered_combined"
+# clean up input file name
+nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 
 # make a new directory for analysis
-formatOut=$outputsPath"/formatted_subset"
+formatOut=$outputsPath"/formatted_subset_"$nameTag
 mkdir $formatOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
