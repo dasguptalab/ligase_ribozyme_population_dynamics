@@ -8,6 +8,17 @@
 # script to subset sequences and format headers
 # usage: qsub 06_format.sh inputFile
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/filtered_combined/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06_format.sh "${fileList[$i]}"; done
+## job 816500
+## job 816501
+## job 816502
+## job 816503
+## job 816504
+## job 816505
+## job 816506
+## job 816507
+## job 816508
+## job 816509
+## job 816511
 
 # retrieve input file
 inputFile=$1

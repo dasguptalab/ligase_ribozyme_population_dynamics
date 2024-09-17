@@ -46,10 +46,13 @@ for f1 in $inputsPath"/"*_R1_001\.fastq\.gz; do
 	# perform adapter trimming on paired reads
 	# http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf
 	#trimmomatic PE -phred"$score" $f1 $f2 $sampleTag"_pForward.fq.gz" $sampleTag"_uForward.fq.gz" $sampleTag"_pReverse.fq.gz" $sampleTag"_uReverse.fq.gz" ILLUMINACLIP:"$adapterPath":2:30:10 SLIDINGWINDOW:4:15 HEADCROP:23 MINLEN:56
-	trimmomatic PE -phred"$score" $f1 $f2 $sampleTag"_pForward.fq.gz" $sampleTag"_uForward.fq.gz" $sampleTag"_pReverse.fq.gz" $sampleTag"_uReverse.fq.gz" ILLUMINACLIP:"$adapterPath":2:30:10:1:TRUE SLIDINGWINDOW:4:15
+	trimmomatic PE -phred"$score" $f1 $f2 $sampleTag"_pForward.fq.gz" $sampleTag"_uForward.fq.gz" $sampleTag"_pReverse.fq.gz" $sampleTag"_uReverse.fq.gz" ILLUMINACLIP:"$adapterPath":2:30:10:1:TRUE SLIDINGWINDOW:81:20
 	# status message
 	echo "$sampleTag processed!"
 done
+
+# unzip all reads
+gunzip -v $trimOut"/"*\.gz
 
 # status message
 echo "Analysis complete!"

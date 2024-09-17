@@ -8,8 +8,13 @@
 
 # script to perform merging of paired end reads into single reads
 # usage: qsub 03_merge.sh
+## outputs_4quality15
 ## job 807481
 ## job 808607
+## outputs_4quality20
+
+## outputs_81quality20
+
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
@@ -61,8 +66,8 @@ for f1 in $inputsPath"/"*_pForward\.fq\.gz; do
 done
 
 # unzip all paired reads
-gunzip $mergeOut"/"*\.fq\.gz
-gunzip $mergeOut"/logs/"*\.fastq\.gz
+gunzip -v $mergeOut"/"*\.fq\.gz
+gunzip -v $mergeOut"/logs/"*\.fastq\.gz
 
 #Print status message
 echo "Analysis complete!"

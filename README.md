@@ -53,7 +53,7 @@ for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/combined/\*\.fq; do 
 | Combined | 2056029 | 2079115 | 2272158 | 1920499 | 2668422 | 3199478 | 1657776 | 2461336 | 1788071 | 1561244 | 2398738 |
 | CombinedFiltered | 1036100 | 1071243 | 1031456 | 901937 | 1002598 | 931306 | 592791 | 914384 | 948183 | 882182 | 1262685 |
 
-### Forward Paird Reads - Filtered by Structure
+### Combined Reads - Filtered by Structure
 
 To count unique read sequences:
 for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/\*/\*\.fq; do echo \$i; cat $i | awk 'NR%4==0' | sort -u | wc -l; done
