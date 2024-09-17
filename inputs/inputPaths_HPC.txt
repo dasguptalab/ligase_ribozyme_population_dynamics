@@ -1,3 +1,3 @@
 software_cdhit: /afs/crc.nd.edu/user/e/ebrooks5/cdhit
 software_NGmerge: /afs/crc.nd.edu/user/e/ebrooks5/NGmerge
-outputs: /scratch365/ebrooks5/RNA_evolution/outputs_81quality20
+outputs: /scratch365/ebrooks5/RNA_evolution/outputs

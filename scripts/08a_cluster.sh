@@ -7,15 +7,15 @@
 #$ -q largemem
 
 # script to cluster sequences using clustalo
-# usage: qsub 07a_cluster.sh inputFile
-# usage ex: qsub 07a_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs/formatted/r8_S8_L001_combined.fmt.fa
+# usage: qsub 08a_cluster.sh inputFile
+# usage ex: qsub 08a_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs/formatted/r8_S8_L001_combined.fmt.fa
 ## job 816015 -> FATAL: Memory allocation for distance matrix failed
-# usage ex: qsub 07a_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs/formatted/r7_S7_L001_combined.fmt.fa
+# usage ex: qsub 08a_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs/formatted/r7_S7_L001_combined.fmt.fa
 ## job 816016 -> FATAL: Memory allocation for distance matrix failed
-# usage ex: qsub 07a_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs/formatted/r6_S6_L001_combined.fmt.fa
+# usage ex: qsub 08a_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs/formatted/r6_S6_L001_combined.fmt.fa
 ## job 816017
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 07a_cluster.sh $i; done
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07a_cluster.sh "${fileList[$i]}"; done
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 08a_cluster.sh $i; done
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 08a_cluster.sh "${fileList[$i]}"; done
 ## job 814037 -> Couldn't allocate MPI memory
 ## job 814038 -> Couldn't allocate MPI memory
 ## job 814039 -> /opt/sge/crc/spool/d32cepyc207/job_scripts/814039: line 41: 2143111 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag

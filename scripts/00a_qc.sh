@@ -3,9 +3,12 @@
 # script to perform fastqc quality control of paired end reads
 # usage: bash 00a_qc.sh analysisType
 # usage ex: bash 00a_qc.sh raw
-# usage ex: bash 00a_qc.sh trimmed
-# usage ex: bash 00a_qc.sh merged
-# usage ex: bash 00a_qc.sh combined
+# usage ex: bash 00a_qc.sh trimmed_s4q20
+# usage ex: bash 00a_qc.sh merged_s4q20
+# usage ex: bash 00a_qc.sh combined_s4q20
+# usage ex: bash 00a_qc.sh filtered_s4q20
+# usage ex: bash 00a_qc.sh trimmed_q20
+# usage ex: bash 00a_qc.sh trimmed_q10
 
 # retrieve input analysis type
 analysisType=$1

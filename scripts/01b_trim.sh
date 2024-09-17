@@ -1,11 +1,14 @@
 #!/bin/bash
 
-# script to perform trimmomatic trimming of paired end reads
-# usage: bash 01_trim.sh 
+# script to perform bbduk trimming of paired end reads
+# usage: bash 01b_trim.sh 
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
+
+# retrieve software path
+softwarePath=$(grep "bbmap:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/bbmap://g")
 
 # retrieve paired reads absolute path for alignment
 inputsPath=$(grep "pairedReads:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/pairedReads://g")
@@ -15,7 +18,7 @@ adapterPath=$(grep "adapter:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # make a new directory for analysis
-trimOut=$outputsPath"/trimmed"
+trimOut=$outputsPath"/trimmed_q10_ftm5"
 mkdir $trimOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -24,11 +27,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # move to the new directory
-cd $trimOut
-
-# set phred score for trimming
-# https://www.drive5.com/usearch/manual/quality_score.html
-score=33
+cd $softwarePath
 
 # status message
 echo "Beginning analysis..."
@@ -43,16 +42,11 @@ for f1 in $inputsPath"/"*_R1_001\.fastq\.gz; do
 	sampleTag=$(basename $f1 | sed 's/_R1_001\.fastq\.gz//')
 	# status message
 	echo "Processing $sampleTag"
-	# perform adapter trimming on paired reads
-	# http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf
-	#trimmomatic PE -phred"$score" $f1 $f2 $sampleTag"_pForward.fq.gz" $sampleTag"_uForward.fq.gz" $sampleTag"_pReverse.fq.gz" $sampleTag"_uReverse.fq.gz" ILLUMINACLIP:"$adapterPath":2:30:10 SLIDINGWINDOW:4:15 HEADCROP:23 MINLEN:56
-	trimmomatic PE -phred"$score" $f1 $f2 $sampleTag"_pForward.fq.gz" $sampleTag"_uForward.fq.gz" $sampleTag"_pReverse.fq.gz" $sampleTag"_uReverse.fq.gz" ILLUMINACLIP:"$adapterPath":2:30:10:1:TRUE SLIDINGWINDOW:81:20
+	# perform adapter trimming and quality filtering of paired reads
+	./bbduk.sh qtrim=rl trimq=10 ftm=5 in=$f1 in2=$f2 out=$trimOut"/"$sampleTag"_pForward.fq" out2=$trimOut"/"$sampleTag"_pReverse.fq" outm=$trimOut"/"$sampleTag"_R1_001_failed.fq" outm2=$trimOut"/"$sampleTag"_R2_001_failed.fq" outs=$trimOut"/"$sampleTag"_unpaired.fq"
 	# status message
 	echo "$sampleTag processed!"
 done
-
-# unzip all reads
-gunzip -v $trimOut"/"*\.gz
 
 # status message
 echo "Analysis complete!"

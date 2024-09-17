@@ -7,21 +7,25 @@
 #$ -q largemem
 
 # script to perform merging of paired end reads into single reads
-# usage: qsub 02_merge.sh
+# usage: qsub 02_merge.sh trimmed
 ## outputs_4quality15
 ## job 807481
 ## job 808607
-## outputs_4quality20
-## job 817812
 ## outputs_81quality20
-
+## job 817815
+## outputs_10quality20
+## job 818009
+# usage: qsub 02_merge.sh trimmed_s4q20
+## job 817813
+# usage: qsub 02_merge.sh trimmed_q20
+## job
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
 
 # retrieve input analysis type
-analysisType=$1
+analysisType=$(echo $1 | sed "s/trimmed_//g")
 
 # retrieve software absolute path
 softwarePath=$(grep "software_NGmerge:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/software_NGmerge://g")
@@ -30,10 +34,10 @@ softwarePath=$(grep "software_NGmerge:" ../"inputs/inputPaths_HPC.txt" | tr -d "
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/trimmed"
+inputsPath=$outputsPath"/"$analysisType
 
 # make a new directory for analysis
-mergeOut=$outputsPath"/merged"
+mergeOut=$outputsPath"/merged_"$analysisType
 mkdir $mergeOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -62,10 +66,6 @@ for f1 in $inputsPath"/"*_pForward\.fq*; do
 	# status message
 	echo "$sampleTag processed!"
 done
-
-# unzip all paired reads
-gunzip -v $mergeOut"/"*\.fq\.gz
-gunzip -v $mergeOut"/logs/"*\.fastq\.gz
 
 #Print status message
 echo "Analysis complete!"

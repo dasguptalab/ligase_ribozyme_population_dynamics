@@ -3,9 +3,12 @@
 # script to perform fastqc quality control of paired end reads
 # usage: bash 00b_report.sh analysisType
 # usage ex: bash 00b_report.sh raw
-# usage ex: bash 00b_report.sh trimmed
-# usage ex: bash 00b_report.sh merged
-# usage ex: bash 00b_report.sh combined
+# usage ex: bash 00b_report.sh trimmed_s4q20
+# usage ex: bash 00b_report.sh merged_s4q20
+# usage ex: bash 00b_report.sh combined_s4q20
+# usage ex: bash 00b_report.sh filtered_s4q20
+# usage ex: bash 00b_report.sh trimmed_q20
+# usage ex: bash 00b_report.sh trimmed_q10
 
 # retrieve input analysis type
 analysisType=$1
@@ -25,16 +28,19 @@ echo "Processing..."
 # check input analysis type
 if [[ $analysisType == "raw" ]]; then
 	# run multiqc
-	multiqc $qcOut -o $outputsPath
-elif [[ $analysisType == "trimmed" ]]; then
+	multiqc $qcOut -o $outputsPath -n "qc_raw"
+elif [[ $analysisType == "trimmed"* ]]; then
 	# run multiqc on all
-	multiqc $qcOut -o $outputsPath -n "qc_trimmed_all"
+	multiqc $qcOut -o $outputsPath -n "qc_"$analysisType"_all"
 	# run multiqc on paired data
-	multiqc $qcOut"/"*_p* -o $outputsPath -n "qc_trimmed_paired"
+	multiqc $qcOut"/"*_p* -o $outputsPath -n "qc_"$analysisType"_paired"
 else
 	# run multiqc
 	multiqc $qcOut -o $outputsPath -n "qc_"$analysisType
 fi
+
+# clean up
+rm -r $qcOut
 
 #Print status message
 echo "Analysis complete!"

@@ -2,11 +2,12 @@
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
 # usage: bash 00c_analyze.sh analysisType
-# usage: bash 00c_analyze.sh trimmed
-# usage: bash 00c_analyze.sh merged
-# usage: bash 00c_analyze.sh filtered
-# usage: bash 00c_analyze.sh combined
-# usage: bash 00c_analyze.sh combined_filtered
+# usage: bash 00c_analyze.sh trimmed_s4q20
+# usage: bash 00c_analyze.sh merged_s4q20
+# usage: bash 00c_analyze.sh combined_s4q20
+# usage: bash 00c_analyze.sh filtered_s4q20
+# usage: bash 00c_analyze.sh trimmed_q20
+# usage: bash 00c_analyze.sh trimmed_q10
 
 # retrieve input analysis type
 analysisType=$1
@@ -38,7 +39,12 @@ cd $analysisOut
 # status message
 echo "Beginning analysis..."
 
+# unzip any gz read files
+gunzip -v $readPath"/"*\.gz
+
 # name output files
+namesOut=$analysisOut"/names_count.txt"
+uniqueOut=$analysisOut"/unique_sequences_count.txt"
 lengthsOut=$analysisOut"/read_lengths.txt"
 countsOut=$analysisOut"/read_counts.txt"
 
@@ -47,21 +53,44 @@ echo "run,count,length" > $lengthsOut
 echo "run,count,sequence" > $countsOut
 #echo "run,total,quality,unique,diversity"
 
+# check analysis type
+if [[ $analysisType == *"cleaned" ]]; then
+	# count read names
+	echo "Calculating read name counts..."
+	for i in $readPath"/"*; do echo $i; cat $i | awk 'NR%2==1' | wc -l; done > $namesOut
+	# count unique read sequences
+	echo "Calculating unique read sequence counts..."
+	#for i in $readPath"/"*; do echo $i; cat $i | awk 'NR%2==0' | sort -u | wc -l; done > $uniqueOut
+	for i in $readPath"/"*; do echo $i; cat $i | awk 'NR%2==0' | awk '!seen[$0]++' | wc -l; done > $uniqueOut
+else
+	# count read names
+	echo "Calculating read name counts..."
+	for i in $readPath"/"*; do echo $i; cat $i | awk 'NR%4==1' | wc -l; done > $namesOut
+	# count unique read sequences
+	echo "Calculating unique read sequence counts..."
+	#for i in $readPath"/"*; do echo $i; cat $i | awk 'NR%4==2' | sort -u | wc -l; done > $uniqueOut
+	for i in $readPath"/"*; do echo $i; cat $i | awk 'NR%4==2' | awk '!seen[$0]++' | wc -l; done > $uniqueOut
+fi
+
 # loop over each file
 for f1 in $readPath"/"*; do
 	# status message
 	echo "Processing file: $f1"
 	# check analysis type
-	if [[ $analysisType == *"filtered" ]]; then
+	if [[ $analysisType == *"cleaned" ]]; then
 		# print read lengths
-		cat $f1 | awk 'NR%2==0 {print length($0)}' | sort -n | uniq -c > $lengthsOut".tmp.txt"
+		#cat $f1 | awk 'NR%2==0 {print length($0)}' | sort -n | uniq -c > $lengthsOut".tmp.txt"
+		cat $f1 | awk 'NR%2==0 {print length($0)}' | awk '!seen[$0]++' > $lengthsOut".tmp.txt"
 		# print read counts
-		cat $f1 | awk 'NR%2==0' | sort -n | uniq -c | sort -rk1 > $countsOut".tmp.txt"
+		#cat $f1 | awk 'NR%2==0' | sort -n | uniq -c | sort -rk1 > $countsOut".tmp.txt"
+		cat $f1 | awk 'NR%2==0' | awk '!seen[$0]++' | sort -rk1 > $countsOut".tmp.txt"
 	else
 		# print read lengths
-		cat $f1 | awk 'NR%4==2 {print length($0)}' | sort -n | uniq -c > $lengthsOut".tmp.txt"
+		#cat $f1 | awk 'NR%4==2 {print length($0)}' | sort -n | uniq -c > $lengthsOut".tmp.txt"
+		cat $f1 | awk 'NR%4==2 {print length($0)}' | awk '!seen[$0]++' > $lengthsOut".tmp.txt"
 		# print read counts
-		cat $f1 | awk 'NR%4==2' | sort -n | uniq -c | sort -rk1 > $countsOut".tmp.txt"
+		#cat $f1 | awk 'NR%4==2' | sort -n | uniq -c | sort -rk1 > $countsOut".tmp.txt"
+		cat $f1 | awk 'NR%4==2' | awk '!seen[$0]++' | sort -rk1 > $countsOut".tmp.txt"
 	fi
 	# get the run tag
 	runTag=$(basename $f1 | cut -d"_" -f1)
@@ -82,8 +111,6 @@ for f1 in $readPath"/"*; do
 	rm $lengthsOut".run.tmp.txt"
 	rm $countsOut".tmp.txt"
 	rm $countsOut".run.tmp.txt"
-	# status message
-	echo "File processed!"
 done
 
 # status message

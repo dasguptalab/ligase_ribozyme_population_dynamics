@@ -2,12 +2,12 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N RNA_subset_format_jobOutput
+#$ -N RNA_format_jobOutput
 #$ -q largemem
 
 # script to subset sequences and format headers
-# usage: qsub 06_format.sh inputFile
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/filtered_combined/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06_format.sh "${fileList[$i]}"; done
+# usage: qsub 07_format.sh inputFile
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_s4q15/filtered_combined/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_format.sh "${fileList[$i]}"; done
 ## job 816500
 ## job 816501
 ## job 816502
@@ -19,6 +19,7 @@
 ## job 816508
 ## job 816509
 ## job 816511
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_format.sh "${fileList[$i]}"; done
 
 # retrieve input file
 inputFile=$1

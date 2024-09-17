@@ -6,9 +6,9 @@
 #$ -pe smp 8
 
 # script to cluster sequences using clustalo and --maxnumseq=1300000
-# usage: qsub 07c_cluster.sh inputFile
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 07c_cluster.sh $i; done
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07c_cluster.sh "${fileList[$i]}"; done
+# usage: qsub 08c_cluster.sh inputFile
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 08c_cluster.sh $i; done
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 08c_cluster.sh "${fileList[$i]}"; done
 ## job 814075 -> FATAL: Memory allocation for distance matrix failed
 ## job 814076 -> FATAL: Memory allocation for distance matrix failed
 ## job 814077 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_maxnumseq_1300000_r6_S6_L001_combined_fmt/clustered_r6_S6_L001_combined_fmt
