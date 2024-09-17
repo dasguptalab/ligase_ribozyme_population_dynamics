@@ -25,7 +25,10 @@
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
 
 # retrieve input analysis type
-analysisType=$(echo $1 | sed "s/trimmed_//g")
+analysisType=$1
+
+# retrieve analysis tag
+analysisTag=$(echo $1 | sed "s/trimmed_//g")
 
 # retrieve software absolute path
 softwarePath=$(grep "software_NGmerge:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/software_NGmerge://g")
@@ -37,7 +40,7 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 inputsPath=$outputsPath"/"$analysisType
 
 # make a new directory for analysis
-mergeOut=$outputsPath"/merged_"$analysisType
+mergeOut=$outputsPath"/merged_"$analysisTag
 mkdir $mergeOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
