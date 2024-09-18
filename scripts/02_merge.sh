@@ -17,7 +17,9 @@
 ## job 818009
 # usage: qsub 02_merge.sh trimmed_s4q20
 ## job 817813
+## job 
 # usage: qsub 02_merge.sh trimmed_q20
+## job 819645
 ## job
 
 # primer: GGCUAAGG -> GGCTAAGG
@@ -65,7 +67,8 @@ for f1 in $inputsPath"/"*_pForward\.fq*; do
 	sampleTag=$(basename $f1 | sed 's/_pForward\.fq.*//')
 	# status message
 	echo "Processing $sampleTag"
-	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fq" -m 8 -p 0 -d -e 8 -l $mergeOut"/logs/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/logs/"$sampleTag"_stiched_reads_failed.fq" -j $mergeOut"/logs/"$sampleTag"_log_formatted_alignments.txt" -q 33 -u 40
+	#./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fq" -m 8 -p 0 -d -e 8 -l $mergeOut"/logs/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/logs/"$sampleTag"_stiched_reads_failed.fq" -j $mergeOut"/logs/"$sampleTag"_log_formatted_alignments.txt" -q 33 -u 40
+	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fq" -m 20 -p 0.1 -l $mergeOut"/logs/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/"$sampleTag"_stiched_reads_failed.fq" -j $mergeOut"/logs/"$sampleTag"_log_formatted_alignments.txt" -q 33 -u 40
 	# status message
 	echo "$sampleTag processed!"
 done

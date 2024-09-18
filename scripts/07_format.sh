@@ -20,6 +20,17 @@
 ## job 816509
 ## job 816511
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_format.sh "${fileList[$i]}"; done
+## job 819632
+## job 819633
+## job 819634
+## job 819635
+## job 819636
+## job 819637
+## job 819638
+## job 819639
+## job 819640
+## job 819641
+## job 819642
 
 # retrieve input file
 inputFile=$1
