@@ -22,17 +22,7 @@
 ## job 814071 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_size_500_doped21-r2_S11_L001_combined_fmt/clustered_doped21-r2_S11_L001_combined_fmt
 ## job 814072 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_size_500_doped21-r1_S10_L001_combined_fmt/clustered_doped21-r1_S10_L001_combined_fmt
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 08b_cluster.sh "${fileList[$i]}"; done
-Your job 869568 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869569 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869570 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869571 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869572 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869573 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869574 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869575 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869576 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869577 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
-Your job 869578 ("RNA_cluster_500_clustalo_jobOutput") has been submitted
+
 
 # load the software module
 module load bio/0724
