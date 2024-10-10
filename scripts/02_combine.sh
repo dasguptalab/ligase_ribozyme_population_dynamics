@@ -42,9 +42,9 @@ for f1 in $inputsPath"/trimmed_"$analysisTag"/"*_pForward\.fq; do
 	sampleTag=$(basename $f1 | sed 's/_pForward\.fq//')
 	# status message
 	echo "Processing $sampleTag ..."
-	# combine un-filtered merged,.fqiled merged, and unpaired trimmed reads
-	#cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_u"*\.fq $inputsPath"/merged_"$analysisTag"/"$sampleTag*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
-	cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
+	# combine un-filtered merged, failed merged, and unpaired trimmed reads
+	cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_u"*\.fq $inputsPath"/merged_"$analysisTag"/"$sampleTag*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
+	#cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
 done
 
 # double check that there are no duplicate reads
