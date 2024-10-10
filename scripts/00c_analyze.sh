@@ -6,10 +6,7 @@
 # usage ex: bash 00c_analyze.sh combined_s4q20
 # usage ex: bash 00c_analyze.sh filtered_s4q20
 # usage ex: bash 00c_analyze.sh cleaned_s4q20
-# usage ex: bash 00c_analyze.sh trimmed_s20q20
-# usage ex: bash 00c_analyze.sh combined_s20q20
-# usage ex: bash 00c_analyze.sh filtered_s20q20
-# usage ex: bash 00c_analyze.sh cleaned_s20q20
+# usage ex: bash 00c_analyze.sh formatted_s4q20
 
 # retrieve input analysis type
 analysisType=$1

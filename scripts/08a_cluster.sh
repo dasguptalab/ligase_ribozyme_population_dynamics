@@ -28,6 +28,19 @@
 ## job 814046 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r2_S11_L001_combined_fmt/clustered_doped21-r2_S11_L001_combined_fmt
 ## job 814047 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r1_S10_L001_combined_fmt/clustered_doped21-r1_S10_L001_combined_fmt
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 08a_cluster.sh "${fileList[$i]}"; done
+## job 868912
+## job 868914
+## job 868915
+## job 868916
+## job 868917
+## job 868918
+## job 868919
+## job 868920
+## job 868921
+## job 868922
+## job 868923
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 08a_cluster.sh "${fileList[$i]}"; done
+
 
 # load the software module
 module load bio/0724
@@ -41,8 +54,16 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 # clean up input file name
 nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 
+# retrieve the analysis type
+analysisType=$(dirname $inputFile)
+analysisType=$(basename $clusterOut)
+
+# make a directory for the clustering outputs
+clusterOut=$outputsPath"/clustered_"$analysisType
+mkdir $clusterOut
+
 # make a new directory for analysis
-clusterOut=$outputsPath"/clustered_"$nameTag
+clusterOut=$clusterOut"/"$nameTag
 mkdir $clusterOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -57,7 +78,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # filter to keep sequences with matching up- and down-stream sequences
-clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag
+clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/"$nameTag
 
 # status message
 echo "Analysis complete!"
