@@ -33,8 +33,16 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 # clean up input file name
 nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 
+# retrieve the analysis type
+analysisType=$(dirname $inputFile)
+analysisType=$(basename $clusterOut)
+
+# make a directory for the clustering outputs
+clusterOut=$outputsPath"/clustered_maxnumseq_1300000_"$analysisType
+mkdir $clusterOut
+
 # make a new directory for analysis
-clusterOut=$outputsPath"/clustered_maxnumseq_1300000_"$nameTag
+clusterOut=$clusterOut"/"$nameTag
 mkdir $clusterOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then

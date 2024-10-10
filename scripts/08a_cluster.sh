@@ -28,19 +28,17 @@
 ## job 814046 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r2_S11_L001_combined_fmt/clustered_doped21-r2_S11_L001_combined_fmt
 ## job 814047 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r1_S10_L001_combined_fmt/clustered_doped21-r1_S10_L001_combined_fmt
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 08a_cluster.sh "${fileList[$i]}"; done
-## job 868912
-## job 868914
-## job 868915
-## job 868916
-## job 868917
-## job 868918
-## job 868919
-## job 868920
-## job 868921
-## job 868922
-## job 868923
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 08a_cluster.sh "${fileList[$i]}"; done
-
+## job 868912 -> FATAL: Memory allocation for distance matrix failed
+## job 868914 -> FATAL: Memory allocation for distance matrix failed
+## job 868915 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_r6_S6_L001_cleaned_fmt/clustered_r6_S6_L001_cleaned_fmt
+## job 868916 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_r5_S5_L001_cleaned_fmt/clustered_r5_S5_L001_cleaned_fmt
+## job 868917 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_r4_S4_L001_cleaned_fmt/clustered_r4_S4_L001_cleaned_fmt
+## job 868918 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_r3_S3_L001_cleaned_fmt/clustered_r3_S3_L001_cleaned_fmt
+## job 868919 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_r2_S2_L001_cleaned_fmt/clustered_r2_S2_L001_cleaned_fmt
+## job 868920 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_r1_S1_L001_cleaned_fmt/clustered_r1_S1_L001_cleaned_fmt
+## job 868921 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r3_S12_L001_cleaned_fmt/clustered_doped21-r3_S12_L001_cleaned_fmt
+## job 868922 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r2_S11_L001_cleaned_fmt/clustered_doped21-r2_S11_L001_cleaned_fmt
+## job 868923 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r1_S10_L001_cleaned_fmt/clustered_doped21-r1_S10_L001_cleaned_fmt
 
 # load the software module
 module load bio/0724
