@@ -35,8 +35,7 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 
 # retrieve the analysis type
-analysisType=$(dirname $inputFile)
-analysisType=$(basename $clusterOut)
+analysisType=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # make a directory for the clustering outputs
 clusterOut=$outputsPath"/clustered_maxnumseq_1300000_"$analysisType
