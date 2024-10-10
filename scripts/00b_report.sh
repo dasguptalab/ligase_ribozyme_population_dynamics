@@ -4,11 +4,11 @@
 # usage: bash 00b_report.sh analysisType
 # usage ex: bash 00b_report.sh raw
 # usage ex: bash 00b_report.sh trimmed_s4q20
-# usage ex: bash 00b_report.sh merged_s4q20
 # usage ex: bash 00b_report.sh combined_s4q20
 # usage ex: bash 00b_report.sh filtered_s4q20
-# usage ex: bash 00b_report.sh trimmed_q20
-# usage ex: bash 00b_report.sh trimmed_q10
+# usage ex: bash 00b_report.sh trimmed_s20q20
+# usage ex: bash 00b_report.sh combined_s20q20
+# usage ex: bash 00b_report.sh filtered_s20q20
 
 # retrieve input analysis type
 analysisType=$1

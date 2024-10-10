@@ -2,12 +2,14 @@
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
 # usage: bash 00c_analyze.sh analysisType
-# usage: bash 00c_analyze.sh trimmed_s4q20
-# usage: bash 00c_analyze.sh merged_s4q20
-# usage: bash 00c_analyze.sh combined_s4q20
-# usage: bash 00c_analyze.sh filtered_s4q20
-# usage: bash 00c_analyze.sh trimmed_q20
-# usage: bash 00c_analyze.sh trimmed_q10
+# usage ex: bash 00c_analyze.sh trimmed_s4q20
+# usage ex: bash 00c_analyze.sh combined_s4q20
+# usage ex: bash 00c_analyze.sh filtered_s4q20
+# usage ex: bash 00c_analyze.sh cleaned_s4q20
+# usage ex: bash 00c_analyze.sh trimmed_s20q20
+# usage ex: bash 00c_analyze.sh combined_s20q20
+# usage ex: bash 00c_analyze.sh filtered_s20q20
+# usage ex: bash 00c_analyze.sh cleaned_s20q20
 
 # retrieve input analysis type
 analysisType=$1
@@ -40,7 +42,7 @@ cd $analysisOut
 echo "Beginning analysis..."
 
 # unzip any gz read files
-gunzip -v $readPath"/"*\.gz
+gunzip -v $readPath"/"*
 
 # name output files
 namesOut=$analysisOut"/names_count.txt"

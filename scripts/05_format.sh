@@ -6,8 +6,8 @@
 #$ -q largemem
 
 # script to subset sequences and format headers
-# usage: qsub 07_format.sh inputFile
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_s4q15/filtered_combined/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_format.sh "${fileList[$i]}"; done
+# usage: qsub 05_format.sh inputFile
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_s4q15/filtered_combined/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 05_format.sh "${fileList[$i]}"; done
 ## job 816500
 ## job 816501
 ## job 816502
@@ -19,7 +19,7 @@
 ## job 816508
 ## job 816509
 ## job 816511
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_format.sh "${fileList[$i]}"; done
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 05_format.sh "${fileList[$i]}"; done
 ## job 819632
 ## job 819633
 ## job 819634
@@ -35,11 +35,17 @@
 # retrieve input file
 inputFile=$1
 
+# retrieve input analysis type
+analysisType=$(basename $1)
+
+# retrieve analysis tag
+analysisTag=$(echo $analysisType | sed "s/merged_//g")
+
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # make a new directory for analysis
-formatOut=$outputsPath"/formatted_subset"
+formatOut=$outputsPath"/formatted_"$analysisTag
 mkdir $formatOut
 
 # move to the new directory

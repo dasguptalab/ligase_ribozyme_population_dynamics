@@ -19,14 +19,15 @@
 ## job 814037 -> Couldn't allocate MPI memory
 ## job 814038 -> Couldn't allocate MPI memory
 ## job 814039 -> /opt/sge/crc/spool/d32cepyc207/job_scripts/814039: line 41: 2143111 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag
-## job 814040 
+## job 814040 -> Distance calculation within sub-clusters done. CPU time: 2166.49u 45.15s 00:36:51.64 Elapsed: 00:15:11
 ## job 814041 -> /opt/sge/crc/spool/d32cepyc189/job_scripts/814041: line 41: 3944610 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag
 ## job 814042 -> /opt/sge/crc/spool/d32cepyc214/job_scripts/814042: line 41: 2583840 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag
-## job 814043 
+## job 814043 -> Distance calculation within sub-clusters done. CPU time: 2447.68u 48.10s 00:41:35.77 Elapsed: 00:17:54
 ## job 814044 -> /opt/sge/crc/spool/d32cepyc217/job_scripts/814044: line 41: 81853 Killed                  clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag
 ## job 814045 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r3_S12_L001_combined_fmt/clustered_doped21-r3_S12_L001_combined_fmt
 ## job 814046 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r2_S11_L001_combined_fmt/clustered_doped21-r2_S11_L001_combined_fmt
 ## job 814047 -> Alignment written to /scratch365/ebrooks5/RNA_evolution/outputs/clustered_doped21-r1_S10_L001_combined_fmt/clustered_doped21-r1_S10_L001_combined_fmt
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 08a_cluster.sh "${fileList[$i]}"; done
 
 # load the software module
 module load bio/0724

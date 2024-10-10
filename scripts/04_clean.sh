@@ -1,14 +1,19 @@
 #!/bin/bash
 
-# script to filter reads and keep sequences with matching up- and down-stream sequences
-# usage: bash 05_filter.sh analysisType
-
-# retrieve input analysis type
-analysisType=$1
+# script to clean reads and keep only the variable 40bp region
+# usage: bash 04_clean.sh analysisType
+# usage: bash 04_clean.sh filtered_s4q20
+# usage: bash 04_clean.sh filtered_s20q20
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
+
+# retrieve input analysis type
+analysisType=$1
+
+# retrieve analysis tag
+analysisTag=$(echo $1 | sed "s/filtered_//g")
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
@@ -17,7 +22,7 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed
 inputsPath=$outputsPath"/"$analysisType
 
 # make a new directory for analysis
-filterOut=$outputsPath"/filtered_"$analysisType
+filterOut=$outputsPath"/cleaned_"$analysisTag
 mkdir $filterOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -36,11 +41,9 @@ for f1 in $inputsPath"/"*\.fq; do
 	# status message
 	echo "Processing $f1"
 	# trim to sample tag
-	newName=$(basename $f1 | sed 's/_combined\.fq/_filtered\.fq/')
+	newName=$(basename $f1 | sed 's/_filtered\.fq/_cleaned\.fa/')
 	# filter to keep sequences with matching up- and down-stream sequences
-	#cat $f1 | awk '/GGACAGCG.{40}CGCTGTCC/{if (a && a !~ /GGACAGCG.{40}CGCTGTCC/) print a; print} {a=$0}' | sed "s/^.*GGACAGCG//g" | sed "s/CGCTGTCC.*$//g" | grep -Ex -B1 '.{40}' > $filterOut"/"$newName
-	#cat $f1 | grep -Ex -B1 '.*GGACAGCG.{40}CGCTGTCC.*' | sed "s/^.*GGACAGCG//g" | sed "s/CGCTGTCC.*$//g" | grep -Ex -B1 '.{40}' | grep -v "^--$" > $filterOut"/"$newName
-	cat $f1 | grep -Ex -B1 -A2 '.*GGACAGCG.{40}CGCTGTCC.*' | grep -v "^--$" > $filterOut"/"$newName
+	cat $f1 | sed "s/^.*GGACAGCG/START/g" | sed "s/CGCTGTCC.*$/END/g" | grep -Ex -B1 'START.{40}END' | grep -v "^--$" | sed "s/START//g" | sed "s/END//g" > $filterOut"/"$newName
 done
 
 # status message
