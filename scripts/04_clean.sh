@@ -3,7 +3,7 @@
 # script to clean reads and keep only the variable 40bp region
 # usage: bash 04_clean.sh analysisType
 # usage: bash 04_clean.sh filtered_s4q20
-# usage: bash 04_clean.sh filtered_s20q20
+# usage: bash 04_clean.sh trimmed_merged
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
@@ -16,7 +16,7 @@ analysisType=$1
 analysisTag=$(echo $1 | sed "s/filtered_//g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/"$analysisType

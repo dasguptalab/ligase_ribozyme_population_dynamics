@@ -3,7 +3,7 @@
 # script to filter reads and keep sequences with matching up- and down-stream sequences
 # usage: bash 03_filter.sh analysisType
 # usage: bash 03_filter.sh combined_s4q20
-# usage: bash 03_filter.sh combined_s20q20
+# usage: bash 03_filter.sh trimmed_merged
 
 # retrieve input analysis type
 analysisType=$1
@@ -16,7 +16,7 @@ analysisTag=$(echo $1 | sed "s/combined_//g")
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/"$analysisType

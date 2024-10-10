@@ -8,6 +8,7 @@
 
 # script to perform merging of paired end reads into single reads
 # usage: qsub 01b_trim.sh
+## job 870256
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total

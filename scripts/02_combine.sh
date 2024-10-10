@@ -3,7 +3,7 @@
 # script to combine files of merged trimmed paired reads with trimmed unpaired reads
 # usage: bash 02_combine.sh analysisType
 # usage: bash 02_combine.sh trimmed_s4q20
-# usage: bash 02_combine.sh trimmed_s20q20
+# usage: bash 02_combine.sh trimmed_merged
 
 # retrieve input analysis type
 analysisType=$1
@@ -12,7 +12,7 @@ analysisType=$1
 analysisTag=$(echo $1 | sed "s/trimmed_//g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set the inputs directory
 inputsPath=$outputsPath
