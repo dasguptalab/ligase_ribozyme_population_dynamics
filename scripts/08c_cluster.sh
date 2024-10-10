@@ -4,6 +4,7 @@
 #$ -r n
 #$ -N RNA_cluster_maxnumseq_clustalo_jobOutput
 #$ -pe smp 8
+#$ -q largemem
 
 # script to cluster sequences using clustalo and --maxnumseq=1300000
 # usage: qsub 08c_cluster.sh inputFile
