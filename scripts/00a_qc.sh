@@ -10,6 +10,9 @@
 # usage ex: bash 00a_qc.sh combined_merged
 # usage ex: bash 00a_qc.sh filtered_merged
 
+# load software module for remote servers
+module load bio/2.0
+
 # retrieve input analysis type
 analysisType=$1
 
