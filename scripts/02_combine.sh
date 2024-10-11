@@ -35,7 +35,7 @@ echo "Analyzing combined data..."
 # unzip any gz read files
 gunzip -v $inputsPath"/"*\.gz
 
-# loop over un-filtered merged reads for each run
+# loop through all samples
 for f1 in $inputsPath"/"*_stiched_reads\.fq; do
 	# trim file extension
 	sampleFile=$(echo $f1 | sed 's/\.fq//')

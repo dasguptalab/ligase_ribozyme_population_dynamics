@@ -6,15 +6,15 @@
 # usage ex: bash 00b_report.sh trimmed_s4q20
 # usage ex: bash 00b_report.sh combined_s4q20
 # usage ex: bash 00b_report.sh filtered_s4q20
-# usage ex: bash 00b_report.sh trimmed_s20q20
-# usage ex: bash 00b_report.sh combined_s20q20
-# usage ex: bash 00b_report.sh filtered_s20q20
+# usage ex: bash 00b_report.sh trimmed_merged
+# usage ex: bash 00b_report.sh combined_merged
+# usage ex: bash 00b_report.sh filtered_merged
 
 # retrieve input analysis type
 analysisType=$1
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve directory for analysis
 qcOut=$outputsPath"/qc_"$analysisType

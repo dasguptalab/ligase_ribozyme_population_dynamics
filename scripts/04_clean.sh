@@ -3,7 +3,7 @@
 # script to clean reads and keep only the variable 40bp region
 # usage: bash 04_clean.sh analysisType
 # usage: bash 04_clean.sh filtered_s4q20
-# usage: bash 04_clean.sh trimmed_merged
+# usage: bash 04_clean.sh filtered_merged
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
@@ -36,7 +36,7 @@ cd $filterOut
 # status message
 echo "Beginning analysis..."
 
-# loop through all forward and reverse reads and run trimmomatic on each pair
+# loop through all samples
 for f1 in $inputsPath"/"*\.fq; do
 	# status message
 	echo "Processing $f1"

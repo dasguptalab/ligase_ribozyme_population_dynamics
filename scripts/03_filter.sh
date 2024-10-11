@@ -3,7 +3,7 @@
 # script to filter reads and keep sequences with matching up- and down-stream sequences
 # usage: bash 03_filter.sh analysisType
 # usage: bash 03_filter.sh combined_s4q20
-# usage: bash 03_filter.sh trimmed_merged
+# usage: bash 03_filter.sh combined_merged
 
 # retrieve input analysis type
 analysisType=$1
@@ -36,7 +36,7 @@ cd $filterOut
 # status message
 echo "Beginning analysis..."
 
-# loop through all forward and reverse reads and run trimmomatic on each pair
+# loop through all samples
 for f1 in $inputsPath"/"*\.fq; do
 	# status message
 	echo "Processing $f1"

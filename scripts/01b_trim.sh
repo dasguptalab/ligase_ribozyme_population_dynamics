@@ -44,7 +44,7 @@ cd $softwarePath
 # status message
 echo "Processing..."
 
-# loop through all forward and reverse reads and merge each pair into a single read
+# loop through all samples
 for f1 in $inputsPath"/"*_R1_001\.fastq\.gz; do
 	# trim extension from current file name
 	curSample=$(echo $f1 | sed 's/_R1_001\.fastq\.gz//')

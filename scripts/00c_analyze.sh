@@ -7,17 +7,22 @@
 # usage ex: bash 00c_analyze.sh filtered_s4q20
 # usage ex: bash 00c_analyze.sh cleaned_s4q20
 # usage ex: bash 00c_analyze.sh formatted_s4q20
+# usage ex: bash 00c_analyze.sh trimmed_merged
+# usage ex: bash 00c_analyze.sh combined_merged
+# usage ex: bash 00c_analyze.sh filtered_merged
+# usage ex: bash 00c_analyze.sh cleaned_merged
+# usage ex: bash 00c_analyze.sh formatted_merged
 
 # retrieve input analysis type
 analysisType=$1
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # check input analysis type
 if [[ $analysisType == "raw" ]]; then
 	# retrieve raw paired reads absolute path for alignment
-	readPath=$(grep "pairedReads:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/pairedReads://g")
+	readPath=$(grep "pairedReads:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/pairedReads://g")
 else 
 	# set reads path
 	readPath=$outputsPath"/"$analysisType
@@ -39,7 +44,7 @@ cd $analysisOut
 echo "Beginning analysis..."
 
 # unzip any gz read files
-gunzip -v $readPath"/"*
+gunzip -v $readPath"/"*\.gz
 
 # name output files
 namesOut=$analysisOut"/names_count.txt"
