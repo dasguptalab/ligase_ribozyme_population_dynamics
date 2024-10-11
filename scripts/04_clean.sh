@@ -12,8 +12,8 @@
 # retrieve input analysis type
 analysisType=$1
 
-# retrieve analysis tag
-analysisTag=$(echo $1 | sed "s/filtered_//g")
+# retrieve the analysis type
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")

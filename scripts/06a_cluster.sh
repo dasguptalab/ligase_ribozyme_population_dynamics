@@ -53,10 +53,10 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 
 # retrieve the analysis type
-analysisType=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # make a directory for the clustering outputs
-clusterOut=$outputsPath"/clustered_"$analysisType
+clusterOut=$outputsPath"/clustered_"$analysisTag
 mkdir $clusterOut
 
 # make a new directory for analysis

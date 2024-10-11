@@ -21,13 +21,13 @@ inputsPath=$(grep "pairedReads:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the analysis type
-analysisType=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve software absolute path
 softwarePath=$(grep "software_NGmerge:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/software_NGmerge://g")
 
 # make a new directory for analysis
-mergeOut=$outputsPath"/trimmed_"$analysisType
+mergeOut=$outputsPath"/trimmed_"$analysisTag
 mkdir $mergeOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then

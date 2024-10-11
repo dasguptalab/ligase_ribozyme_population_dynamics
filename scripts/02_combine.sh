@@ -8,14 +8,14 @@
 # retrieve input analysis type
 analysisType=$1
 
-# retrieve analysis tag
-analysisTag=$(echo $1 | sed "s/trimmed_//g")
+# retrieve the analysis type
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set the inputs directory
-inputsPath=$outputsPath
+inputsPath=$outputsPath"/"$analysisType
 
 # make a new directory for analysis
 outputsCombined=$outputsPath"/combined_"$analysisTag
@@ -33,17 +33,18 @@ cd $outputsCombined
 echo "Analyzing combined data..."
 
 # unzip any gz read files
-gunzip -v $inputsPath"/trimmed_"$analysisTag"/"*\.gz
-gunzip -v $inputsPath"/merged_"$analysisTag"/"*\.gz
+gunzip -v $inputsPath"/"*\.gz
 
 # loop over un-filtered merged reads for each run
-for f1 in $inputsPath"/trimmed_"$analysisTag"/"*_pForward\.fq; do
+for f1 in $inputsPath"/"*_stiched_reads\.fq; do
+	# trim file extension
+	sampleFile=$(echo $f1 | sed 's/\.fq//')
 	# trim to sample tag
-	sampleTag=$(basename $f1 | sed 's/_pForward\.fq//')
+	sampleTag=$(basename $f1 | sed 's/\.fq//')
 	# status message
 	echo "Processing $sampleTag ..."
 	# combine un-filtered merged, failed merged, and unpaired trimmed reads
-	cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_u"*\.fq $inputsPath"/merged_"$analysisTag"/"$sampleTag*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
+	cat $f1 $sampleFile"_failed.fq_1.fastq" $sampleFile"_failed.fq_2.fastq" >> $outputsCombined"/"$sampleTag"_combined.fq"
 	#cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
 done
 

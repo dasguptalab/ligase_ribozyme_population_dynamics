@@ -38,8 +38,8 @@ inputFile=$1
 # retrieve input analysis type
 analysisType=$(basename $1)
 
-# retrieve analysis tag
-analysisTag=$(echo $analysisType | sed "s/merged_//g")
+# retrieve the analysis type
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")

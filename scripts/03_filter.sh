@@ -8,8 +8,8 @@
 # retrieve input analysis type
 analysisType=$1
 
-# retrieve analysis tag
-analysisTag=$(echo $1 | sed "s/combined_//g")
+# retrieve the analysis type
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
