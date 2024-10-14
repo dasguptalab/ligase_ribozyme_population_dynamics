@@ -12,6 +12,7 @@
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06c_cluster.sh "${fileList[$i]}"; done
 ## job 814075 to 814086
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06c_cluster.sh "${fileList[$i]}"; done
+## jobs 874217 to 874227
 
 # load the software module
 module load bio/0724
