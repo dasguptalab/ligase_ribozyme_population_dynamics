@@ -33,7 +33,7 @@ elif [[ $analysisType == "trimmed"* ]]; then
 	# run multiqc on all
 	multiqc $qcOut -o $outputsPath -n "qc_"$analysisType"_all"
 	# run multiqc on paired data
-	multiqc $qcOut"/"*_p* -o $outputsPath -n "qc_"$analysisType"_paired"
+	#multiqc $qcOut"/"*_p* -o $outputsPath -n "qc_"$analysisType"_paired"
 else
 	# run multiqc
 	multiqc $qcOut -o $outputsPath -n "qc_"$analysisType

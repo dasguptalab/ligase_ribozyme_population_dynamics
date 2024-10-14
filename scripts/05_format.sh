@@ -13,6 +13,8 @@
 ## jobs 819632 to 819642
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 05_format.sh "${fileList[$i]}"; done
 ## jobs 870685 to 870695
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_merged_copy/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 05_format.sh "${fileList[$i]}"; done
+## jobs 871478, 871479, 871481 to 871485, 871487 to 871490
 
 # retrieve input file
 inputFile=$1
@@ -44,6 +46,7 @@ rm $formatOut"/"$fileName
 # status message
 echo "Beginning analysis..."
 
+# very innificient... consider using sort to prepare the data and reduce search time
 # subset read sequences and re-format headers
 while read -r line; do
 	# check if the current line is a header
