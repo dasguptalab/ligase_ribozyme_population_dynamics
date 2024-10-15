@@ -1,20 +1,11 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N RNA_format_jobOutput
-#$ -q largemem
 
 # script to subset sequences and format headers
-# usage: qsub 05_format.sh inputFile
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_s4q15/filtered_combined/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 05_format.sh "${fileList[$i]}"; done
-## jobs 
-
-# retrieve input file
-inputFile=$1
+# usage: bash 05_format.sh inputFile
+# usage: bash 05_format.sh cleaned_merged
 
 # retrieve input analysis type
-analysisType=$(basename $1)
+analysisType=$1
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -22,54 +13,52 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
-# make a new directory for outputs
-formatOut=$outputsPath"/formatted_"$analysisTag
-mkdir $formatOut
+# retrieve the inputs path
+inputsPath=$outputsPath"/"$analysisType
 
-# make a new directory for filtered outputs
-filterOut=$outputsPath"/formatted_filtered_"$analysisTag
-mkdir $filterOut
+# make a new directory for analysis
+outputsPath=$outputsPath"/formatted_"$analysisTag
+mkdir $outputsPath
+# check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
-# create sequence run name
-#newName=$(basename $f1 | sed "s/_L001_p.*\.flt\.fq//g")
-# clean up file name
-fileName=$(basename $inputFile | sed "s/\.fa/\.fmt\.fa/g")
-
-# pre-clean up
-rm $formatOut"/"$fileName
-rm $filterOut"/"$fileName
+# move to the new directory
+cd $outputsPath
 
 # status message
 echo "Beginning analysis..."
 
-# very innificient... consider using sort to prepare the data and reduce search time
-# subset read sequences and re-format headers
-while read -r line; do
-	# check if the current line is a header
-	if [[ $line == "@"* ]]; then # read header
-		# save previous line, which should be the leader of the current sequence
-		headerLine=$line
-	else # read sequence
-		# status message
-		echo "Processing $line ..."
-		# get read count
-		readCount=$(cat $inputFile | grep $line | wc -l | tr -d " ")
-		# re-format read header and add sequence counts
-		headerInfo=$(echo $headerLine | cut -d" " -f1 | sed "s/^@/>/g")
-		headerInfo=$headerInfo"."$readCount
-		# add header to outputs
-		echo $headerInfo >> $formatOut"/"$fileName
-		# add sequence to outputs
-		echo $line >> $formatOut"/"$fileName
-		# check if there are more than 10 of the current read
-		if (( $readCount > 10 )); then # add read info to outputs
-			# add header to filtered outputs
-			echo $headerInfo >> $filterOut"/"$fileName
-			# add sequence to filtered outputs
-			echo $line >> $filterOut"/"$fileName
-		fi		
-	fi
-done < $inputFile
+# loop through all samples
+for f1 in $inputsPath"/"*\.fa; do
+	# status message
+	echo "Processing file: $f1"
+	# trim to sample tag
+	newName=$(basename $f1 | sed 's/_cleaned\.fq/_formatted\.fq/')
+	# print read counts
+	# for fasta files
+	cat $f1 | awk 'NR%2==0' | sort | uniq -c | sort -nrk1 > $outputsPath"/"$newName".counts.tmp.txt"
+	# for fastq files
+	#cat $f1 | awk 'NR%4==2' | sort | uniq -c | sort -nrk1 > $outputsPath"/"$newName".counts.tmp.txt"
+	# get the run tag
+	runTag=$(basename $f1 | cut -d"_" -f1)
+	# get length of output file
+	outLength=$(wc -l $outputsPath"/"$newName".counts.tmp.txt" | cut -d"/" -f1 | tr -d " ")
+	# make a file with the run tag on each line
+	yes . | head -n $outLength | sed "s/./>$runTag/g" > $outputsPath"/"$newName".run.tmp.txt"
+	# combine output counts and sequence file with run tags and convert to csv
+	paste -d" " $outputsPath"/"$newName".run.tmp.txt" $outputsPath"/"$newName".counts.tmp.txt" | tr -s ' ' | sed "s/ /,/g" > $outputsPath"/"$newName".tmp.txt"
+	# cut out the header data
+	cut -d"," -f1,2 $outputsPath"/"$newName".tmp.txt" > $outputsPath"/"$newName".header.tmp.txt"
+	# cut out the seqeunce data
+	cut -d"," -f3 $outputsPath"/"$newName".tmp.txt" > $outputsPath"/"$newName".seq.tmp.txt"
+	# interleave the seqeunce data with the headers
+	paste -d'\n' $outputsPath"/"$newName".header.tmp.txt" $outputsPath"/"$newName".seq.tmp.txt" > $outputsPath"/"$newName
+	# clean up
+	rm $outputsPath"/"$newName*".tmp.txt"
+done
 
 # status message
 echo "Analysis complete!"
