@@ -86,15 +86,15 @@ for f1 in $readPath"/"*; do
 		#cat $f1 | awk 'NR%2==0 {print length($0)}' | sort -n | uniq -c > $lengthsOut".tmp.txt"
 		cat $f1 | awk 'NR%2==0 {print length($0)}' | awk '!seen[$0]++' > $lengthsOut".tmp.txt"
 		# print read counts
-		#cat $f1 | awk 'NR%2==0' | sort -n | uniq -c | sort -rk1 > $countsOut".tmp.txt"
-		cat $f1 | awk 'NR%2==0' | awk '!seen[$0]++' | sort -rk1 > $countsOut".tmp.txt"
+		cat $f1 | awk 'NR%2==0' | sort | uniq -c | sort -nrk1 > $countsOut".tmp.txt"
+		#cat $f1 | awk 'NR%2==0' | awk '!seen[$0]++' | sort -rk1 > $countsOut".tmp.txt"
 	else
 		# print read lengths
 		#cat $f1 | awk 'NR%4==2 {print length($0)}' | sort -n | uniq -c > $lengthsOut".tmp.txt"
 		cat $f1 | awk 'NR%4==2 {print length($0)}' | awk '!seen[$0]++' > $lengthsOut".tmp.txt"
 		# print read counts
-		#cat $f1 | awk 'NR%4==2' | sort -n | uniq -c | sort -rk1 > $countsOut".tmp.txt"
-		cat $f1 | awk 'NR%4==2' | awk '!seen[$0]++' | sort -rk1 > $countsOut".tmp.txt"
+		cat $f1 | awk 'NR%4==2' | sort | uniq -c | sort -nrk1 > $countsOut".tmp.txt"
+		#cat $f1 | awk 'NR%4==2' | awk '!seen[$0]++' | sort -rk1 > $countsOut".tmp.txt"
 	fi
 	# get the run tag
 	runTag=$(basename $f1 | cut -d"_" -f1)
