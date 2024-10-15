@@ -40,7 +40,7 @@ else
 fi
 
 # clean up
-rm -r $qcOut
+#rm -r $qcOut
 
 #Print status message
 echo "Analysis complete!"

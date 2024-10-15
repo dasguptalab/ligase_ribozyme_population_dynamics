@@ -13,7 +13,6 @@ Repository for analyzing RNA sequences from in vitro selection-amplification to 
 4. combine filtered read files with trimmed unpaired reads and make sure there are no duplicate reads using BASH
 5. before clustering, remove sequences that appear less than 10 times and re-format read headers
 6. cluster read sequences for each run
-
 7. reproduce "Progress of in vitro selection"
 - total sequences
 - high quality sequences
@@ -21,6 +20,58 @@ Repository for analyzing RNA sequences from in vitro selection-amplification to 
 - diversity (%)
 - number of sequence families
 8. reproduce "Different classes of ribozymes after clustering" from the run 8 data
+
+## Progress of in vitro selection - Update (14 October 2024)
+
+| Stat | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Total | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 | 1,226,539 | 1,090,909 | 1,656,088 |
+| Quality | 632,019 | 638,186 | 622,607 | 532,376 | 609,626 | 572,035 | 353,891 | 558,886 | 524,920 | 484,648 | 698,698 |
+| Unique | 631,112 | 637,228 | 621,664 | 531,469 | 603,425 | 360,806 | 103,259 | 149,949 | 517,947 | 458,560 | 632,000 |
+| Diversity% | 99.8565 | 99.8499 | 99.8485 | 99.8296 | 98.9828 | 63.0741 | 29.1782 | 26.8300 | 98.6716 | 94.6171 | 90.4540 |
+| Families | N/A | N/A | N/A | N/A | N/A | 3,433 | 1,814 | 1,006 | N/A | N/A | N/A |
+
+![Progress of in vitro selection - OG](images/Progress_of_in_vitro_selection.png)
+
+### Step 02 - Combined
+
+| Stat | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Total | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 | 1,226,539 | 1,090,909 | 1,656,088 |
+| Quality | 1869328 | 1882973 | 2074627 | 1726395 | 2416855 | 2896900 | 1489558 | 2240022 | 1553656 | 1337026 | 2077312 |
+| Unique | 1657227 | 1712138 | 1813249 | 1612688 | 2115472 | 1709142 | 549695 | 751481 | 1388018 | 1217610 | 1744650 |
+| Diversity% | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
+| Families | N/A | N/A | N/A | N/A | N/A | R6 | R7 | R8 | N/A | N/A | N/A |
+
+### Step 03 - Filtered
+
+| Stat | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Total | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 | 1,226,539 | 1,090,909 | 1,656,088 |
+| Quality | 1265458 | 1278170 | 1247279 | 1067052 | 1222207 | 1147067 | 708882 | 1118288 | 1050290 | 969677 | 1398173 |
+| Unique | 1262333 | 1274868 | 1244065 | 1063950 | 1207611 | 737192 | 220609 | 318830 | 1028429 | 912335 | 1256095 |
+| Diversity% | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
+| Families | N/A | N/A | N/A | N/A | N/A | R6 | R7 | R8 | N/A | N/A | N/A |
+
+### Step 04 - Cleaned
+
+| Stat | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Total | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 | 1,226,539 | 1,090,909 | 1,656,088 |
+| Quality | 632,019 | 638,186 | 622,607 | 532,376 | 609,626 | 572,035 | 353,891 | 558,886 | 524,920 | 484,648 | 698,698 |
+| Unique | 631,112 | 637,228 | 621,664 | 531,469 | 603,425 | 360,806 | 103,259 | 149,949 | 517,947 | 458,560 | 632,000 |
+| Diversity% | 99.8565 | 99.8499 | 99.8485 | 99.8296 | 98.9828 | 63.0741 | 29.1782 | 26.8300 | 98.6716 | 94.6171 | 90.4540 |
+| Families | N/A | N/A | N/A | N/A | N/A | 678,919 | 173,591 | 262,776 | N/A | N/A | N/A |
+
+### Step 05 - Formatted
+
+| Stat | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Total | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 | 1,226,539 | 1,090,909 | 1,656,088 |
+| Quality | 63 | 52 | 64 | 46 | 3301 | 201922 | 245066 | 403335 | 992 | 17480 | 46229 |
+| Unique | 5 | 3 | 5 | 5 | 262 | 3827 | 2574 | 2008 | 57 | 679 | 1568 |
+| Diversity% | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
+| Families | N/A | N/A | N/A | N/A | N/A | 3433 | 1814 | 1006 | N/A | N/A | N/A |
 
 ## Progress of in vitro selection - Update (12 September 2024)
 
@@ -31,7 +82,7 @@ for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/\*/\*\.fa; do echo \
 To filter sequences by structure and count read names:
 for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/combined/\*\.fq; do echo \$i; cat \$i | grep -Ex -B1 '.\*GGACAGCG.{40}CGCTGTCC.\*' | sed "s/^.\*GGACAGCG//g" | sed "s/CGCTGTCC.\*\$//g" | grep -Ex -B1 '.{40}' | grep -v "^--$" | awk 'NR%2==1 | wc -l; done
 
-## Run Stats
+### Run Stats
 
 | Stat | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -71,11 +122,9 @@ for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/\*/\*\.fa; do echo \
 | Diversity% | 100 | 100 | 100 | 100 | 99 | 54 | 14 | 0.1 | 98 | 94 | 88 |
 | Families | N/A | N/A | N/A | N/A | N/A | R6 | R7 | R8 | N/A | N/A | N/A |
 
-![Progress of in vitro selection - OG](images/Progress_of_in_vitro_selection.png)
-
 ## Progress of in vitro selection - Update (30 August 2024)
 
-## Run Stats
+### Run Stats
 
 | Stat | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |

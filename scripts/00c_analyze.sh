@@ -58,7 +58,7 @@ echo "run,count,sequence" > $countsOut
 #echo "run,total,quality,unique,diversity"
 
 # check analysis type
-if [[ $analysisType == *"cleaned" ]]; then
+if [[ $analysisType == "cleaned_"* || $analysisType == "formatted_"* ]]; then
 	# count read names
 	echo "Calculating read name counts..."
 	for i in $readPath"/"*; do echo $i; cat $i | awk 'NR%2==1' | wc -l; done > $namesOut
@@ -81,7 +81,7 @@ for f1 in $readPath"/"*; do
 	# status message
 	echo "Processing file: $f1"
 	# check analysis type
-	if [[ $analysisType == *"cleaned" ]]; then
+	if [[ $analysisType == "cleaned_"* || $analysisType == "formatted_"* ]]; then
 		# print read lengths
 		#cat $f1 | awk 'NR%2==0 {print length($0)}' | sort -n | uniq -c > $lengthsOut".tmp.txt"
 		cat $f1 | awk 'NR%2==0 {print length($0)}' | awk '!seen[$0]++' > $lengthsOut".tmp.txt"

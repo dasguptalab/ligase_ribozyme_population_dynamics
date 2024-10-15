@@ -8,7 +8,13 @@
 # script to subset sequences and format headers
 # usage: qsub 05_format.sh inputFile
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_s4q15/filtered_combined/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 05_format.sh "${fileList[$i]}"; done
-## jobs 
+## jobs 816500 to 816509 and 816511
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 05_format.sh "${fileList[$i]}"; done
+## jobs 819632 to 819642
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 05_format.sh "${fileList[$i]}"; done
+## jobs 870685 to 870695
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_merged_copy/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 05_format.sh "${fileList[$i]}"; done
+## jobs 871478 to 871490
 
 # retrieve input file
 inputFile=$1
@@ -22,13 +28,12 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
-# make a new directory for outputs
+# make a new directory for analysis
 formatOut=$outputsPath"/formatted_"$analysisTag
 mkdir $formatOut
 
-# make a new directory for filtered outputs
-filterOut=$outputsPath"/formatted_filtered_"$analysisTag
-mkdir $filterOut
+# move to the new directory
+cd $formatOut
 
 # create sequence run name
 #newName=$(basename $f1 | sed "s/_L001_p.*\.flt\.fq//g")
@@ -37,7 +42,6 @@ fileName=$(basename $inputFile | sed "s/\.fa/\.fmt\.fa/g")
 
 # pre-clean up
 rm $formatOut"/"$fileName
-rm $filterOut"/"$fileName
 
 # status message
 echo "Beginning analysis..."
@@ -54,20 +58,13 @@ while read -r line; do
 		echo "Processing $line ..."
 		# get read count
 		readCount=$(cat $inputFile | grep $line | wc -l | tr -d " ")
-		# re-format read header and add sequence counts
-		headerInfo=$(echo $headerLine | cut -d" " -f1 | sed "s/^@/>/g")
-		headerInfo=$headerInfo"."$readCount
-		# add header to outputs
-		echo $headerInfo >> $formatOut"/"$fileName
-		# add sequence to outputs
-		echo $line >> $formatOut"/"$fileName
 		# check if there are more than 10 of the current read
 		if (( $readCount > 10 )); then # add read info to outputs
-			# add header to filtered outputs
-			echo $headerInfo >> $filterOut"/"$fileName
-			# add sequence to filtered outputs
-			echo $line >> $filterOut"/"$fileName
-		fi		
+			# re-format read headers and add to outputs
+			echo $headerLine | cut -d" " -f1 | sed "s/^@/>/g" >> $formatOut"/"$fileName
+			# add sequence to outputs
+			echo $line >> $formatOut"/"$fileName
+		fi
 	fi
 done < $inputFile
 
