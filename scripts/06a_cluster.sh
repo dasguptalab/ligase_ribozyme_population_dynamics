@@ -8,21 +8,8 @@
 
 # script to cluster sequences using clustalo
 # usage: qsub 06a_cluster.sh inputFile
-# usage ex: qsub 06a_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs/formatted/r8_S8_L001_combined.fmt.fa
-## job 816015 -> FATAL: Memory allocation for distance matrix failed
-# usage ex: qsub 06a_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs/formatted/r7_S7_L001_combined.fmt.fa
-## job 816016 -> FATAL: Memory allocation for distance matrix failed
-# usage ex: qsub 06a_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs/formatted/r6_S6_L001_combined.fmt.fa
-## job 816017
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/formatted/*; do qsub 06a_cluster.sh $i; done
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06a_cluster.sh "${fileList[$i]}"; done
-## job 814037 to 814047
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06a_cluster.sh "${fileList[$i]}"; done
-## job 868912 to 868923
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06a_cluster.sh "${fileList[$i]}"; done
-## jobs 874029 to 874039
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06a_cluster.sh "${fileList[$i]}"; done
-## jobs 880073 to 880083
+## jobs 
 
 # load the software module
 module load bio/0724

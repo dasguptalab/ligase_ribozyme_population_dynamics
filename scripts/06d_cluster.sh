@@ -8,14 +8,6 @@
 
 # script to cluster sequences using cd-hit
 # usage: qsub 06d_cluster.sh inputFile
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06d_cluster.sh "${fileList[$i]}"; done
-## jobs 874882 to 874893
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06d_cluster.sh "${fileList[$i]}"; done
-## jobs 874898 to 874908
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06d_cluster.sh "${fileList[$i]}"; done
-## jobs 874965 to 874975
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06d_cluster.sh "${fileList[$i]}"; done
-## jobs 874953 to 874963
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/cleaned_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06d_cluster.sh "${fileList[$i]}"; done
 ## jobs
 
