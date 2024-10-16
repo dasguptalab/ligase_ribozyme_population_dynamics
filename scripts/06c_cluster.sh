@@ -51,7 +51,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # cluster sequences
-clustalo --threads=$NSLOTS -v -i $inputFile --clustering-out=$clusterOut"/"$nameTag".aux" --maxnumseq=1300000
+clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag".aux" --maxnumseq=1300000
 
 # status message
 echo "Analysis complete!"
