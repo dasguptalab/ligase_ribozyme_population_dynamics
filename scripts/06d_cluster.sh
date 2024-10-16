@@ -3,7 +3,7 @@
 #$ -m abe
 #$ -r n
 #$ -N RNA_cluster_cd_hit_jobOutput
-#$ -pe smp 63
+#$ -pe smp 8
 #$ -q largemem
 
 # script to cluster sequences using cd-hit
