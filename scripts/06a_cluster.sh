@@ -21,6 +21,8 @@
 ## job 868912 to 868923
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06a_cluster.sh "${fileList[$i]}"; done
 ## jobs 874029 to 874039
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06a_cluster.sh "${fileList[$i]}"; done
+## jobs 
 
 # load the software module
 module load bio/0724
@@ -32,7 +34,7 @@ inputFile=$1
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # clean up input file name
-nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
+nameTag=$(basename $inputFile | sed "s/\./_/g" | sed "s/_fa/\.fa/g")
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -57,7 +59,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # cluster sequences
-clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/"$nameTag
+clustalo --threads=$NSLOTS -v -i $inputFile --clustering-out=$clusterOut"/"$nameTag".aux"
 
 # status message
 echo "Analysis complete!"

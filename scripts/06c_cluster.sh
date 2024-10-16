@@ -13,6 +13,8 @@
 ## job 814075 to 814086
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06c_cluster.sh "${fileList[$i]}"; done
 ## jobs 874217 to 874227
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06c_cluster.sh "${fileList[$i]}"; done
+## jobs
 
 # load the software module
 module load bio/0724
@@ -49,7 +51,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # cluster sequences
-clustalo --threads=$NSLOTS -v -i $inputFile -o $clusterOut"/clustered_"$nameTag --maxnumseq=1300000
+clustalo --threads=$NSLOTS -v -i $inputFile --clustering-out=$clusterOut"/"$nameTag".aux" --maxnumseq=1300000
 
 # status message
 echo "Analysis complete!"

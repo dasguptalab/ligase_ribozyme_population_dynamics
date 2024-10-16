@@ -1,14 +1,8 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
-#$ -r n
-#$ -N RNA_format_jobOutput
-#$ -pe smp 63
-#$ -q largemem
 
 # script to subset sequences and format headers
-# usage: qsub 05_format.sh inputFile
-# usage: qsub 05_format.sh cleaned_merged
+# usage: bash 05_format.sh inputFile
+# usage: bash 05_format.sh cleaned_merged
 
 # retrieve input analysis type
 analysisType=$1
