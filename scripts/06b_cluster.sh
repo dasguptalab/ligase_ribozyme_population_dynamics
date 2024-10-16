@@ -53,7 +53,7 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # cluster sequences
-clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag".aux" --cluster-size=500
+clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa"
 
 # status message
 echo "Analysis complete!"
