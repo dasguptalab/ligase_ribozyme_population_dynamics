@@ -25,15 +25,6 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-# make a new directory for filtered analysis
-filteredOut=$outputsPath"/formatted_above10_"$analysisTag
-mkdir $filteredOut
-# check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $filteredOut directory already exsists... please remove before proceeding."
-	exit 1
-fi
-
 # move to outputs directory
 cd $formattedOut
 
@@ -62,19 +53,18 @@ for f1 in $inputsPath"/"*\.fa; do
 	# combine output counts and sequence file with run tags and convert to csv
 	paste -d" " $formattedOut"/"$newName"_run.tmp.txt" $formattedOut"/"$newName"_ID.tmp.txt" $formattedOut"/"$newName"_counts.tmp.txt" | tr -s ' ' | sed "s/ /,/g" > $formattedOut"/"$newName".tmp.txt"
 	# filter to remove sequences with less than 10 reads
-	awk -F ',' '($3 > 10)' $formattedOut"/"$newName".tmp.txt" > $filteredOut"/"$newName"_above10.tmp.txt"
+	awk -F ',' '($3 > 10)' $formattedOut"/"$newName".tmp.txt" > $formattedOut"/"$newName"_above10.tmp.txt"
 	# cut out the header data
 	cut -d"," -f1-3 $formattedOut"/"$newName".tmp.txt" > $formattedOut"/"$newName"_header.tmp.txt"
-	cut -d"," -f1-3 $filteredOut"/"$newName"_above10.tmp.txt" > $filteredOut"/"$newName"_above10_header.tmp.txt"
+	cut -d"," -f1-3 $formattedOut"/"$newName"_above10.tmp.txt" > $formattedOut"/"$newName"_above10_header.tmp.txt"
 	# cut out the seqeunce data
 	cut -d"," -f4 $formattedOut"/"$newName".tmp.txt" > $formattedOut"/"$newName"_seq.tmp.txt"
-	cut -d"," -f4 $filteredOut"/"$newName"_above10.tmp.txt" > $filteredOut"/"$newName"_above10_seq.tmp.txt"
+	cut -d"," -f4 $formattedOut"/"$newName"_above10.tmp.txt" > $formattedOut"/"$newName"_above10_seq.tmp.txt"
 	# interleave the seqeunce data with the headers
 	paste -d'\n' $formattedOut"/"$newName"_header.tmp.txt" $formattedOut"/"$newName"_seq.tmp.txt" > $formattedOut"/"$newName".fa"
-	paste -d'\n' $filteredOut"/"$newName"_above10_header.tmp.txt" $filteredOut"/"$newName"_above10_seq.tmp.txt" > $filteredOut"/"$newName"_above10.fa"
+	paste -d'\n' $formattedOut"/"$newName"_above10_header.tmp.txt" $formattedOut"/"$newName"_above10_seq.tmp.txt" > $formattedOut"/"$newName"_above10.fa"
 	# clean up
 	rm $formattedOut"/"$newName*".tmp."*
-	rm $filteredOut"/"$newName*".tmp."*
 done
 
 # status message
