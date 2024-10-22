@@ -31,13 +31,13 @@ echo "Analyzing combined data..."
 gunzip -v $inputsPath"/"*\.gz
 
 # loop over un-filtered merged reads for each run
-for f1 in $inputsPath"/trimmed_"$analysisTag"/"*_pForward*\.fq; do
+for f1 in $inputsPath"/"*_pForward\.fq; do
 	# trim to sample tag
 	sampleTag=$(basename $f1 | sed 's/_pForward\.fq//')
 	# status message
 	echo "Processing $sampleTag ..."
 	# combine un-filtered merged,.fqiled merged, and unpaired trimmed reads
-	cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_pReverse.fq" $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_uForward.fq" $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_uReverse.fq" >> $outputsCombined"/"$sampleTag"_combined.fq"
+	cat $f1 $inputsPath"/"$sampleTag"_pReverse.fq" $inputsPath"/"$sampleTag"_uForward.fq" $inputsPath"/"$sampleTag"_uReverse.fq" >> $outputsCombined"/"$sampleTag"_combined.fq"
 done
 
 # loop through all samples
