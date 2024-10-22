@@ -1,13 +1,7 @@
 #!/bin/bash
 
 # script to combine files of merged trimmed paired reads with trimmed unpaired reads
-# usage: bash 02_combine.sh analysisType
-# usage: bash 02_combine.sh trimmed_s4q20
-# usage: bash 02_combine.sh trimmed_merged
-# usage: bash 02_combine.sh trimmed_avg
-
-# retrieve input analysis type
-analysisType=$1
+# usage: bash 02_combine.sh
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -15,8 +9,8 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
-# set the inputs directory
-inputsPath=$outputsPath"/"$analysisType
+# set inputs path
+inputsPath=$outputsPath"/trimmed_"$analysisTag
 
 # make a new directory for analysis
 outputsCombined=$outputsPath"/combined_"$analysisTag
@@ -37,14 +31,13 @@ echo "Analyzing combined data..."
 gunzip -v $inputsPath"/"*\.gz
 
 # loop over un-filtered merged reads for each run
-for f1 in $inputsPath"/trimmed_"$analysisTag"/"*_u*\.fq; do
+for f1 in $inputsPath"/trimmed_"$analysisTag"/"*_pForward*\.fq; do
 	# trim to sample tag
-	sampleTag=$(basename $f1 | sed 's/_stiched_reads\.fq//')
+	sampleTag=$(basename $f1 | sed 's/_pForward\.fq//')
 	# status message
 	echo "Processing $sampleTag ..."
 	# combine un-filtered merged,.fqiled merged, and unpaired trimmed reads
-	#cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_u"*\.fq $inputsPath"/merged_"$analysisTag"/"$sampleTag*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
-	cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_u"*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
+	cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_pReverse.fq" $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_uForward.fq" $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_uReverse.fq" >> $outputsCombined"/"$sampleTag"_combined.fq"
 done
 
 # loop through all samples
