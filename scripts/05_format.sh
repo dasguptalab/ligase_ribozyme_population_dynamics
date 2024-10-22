@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # script to subset sequences and format headers
-# usage: bash 05_format.sh inputFile
-# usage: bash 05_format.sh cleaned_merged
+# usage: bash 05_format.sh analysisSubType
+# usage: bash 05_format.sh a
+# usage: bash 05_format.sh b
+# usage: bash 05_format.sh c
 
 # retrieve input analysis type
-analysisType=$1
+analysisSubType=$1
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -14,10 +16,10 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/"$analysisType
+inputsPath=$outputsPath"/cleaned_"$analysisSubType"_"$analysisTag
 
 # make a new directory for analysis
-formattedOut=$outputsPath"/formatted_"$analysisTag
+filterOut=$outputsPath"/formatted_"$analysisSubType"_"$analysisTag
 mkdir $formattedOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
