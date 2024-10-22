@@ -37,7 +37,7 @@ for f1 in $inputsPath"/"*_pForward\.fq; do
 	# status message
 	echo "Processing $sampleTag ..."
 	# combine un-filtered merged,.fqiled merged, and unpaired trimmed reads
-	cat $f1 $inputsPath"/"$sampleTag"_pReverse.fq" $inputsPath"/"$sampleTag"_uForward.fq" $inputsPath"/"$sampleTag"_uReverse.fq" >> $outputsCombined"/"$sampleTag"_combined.fq"
+	cat $f1 $inputsPath"/"$sampleTag"_pReverse.fq" $inputsPath"/"$sampleTag"_uForward.fq" $inputsPath"/"$sampleTag"_uReverse.fq" > $outputsCombined"/"$sampleTag"_combined.fq"
 done
 
 # loop through all samples
@@ -49,7 +49,7 @@ done
 	# status message
 	#echo "Processing $sampleTag ..."
 	# combine un-filtered merged, failed merged, and unpaired trimmed reads
-	#cat $f1 $sampleFile"_failed.fq_1.fastq" $sampleFile"_failed.fq_2.fastq" >> $outputsCombined"/"$sampleTag"_combined.fq"
+	#cat $f1 $sampleFile"_failed.fq_1.fastq" $sampleFile"_failed.fq_2.fastq" > $outputsCombined"/"$sampleTag"_combined.fq"
 #done
 
 # double check that there are no duplicate reads

@@ -1,12 +1,7 @@
 #!/bin/bash
 
 # script to filter reads and keep sequences with matching up- and down-stream sequences
-# usage: bash 03b_filter.sh analysisType
-# usage: bash 03b_filter.sh combined_s4q20
-# usage: bash 03b_filter.sh combined_merged
-
-# retrieve input analysis type
-analysisType=$1
+# usage: bash 03b_filter.sh
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -23,8 +18,8 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
-# retrieve the inputs path
-inputsPath=$outputsPath"/"$analysisType
+# set inputs path
+inputsPath=$outputsPath"/combined_"$analysisTag
 
 # make a new directory for analysis
 filterOut=$outputsPath"/filtered_b_"$analysisTag
