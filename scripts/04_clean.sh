@@ -1,16 +1,17 @@
 #!/bin/bash
 
 # script to clean reads and keep only the variable 40bp region
-# usage: bash 04_clean.sh analysisType
-# usage: bash 04_clean.sh filtered_s4q20
-# usage: bash 04_clean.sh filtered_merged
+# usage: bash 04_clean.sh analysisSubType
+# usage: bash 04_clean.sh a
+# usage: bash 04_clean.sh b
+# usage: bash 04_clean.sh c
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
 
 # retrieve input analysis type
-analysisType=$1
+analysisSubType=$1
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -19,10 +20,10 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/"$analysisType
+inputsPath=$outputsPath"/filtered_"$analysisSubType"_"$analysisTag
 
 # make a new directory for analysis
-filterOut=$outputsPath"/cleaned_"$analysisTag
+filterOut=$outputsPath"/cleaned_"$analysisSubType"_"$analysisTag
 mkdir $filterOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
