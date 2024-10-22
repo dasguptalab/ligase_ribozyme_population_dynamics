@@ -54,7 +54,7 @@ for f1 in $inputsPath"/"*_R1_001\.fastq\.gz; do
 	sampleTag=$(basename $f1 | sed 's/_R1_001\.fastq\.gz//')
 	# status message
 	echo "Processing $sampleTag"
-	./NGmerge -v -n 8 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fq" -m 20 -p 0.1 -l $mergeOut"/logs/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/"$sampleTag"_stiched_reads_failed.fq" -j $mergeOut"/logs/"$sampleTag"_log_formatted_alignments.txt" -q 33 -u 40
+	./NGmerge -v -n 8 -m 20 -p 0.1 -1 $f1 -2 $f2 -o $mergeOut"/"$sampleTag"_stiched_reads.fq" -l $mergeOut"/logs/"$sampleTag"_log_stitching_results.txt" -f $mergeOut"/"$sampleTag"_stiched_reads_failed.fq" -j $mergeOut"/logs/"$sampleTag"_log_formatted_alignments.txt"
 	#./bbmerge.sh in1=/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/trimmed_q20/r1_S1_L001_pForward.fq in2=/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/trimmed_q20/r1_S1_L001_pReverse.fq out=/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tests/merged_bbmerge/r1_merged.fq outu=/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tests/merged_bbmerge/r1_unmerged.fq ihist=/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tests/merged_bbmerge/r1_ihist.txt
 	# status message
 	echo "$sampleTag processed!"

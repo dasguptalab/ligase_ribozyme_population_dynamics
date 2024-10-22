@@ -8,14 +8,14 @@
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
 
 # retrieve paired reads absolute path for alignment
-inputsPath=$(grep "pairedReads:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/pairedReads://g")
+inputsPath=$(grep "pairedReads:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/pairedReads://g")
 # retrieve adapter absolute path for alignment
-adapterPath=$(grep "adapter:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/adapter://g")
+adapterPath=$(grep "adapter:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/adapter://g")
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # make a new directory for analysis
-trimOut=$outputsPath"/trimmed_s20q20"
+trimOut=$outputsPath"/trimmed_avg"
 mkdir $trimOut
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -46,7 +46,8 @@ for f1 in $inputsPath"/"*_R1_001\.fastq\.gz; do
 	# perform adapter trimming on paired reads
 	# http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf
 	#trimmomatic PE -phred"$score" $f1 $f2 $sampleTag"_pForward.fq.gz" $sampleTag"_uForward.fq.gz" $sampleTag"_pReverse.fq.gz" $sampleTag"_uReverse.fq.gz" ILLUMINACLIP:"$adapterPath":2:30:10 SLIDINGWINDOW:4:15 HEADCROP:23 MINLEN:56
-	trimmomatic PE -phred"$score" $f1 $f2 $sampleTag"_pForward.fq.gz" $sampleTag"_uForward.fq.gz" $sampleTag"_pReverse.fq.gz" $sampleTag"_uReverse.fq.gz" ILLUMINACLIP:"$adapterPath":2:30:10:1:TRUE SLIDINGWINDOW:20:20
+	trimmomatic PE -phred"$score" $f1 $f2 $sampleTag"_pForward.fq.gz" $sampleTag"_uForward.fq.gz" $sampleTag"_pReverse.fq.gz" $sampleTag"_uReverse.fq.gz" ILLUMINACLIP:"$adapterPath":2:30:10:1:TRUE AVGQUAL:20
+	#trimmomatic PE -phred"$score" $f1 $f2 $sampleTag"_pForward.fq.gz" $sampleTag"_uForward.fq.gz" $sampleTag"_pReverse.fq.gz" $sampleTag"_uReverse.fq.gz" ILLUMINACLIP:"$adapterPath":2:30:10:1:TRUE MAXINFO:56:0.8
 	# status message
 	echo "$sampleTag processed!"
 done
