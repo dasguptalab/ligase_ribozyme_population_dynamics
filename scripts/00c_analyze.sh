@@ -17,6 +17,8 @@
 # usage ex: bash 00c_analyze.sh filtered_a_avg
 # usage ex: bash 00c_analyze.sh filtered_b_avg
 # usage ex: bash 00c_analyze.sh filtered_c_avg
+# usage ex: bash 00c_analyze.sh cleaned_a_avg
+# usage ex: bash 00c_analyze.sh formatted_a_avg
 
 # retrieve input analysis type
 analysisType=$1
