@@ -29,16 +29,16 @@ else
 fi
 
 #Make a new directory for analysis
-analysisOut=$outputsPath"/analyzed_"$analysisType
-mkdir $analysisOut
+outputsPath=$outputsPath"/analyzed_"$analysisType
+mkdir $outputsPath
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
-	echo "The $analysisOut directory already exsists... please remove before proceeding."
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
 #Move to the new directory
-cd $analysisOut
+cd $outputsPath
 
 # status message
 echo "Beginning analysis..."
@@ -47,10 +47,10 @@ echo "Beginning analysis..."
 gunzip -v $readPath"/"*\.gz
 
 # name output files
-namesOut=$analysisOut"/names_count.txt"
-uniqueOut=$analysisOut"/unique_sequences_count.txt"
-lengthsOut=$analysisOut"/read_lengths.txt"
-countsOut=$analysisOut"/read_counts.txt"
+namesOut=$outputsPath"/names_count.txt"
+uniqueOut=$outputsPath"/unique_sequences_count.txt"
+lengthsOut=$outputsPath"/read_lengths.txt"
+countsOut=$outputsPath"/read_counts.txt"
 
 # add headers
 echo "run,count,length" > $lengthsOut

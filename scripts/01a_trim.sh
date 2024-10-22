@@ -18,16 +18,16 @@ adapterPath=$(grep "adapter:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # make a new directory for analysis
-trimOut=$outputsPath"/trimmed_avg"
-mkdir $trimOut
+outputsPath=$outputsPath"/trimmed_avg"
+mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then
-	echo "The $trimOut directory already exsists... please remove before proceeding."
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
 # move to the new directory
-cd $trimOut
+cd $outputsPath
 
 # set phred score for trimming
 # https://www.drive5.com/usearch/manual/quality_score.html

@@ -23,16 +23,16 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 inputsPath=$outputsPath"/filtered_"$analysisSubType"_"$analysisTag
 
 # make a new directory for analysis
-filterOut=$outputsPath"/cleaned_"$analysisSubType"_"$analysisTag
-mkdir $filterOut
+outputsPath=$outputsPath"/cleaned_"$analysisSubType"_"$analysisTag
+mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then
-	echo "The $filterOut directory already exsists... please remove before proceeding."
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
 # move to the new directory
-cd $filterOut
+cd $outputsPath
 
 # status message
 echo "Beginning analysis..."
@@ -44,7 +44,7 @@ for f1 in $inputsPath"/"*\.fq; do
 	# trim to sample tag
 	newName=$(basename $f1 | sed 's/_filtered\.fq/_cleaned\.fa/')
 	# filter to keep sequences with matching up- and down-stream sequences
-	cat $f1 | sed "s/^.*GGACAGCG/START/g" | sed "s/CGCTGTCC.*$/END/g" | grep -Ex -B1 'START.{40}END' | grep -v "^--$" | sed "s/START//g" | sed "s/END//g" > $filterOut"/"$newName
+	cat $f1 | sed "s/^.*GGACAGCG/START/g" | sed "s/CGCTGTCC.*$/END/g" | grep -Ex -B1 'START.{40}END' | grep -v "^--$" | sed "s/START//g" | sed "s/END//g" > $outputsPath"/"$newName
 done
 
 # status message

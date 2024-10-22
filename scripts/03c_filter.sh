@@ -22,16 +22,16 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 inputsPath=$outputsPath"/combined_"$analysisTag
 
 # make a new directory for analysis
-filterOut=$outputsPath"/filtered_c_"$analysisTag
-mkdir $filterOut
+outputsPath=$outputsPath"/filtered_c_"$analysisTag
+mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then
-	echo "The $filterOut directory already exsists... please remove before proceeding."
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
 # move to the new directory
-cd $filterOut
+cd $outputsPath
 
 # status message
 echo "Beginning analysis..."
@@ -43,8 +43,8 @@ for f1 in $inputsPath"/"*\.fq; do
 	# trim to sample tag
 	newName=$(basename $f1 | sed 's/_combined\.fq/_filtered\.fq/')
 	# filter to keep sequences with matching up- and down-stream sequences
-	#cat $f1 | grep -Ex -B1 -A2 '.*GGACAGCG.{40}CGCTGTCC.*' | grep -v "^--$" > $filterOut"/"$newName
-	cat $f1 | grep -Ex -B1 -A2 '.*CGCTGTCCGT.{40}CGCTGTCCTTTTTTGGCTAAGGGACCTACCG.*' | grep -v "^--$" > $filterOut"/"$newName
+	#cat $f1 | grep -Ex -B1 -A2 '.*GGACAGCG.{40}CGCTGTCC.*' | grep -v "^--$" > $outputsPath"/"$newName
+	cat $f1 | grep -Ex -B1 -A2 '.*CGCTGTCCGT.{40}CGCTGTCCTTTTTTGGCTAAGGGACCTACCG.*' | grep -v "^--$" > $outputsPath"/"$newName
 done
 
 # status message

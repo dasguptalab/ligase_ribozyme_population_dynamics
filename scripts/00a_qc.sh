@@ -29,22 +29,22 @@ else
 fi
 
 #Make a new directory for analysis
-qcOut=$outputsPath"/qc_"$analysisType
-mkdir $qcOut
+outputsPath=$outputsPath"/qc_"$analysisType
+mkdir $outputsPath
 #Check if the folder already exists
 if [ $? -ne 0 ]; then
-	echo "The $qcOut directory already exsists... please remove before proceeding."
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
 	exit 1
 fi
 
 #Move to the new directory
-cd $qcOut
+cd $outputsPath
 
 # status message
 echo "Beginning analysis..."
 
 # perform QC
-fastqc $readPath"/"*\.f*q -o $qcOut
+fastqc $readPath"/"*\.f*q -o $outputsPath
 
 #Print status message
 echo "Analysis complete!"

@@ -17,10 +17,10 @@ analysisType=$1
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve directory for analysis
-qcOut=$outputsPath"/qc_"$analysisType
+outputsPath=$outputsPath"/qc_"$analysisType
 
 # move to the new directory
-cd $qcOut
+cd $outputsPath
 
 # status message
 echo "Processing..."
@@ -28,19 +28,19 @@ echo "Processing..."
 # check input analysis type
 if [[ $analysisType == "raw" ]]; then
 	# run multiqc
-	multiqc $qcOut -o $outputsPath -n "qc_raw"
+	multiqc $outputsPath -o $outputsPath -n "qc_raw"
 elif [[ $analysisType == "trimmed"* ]]; then
 	# run multiqc on all
-	multiqc $qcOut -o $outputsPath -n "qc_"$analysisType"_all"
+	multiqc $outputsPath -o $outputsPath -n "qc_"$analysisType"_all"
 	# run multiqc on paired data
-	#multiqc $qcOut"/"*_p* -o $outputsPath -n "qc_"$analysisType"_paired"
+	#multiqc $outputsPath"/"*_p* -o $outputsPath -n "qc_"$analysisType"_paired"
 else
 	# run multiqc
-	multiqc $qcOut -o $outputsPath -n "qc_"$analysisType
+	multiqc $outputsPath -o $outputsPath -n "qc_"$analysisType
 fi
 
 # clean up
-#rm -r $qcOut
+#rm -r $outputsPath
 
 #Print status message
 echo "Analysis complete!"
