@@ -12,6 +12,11 @@
 # usage ex: bash 00c_analyze.sh filtered_merged
 # usage ex: bash 00c_analyze.sh cleaned_merged
 # usage ex: bash 00c_analyze.sh formatted_merged
+# usage ex: bash 00c_analyze.sh trimmed_avg
+# usage ex: bash 00c_analyze.sh combined_avg
+# usage ex: bash 00c_analyze.sh filtered_a_avg
+# usage ex: bash 00c_analyze.sh filtered_b_avg
+# usage ex: bash 00c_analyze.sh filtered_c_avg
 
 # retrieve input analysis type
 analysisType=$1

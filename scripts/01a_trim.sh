@@ -12,13 +12,18 @@ module load bio/2.0
 
 # retrieve paired reads absolute path for alignment
 inputsPath=$(grep "pairedReads:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/pairedReads://g")
+
+# retrieve the analysis type
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+
 # retrieve adapter absolute path for alignment
-adapterPath=$(grep "adapter:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/adapter://g")
+#adapterPath=$(grep "adapter:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/adapter://g")
+
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/trimmed_avg"
+outputsPath=$outputsPath"/trimmed_"$analysisTag
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then

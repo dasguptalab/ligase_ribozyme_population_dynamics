@@ -9,6 +9,11 @@
 # usage ex: bash 00a_qc.sh trimmed_merged
 # usage ex: bash 00a_qc.sh combined_merged
 # usage ex: bash 00a_qc.sh filtered_merged
+# usage ex: bash 00a_qc.sh trimmed_avg
+# usage ex: bash 00a_qc.sh combined_avg
+# usage ex: bash 00a_qc.sh filtered_a_avg
+# usage ex: bash 00a_qc.sh filtered_b_avg
+# usage ex: bash 00a_qc.sh filtered_c_avg
 
 # load software module for remote servers
 module load bio/2.0

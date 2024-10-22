@@ -9,6 +9,11 @@
 # usage ex: bash 00b_report.sh trimmed_merged
 # usage ex: bash 00b_report.sh combined_merged
 # usage ex: bash 00b_report.sh filtered_merged
+# usage ex: bash 00b_report.sh trimmed_avg
+# usage ex: bash 00b_report.sh combined_avg
+# usage ex: bash 00b_report.sh filtered_a_avg
+# usage ex: bash 00b_report.sh filtered_b_avg
+# usage ex: bash 00b_report.sh filtered_c_avg
 
 # retrieve input analysis type
 analysisType=$1

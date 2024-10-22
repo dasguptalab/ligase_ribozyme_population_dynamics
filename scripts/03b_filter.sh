@@ -44,7 +44,7 @@ for f1 in $inputsPath"/"*\.fq; do
 	newName=$(basename $f1 | sed 's/_combined\.fq/_filtered\.fq/')
 	# filter to keep sequences with matching up- and down-stream sequences
 	#cat $f1 | grep -Ex -B1 -A2 '.*GGACAGCG.{40}CGCTGTCC.*' | grep -v "^--$" > $outputsPath"/"$newName
-	cat $f1 | grep -Ex -B1 -A2 '^CGCTGTCCGT.*CGCTGTCCTTTTTTGGCTAAGGGACCTACCG$' | grep -v "^--$" > $outputsPath"/"$newName
+	cat $f1 | grep -Ex -B1 -A2 '^ACGGACAGCG.*CGCTGTCCTTTTTTGGCTAAGGGACCTACCG$' | grep -v "^--$" > $outputsPath"/"$newName
 done
 
 # status message
