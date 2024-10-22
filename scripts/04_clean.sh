@@ -3,8 +3,6 @@
 # script to clean reads and keep only the variable 40bp region
 # usage: bash 04_clean.sh analysisSubType
 # usage: bash 04_clean.sh a
-# usage: bash 04_clean.sh b
-# usage: bash 04_clean.sh c
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total

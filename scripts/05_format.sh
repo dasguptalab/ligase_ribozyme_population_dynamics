@@ -3,8 +3,6 @@
 # script to subset sequences and format headers
 # usage: bash 05_format.sh analysisSubType
 # usage: bash 05_format.sh a
-# usage: bash 05_format.sh b
-# usage: bash 05_format.sh c
 
 # retrieve input analysis type
 analysisSubType=$1
