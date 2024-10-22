@@ -4,6 +4,7 @@
 # usage: bash 02_combine.sh analysisType
 # usage: bash 02_combine.sh trimmed_s4q20
 # usage: bash 02_combine.sh trimmed_merged
+# usage: bash 02_combine.sh trimmed_avg
 
 # retrieve input analysis type
 analysisType=$1
@@ -35,18 +36,28 @@ echo "Analyzing combined data..."
 # unzip any gz read files
 gunzip -v $inputsPath"/"*\.gz
 
-# loop through all samples
-for f1 in $inputsPath"/"*_stiched_reads\.fq; do
-	# trim file extension
-	sampleFile=$(echo $f1 | sed 's/\.fq//')
+# loop over un-filtered merged reads for each run
+for f1 in $inputsPath"/trimmed_"$analysisTag"/"*_u*\.fq; do
 	# trim to sample tag
-	sampleTag=$(basename $f1 | sed 's/\.fq//')
+	sampleTag=$(basename $f1 | sed 's/_stiched_reads\.fq//')
 	# status message
 	echo "Processing $sampleTag ..."
-	# combine un-filtered merged, failed merged, and unpaired trimmed reads
-	cat $f1 $sampleFile"_failed.fq_1.fastq" $sampleFile"_failed.fq_2.fastq" >> $outputsCombined"/"$sampleTag"_combined.fq"
-	#cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
+	# combine un-filtered merged,.fqiled merged, and unpaired trimmed reads
+	#cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_u"*\.fq $inputsPath"/merged_"$analysisTag"/"$sampleTag*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
+	cat $f1 $inputsPath"/trimmed_"$analysisTag"/"$sampleTag"_u"*\.fq >> $outputsCombined"/"$sampleTag"_combined.fq"
 done
+
+# loop through all samples
+#for f1 in $inputsPath"/"*_stiched_reads\.fq; do
+	# trim file extension
+	#sampleFile=$(echo $f1 | sed 's/\.fq//')
+	# trim to sample tag
+	#sampleTag=$(basename $f1 | sed 's/\.fq//')
+	# status message
+	#echo "Processing $sampleTag ..."
+	# combine un-filtered merged, failed merged, and unpaired trimmed reads
+	#cat $f1 $sampleFile"_failed.fq_1.fastq" $sampleFile"_failed.fq_2.fastq" >> $outputsCombined"/"$sampleTag"_combined.fq"
+#done
 
 # double check that there are no duplicate reads
 #for i in $outputsCombined"/"*_combined\.fq; do echo $i; cat $i | awk 'NR%2==1' | cut -d' ' -f1 | sort | uniq -c | sort -n | head; done
