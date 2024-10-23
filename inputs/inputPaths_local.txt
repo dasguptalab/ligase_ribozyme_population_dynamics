@@ -4,4 +4,4 @@ pairedReads_backup: /Volumes/MyPassport/bamflappy/PfrenderLab/RNA_evolution_Sep2
 adapter_backup: /Volumes/MyPassport/bamflappy/PfrenderLab/RNA_evolution_Sep2024/data/adapters/NEBnext_adaptors.fa
 outputs: /Users/bamflappy/PfrenderLab/RNA_evolution/outputs_s4q20
 bbmap: /Users/bamflappy/bbmap
-analysis: avg
+analysis: s4q20
