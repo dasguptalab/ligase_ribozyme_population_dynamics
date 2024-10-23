@@ -146,3 +146,8 @@ for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/\*/\*\.fa; do echo \
 | Unique | 836538 | 869219 | 836906 | 726372 | 799992 | 378395 | 38617 | 28478 | 705348 | 621216 | 830676 |
 | Diversity% | 74 | 74 | 66 | 66 | 54 | 21 | 4 | 2 | 77 | 77 | 67 |
 | Families | N/A | N/A | N/A | N/A | N/A | R6 | R7 | R8 | N/A | N/A | N/A |
+
+## NOTES
+
+Check cluster numbers and sizes:
+for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs_avg/clustered_size_500_avg/*/*_clustered.aux; do echo $i; cat $i | cut -d":" -f1 | cut -d" " -f2 | sort -n | uniq -c; done
