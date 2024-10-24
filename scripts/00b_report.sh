@@ -12,8 +12,9 @@
 # usage ex: bash 00b_report.sh trimmed_avg
 # usage ex: bash 00b_report.sh combined_avg
 # usage ex: bash 00b_report.sh filtered_a_avg
-# usage ex: bash 00b_report.sh filtered_b_avg
-# usage ex: bash 00b_report.sh filtered_c_avg
+# usage ex: bash 00b_report.sh trimmed_max
+# usage ex: bash 00b_report.sh combined_max
+# usage ex: bash 00b_report.sh filtered_a_max
 
 # retrieve input analysis type
 analysisType=$1

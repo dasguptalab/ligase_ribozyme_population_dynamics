@@ -12,8 +12,9 @@
 # usage ex: bash 00a_qc.sh trimmed_avg
 # usage ex: bash 00a_qc.sh combined_avg
 # usage ex: bash 00a_qc.sh filtered_a_avg
-# usage ex: bash 00a_qc.sh filtered_b_avg
-# usage ex: bash 00a_qc.sh filtered_c_avg
+# usage ex: bash 00a_qc.sh trimmed_max
+# usage ex: bash 00a_qc.sh combined_max
+# usage ex: bash 00a_qc.sh filtered_a_max
 
 # load software module for remote servers
 module load bio/2.0
