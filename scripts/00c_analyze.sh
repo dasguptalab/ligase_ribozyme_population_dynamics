@@ -4,9 +4,9 @@
 # usage: bash 00c_analyze.sh analysisType
 # usage ex: bash 00c_analyze.sh trimmed_s4q20
 # usage ex: bash 00c_analyze.sh combined_s4q20
-# usage ex: bash 00c_analyze.sh filtered_s4q20
-# usage ex: bash 00c_analyze.sh cleaned_s4q20
-# usage ex: bash 00c_analyze.sh formatted_s4q20
+# usage ex: bash 00c_analyze.sh filtered_a_s4q20
+# usage ex: bash 00c_analyze.sh cleaned_a_s4q20
+# usage ex: bash 00c_analyze.sh formatted_a_s4q20
 # usage ex: bash 00c_analyze.sh trimmed_merged
 # usage ex: bash 00c_analyze.sh combined_merged
 # usage ex: bash 00c_analyze.sh filtered_merged

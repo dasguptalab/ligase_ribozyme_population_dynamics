@@ -2,6 +2,6 @@ pairedReads: /Users/bamflappy/PfrenderLab/RNA_evolution/data/raw
 adapter: /Users/bamflappy/PfrenderLab/RNA_evolution/data/adapters/NEBnext_adaptors.fa
 pairedReads_backup: /Volumes/MyPassport/bamflappy/PfrenderLab/RNA_evolution_Sep2024/data/raw
 adapter_backup: /Volumes/MyPassport/bamflappy/PfrenderLab/RNA_evolution_Sep2024/data/adapters/NEBnext_adaptors.fa
-outputs: /Users/bamflappy/PfrenderLab/RNA_evolution/outputs_s4q20
+outputs: /Users/bamflappy/PfrenderLab/RNA_evolution/outputs_max
 bbmap: /Users/bamflappy/bbmap
-analysis: s4q20
+analysis: max

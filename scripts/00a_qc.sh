@@ -5,7 +5,7 @@
 # usage ex: bash 00a_qc.sh raw
 # usage ex: bash 00a_qc.sh trimmed_s4q20
 # usage ex: bash 00a_qc.sh combined_s4q20
-# usage ex: bash 00a_qc.sh filtered_s4q20
+# usage ex: bash 00a_qc.sh filtered_a_s4q20
 # usage ex: bash 00a_qc.sh trimmed_merged
 # usage ex: bash 00a_qc.sh combined_merged
 # usage ex: bash 00a_qc.sh filtered_merged

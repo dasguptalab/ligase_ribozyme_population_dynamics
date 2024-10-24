@@ -1,5 +1,5 @@
 pairedReads: /scratch365/ebrooks5/RNA_evolution/data/raw
 software_cdhit: /afs/crc.nd.edu/user/e/ebrooks5/cdhit
 software_NGmerge: /afs/crc.nd.edu/user/e/ebrooks5/NGmerge
-outputs: /scratch365/ebrooks5/RNA_evolution/outputs_s4q20
-analysis: s4q20
+outputs: /scratch365/ebrooks5/RNA_evolution/outputs_max
+analysis: max
