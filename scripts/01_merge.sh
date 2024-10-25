@@ -51,7 +51,8 @@ for f1 in $inputsPath"/"*_R1_001\.fastq\.gz; do
 	# status message
 	echo "Processing $sampleTag"
 	# perform merging of paired reads
-	./flash $f1 $f2 -t 4 -o $sampleTag $ -d $outputsPath -r 81
+	#./flash -t 4 -o $sampleTag $ -d $outputsPath -r 81 $f1 $f2
+	./flash -t 4 -o $sampleTag $ -d $outputsPath $f1 $f2
 	# status message
 	echo "$sampleTag processed!"
 done
