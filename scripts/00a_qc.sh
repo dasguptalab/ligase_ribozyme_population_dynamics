@@ -40,7 +40,7 @@ cd $outputsPath
 echo "Beginning analysis..."
 
 # perform QC
-fastqc $readPath"/"*\.f*q -o $outputsPath
+fastqc $readPath"/"*\.f*q* -o $outputsPath
 
 #Print status message
 echo "Analysis complete!"
