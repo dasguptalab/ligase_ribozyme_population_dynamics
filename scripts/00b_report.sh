@@ -3,8 +3,8 @@
 # script to perform fastqc quality control of paired end reads
 # usage: bash 00b_report.sh analysisType
 # usage ex: bash 00b_report.sh raw
-# usage ex: bash 00b_report.sh trimmed
 # usage ex: bash 00b_report.sh merged
+# usage ex: bash 00b_report.sh trimmed
 
 # retrieve input analysis type
 analysisType=$1
