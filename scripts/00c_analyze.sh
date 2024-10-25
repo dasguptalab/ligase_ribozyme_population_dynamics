@@ -36,7 +36,7 @@ cd $outputsPath
 echo "Beginning analysis..."
 
 # unzip any gz read files
-gunzip -v $readPath"/"*\.gz
+gunzip -v $readPath"/"*
 
 # name output files
 namesOut=$outputsPath"/names_count.txt"

@@ -28,7 +28,7 @@ cd $outputsPath
 echo "Analyzing combined data..."
 
 # unzip any gz read files
-gunzip -v $inputsPath"/"*\.gz
+gunzip -v $inputsPath"/"*
 
 # loop over un-filtered merged reads for each run
 for f1 in $inputsPath"/"*_trimmed.fq; do
