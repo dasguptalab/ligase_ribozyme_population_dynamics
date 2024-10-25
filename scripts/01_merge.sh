@@ -16,8 +16,8 @@ inputsPath=$(grep "pairedReads:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
-# retrieve adapter absolute path for alignment
-#adapterPath=$(grep "adapter:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/adapter://g")
+# retrieve software absolute path
+softwarePath=$(grep "software_FLASH:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/software_FLASH://g")
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
@@ -34,8 +34,8 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-# move to the new directory
-cd $outputsPath
+# move to the software directory
+cd $softwarePath
 
 # status message
 echo "Beginning analysis..."
@@ -51,7 +51,7 @@ for f1 in $inputsPath"/"*_R1_001\.fastq\.gz; do
 	# status message
 	echo "Processing $sampleTag"
 	# perform merging of paired reads
-	flash $f1 $f2 -threads 4 -o $sampleTag $ -d $outputsPath -r 81
+	./flash $f1 $f2 -threads 4 -o $sampleTag $ -d $outputsPath -r 81
 	# status message
 	echo "$sampleTag processed!"
 done

@@ -1,5 +1,6 @@
 pairedReads: /scratch365/ebrooks5/RNA_evolution/data/raw
 software_cdhit: /afs/crc.nd.edu/user/e/ebrooks5/cdhit
 software_NGmerge: /afs/crc.nd.edu/user/e/ebrooks5/NGmerge
+software_FLASH: /afs/crc.nd.edu/user/e/ebrooks5/FLASH-1.2.11
 outputs: /scratch365/ebrooks5/RNA_evolution/outputs_flash
 analysis: flash
