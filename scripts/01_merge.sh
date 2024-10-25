@@ -6,9 +6,7 @@
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
-
-# load the software module
-module load bio/2.0
+# raw data: all reads are 81 bp
 
 # retrieve paired reads absolute path for alignment
 inputsPath=$(grep "pairedReads:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/pairedReads://g")
@@ -26,7 +24,7 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 mkdir $outputsPath
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/trimmed"
+outputsPath=$outputsPath"/merged"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then

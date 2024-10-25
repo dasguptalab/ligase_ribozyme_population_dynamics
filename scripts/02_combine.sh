@@ -37,7 +37,7 @@ for f1 in $inputsPath"/"*\.extendedFrags.fastq; do
 	# status message
 	echo "Processing $sampleTag ..."
 	# combine un-filtered merged,.fqiled merged, and unpaired trimmed reads
-	cat $f1 $inputsPath"/"$sampleTag".notCombined_1.fastq" $inputsPath"/"$sampleTag".notCombined_2.fastq" > $outputsPath"/"$sampleTag"_combined.fq"
+	cat $f1 $inputsPath"/"$sampleTag".notCombined_1.fastq" > $outputsPath"/"$sampleTag"_combined.fq"
 done
 
 # double check that there are no duplicate reads
