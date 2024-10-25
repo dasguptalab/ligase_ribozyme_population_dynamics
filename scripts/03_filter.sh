@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # script to filter reads and keep sequences with matching up- and down-stream sequences
-# usage: bash 03a_filter.sh
+# usage: bash 03_filter.sh
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -15,10 +15,10 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set inputs path
-inputsPath=$outputsPath"/combined_"$analysisTag
+inputsPath=$outputsPath"/combined"
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/filtered_a_"$analysisTag
+outputsPath=$outputsPath"/filtered"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then

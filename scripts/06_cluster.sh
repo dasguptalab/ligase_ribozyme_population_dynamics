@@ -42,7 +42,7 @@ nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # make a directory for the clustering outputs
-clusterOut=$outputsPath"/clustered_size_500_"$analysisTag
+clusterOut=$outputsPath"/clustered_size_500"
 mkdir $clusterOut
 
 # make a new directory for analysis

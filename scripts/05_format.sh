@@ -14,10 +14,10 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/cleaned_"$analysisSubType"_"$analysisTag
+inputsPath=$outputsPath"/cleaned"
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/formatted_"$analysisSubType"_"$analysisTag
+outputsPath=$outputsPath"/formatted"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then
