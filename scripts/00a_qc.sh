@@ -15,6 +15,9 @@
 # usage ex: bash 00a_qc.sh trimmed_max
 # usage ex: bash 00a_qc.sh combined_max
 # usage ex: bash 00a_qc.sh filtered_a_max
+# usage ex: bash 00a_qc.sh trimmed_max56
+# usage ex: bash 00a_qc.sh combined_max56
+# usage ex: bash 00a_qc.sh filtered_a_max56
 
 # load software module for remote servers
 module load bio/2.0

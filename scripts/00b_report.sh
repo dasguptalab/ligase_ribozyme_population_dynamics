@@ -15,6 +15,9 @@
 # usage ex: bash 00b_report.sh trimmed_max
 # usage ex: bash 00b_report.sh combined_max
 # usage ex: bash 00b_report.sh filtered_a_max
+# usage ex: bash 00b_report.sh trimmed_max56
+# usage ex: bash 00b_report.sh combined_max56
+# usage ex: bash 00b_report.sh filtered_a_max56
 
 # retrieve input analysis type
 analysisType=$1

@@ -7,7 +7,8 @@
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # primer: GGCUAAGG -> GGCTAAGG
-# library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
+# RNA library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
+# DNA library: GACTCACTGACACAGATCCACTCAC GGACAGCG G(Nx40)CGCTGTCCTTTTTTGGCTAAGG
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
 
 # retrieve analysis outputs absolute path

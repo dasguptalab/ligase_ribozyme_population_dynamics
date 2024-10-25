@@ -21,7 +21,10 @@
 ## jobs 898605 to 898633
 # max
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_max/formatted_a_max/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06b_cluster.sh "${fileList[$i]}"; done
-## job 899329 to 899350
+## jobs 899329 to 899350
+# max56
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_max56/formatted_a_max56/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06b_cluster.sh "${fileList[$i]}"; done
+## jobs 900027 to 900048
 
 # load the software module
 module load bio/0724

@@ -22,6 +22,11 @@
 # usage ex: bash 00c_analyze.sh filtered_a_max
 # usage ex: bash 00c_analyze.sh cleaned_a_max
 # usage ex: bash 00c_analyze.sh formatted_a_max
+# usage ex: bash 00c_analyze.sh trimmed_max56
+# usage ex: bash 00c_analyze.sh combined_max56
+# usage ex: bash 00c_analyze.sh filtered_a_max56
+# usage ex: bash 00c_analyze.sh cleaned_a_max56
+# usage ex: bash 00c_analyze.sh formatted_a_max56
 
 # retrieve input analysis type
 analysisType=$1
