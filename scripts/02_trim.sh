@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # script to perform trimmomatic trimming of paired end reads
-# usage: bash 01_trim.sh 
+# usage: bash 02_trim.sh 
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
@@ -9,6 +9,10 @@
 
 # load the software module
 module load bio/2.0
+
+# set phred score for trimming
+# https://www.drive5.com/usearch/manual/quality_score.html
+score=33
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
