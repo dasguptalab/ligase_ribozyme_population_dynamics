@@ -31,9 +31,9 @@ echo "Analyzing combined data..."
 gunzip -v $inputsPath"/"*\.gz
 
 # loop over un-filtered merged reads for each run
-for f1 in $inputsPath"/"*\.extendedFrags.fastq; do
+for f1 in $inputsPath"/"*_trimmed.fq; do
 	# trim to sample tag
-	sampleTag=$(basename $f1 | sed 's/\.extendedFrags\.fastq//')
+	sampleTag=$(basename $f1 | sed 's/_trimmed\.fq//')
 	# status message
 	echo "Processing $sampleTag ..."
 	# combine un-filtered merged,.fqiled merged, and unpaired trimmed reads

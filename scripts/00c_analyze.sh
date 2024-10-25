@@ -2,31 +2,8 @@
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
 # usage: bash 00c_analyze.sh analysisType
-# usage ex: bash 00c_analyze.sh trimmed_s4q20
-# usage ex: bash 00c_analyze.sh combined_s4q20
-# usage ex: bash 00c_analyze.sh filtered_a_s4q20
-# usage ex: bash 00c_analyze.sh cleaned_a_s4q20
-# usage ex: bash 00c_analyze.sh formatted_a_s4q20
-# usage ex: bash 00c_analyze.sh trimmed_merged
-# usage ex: bash 00c_analyze.sh combined_merged
-# usage ex: bash 00c_analyze.sh filtered_merged
-# usage ex: bash 00c_analyze.sh cleaned_merged
-# usage ex: bash 00c_analyze.sh formatted_merged
-# usage ex: bash 00c_analyze.sh trimmed_avg
-# usage ex: bash 00c_analyze.sh combined_avg
-# usage ex: bash 00c_analyze.sh filtered_a_avg
-# usage ex: bash 00c_analyze.sh cleaned_a_avg
-# usage ex: bash 00c_analyze.sh formatted_a_avg
-# usage ex: bash 00c_analyze.sh trimmed_max
-# usage ex: bash 00c_analyze.sh combined_max
-# usage ex: bash 00c_analyze.sh filtered_a_max
-# usage ex: bash 00c_analyze.sh cleaned_a_max
-# usage ex: bash 00c_analyze.sh formatted_a_max
-# usage ex: bash 00c_analyze.sh trimmed_max56
-# usage ex: bash 00c_analyze.sh combined_max56
-# usage ex: bash 00c_analyze.sh filtered_a_max56
-# usage ex: bash 00c_analyze.sh cleaned_a_max56
-# usage ex: bash 00c_analyze.sh formatted_a_max56
+# usage ex: bash 00c_analyze.sh merged
+# usage ex: bash 00c_analyze.sh trimmed
 
 # retrieve input analysis type
 analysisType=$1

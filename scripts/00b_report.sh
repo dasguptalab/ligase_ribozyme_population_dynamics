@@ -3,21 +3,8 @@
 # script to perform fastqc quality control of paired end reads
 # usage: bash 00b_report.sh analysisType
 # usage ex: bash 00b_report.sh raw
-# usage ex: bash 00b_report.sh trimmed_s4q20
-# usage ex: bash 00b_report.sh combined_s4q20
-# usage ex: bash 00b_report.sh filtered_a_s4q20
-# usage ex: bash 00b_report.sh trimmed_merged
-# usage ex: bash 00b_report.sh combined_merged
-# usage ex: bash 00b_report.sh filtered_merged
-# usage ex: bash 00b_report.sh trimmed_avg
-# usage ex: bash 00b_report.sh combined_avg
-# usage ex: bash 00b_report.sh filtered_a_avg
-# usage ex: bash 00b_report.sh trimmed_max
-# usage ex: bash 00b_report.sh combined_max
-# usage ex: bash 00b_report.sh filtered_a_max
-# usage ex: bash 00b_report.sh trimmed_max56
-# usage ex: bash 00b_report.sh combined_max56
-# usage ex: bash 00b_report.sh filtered_a_max56
+# usage ex: bash 00b_report.sh trimmed
+# usage ex: bash 00b_report.sh merged
 
 # retrieve input analysis type
 analysisType=$1

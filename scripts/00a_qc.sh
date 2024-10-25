@@ -3,21 +3,8 @@
 # script to perform fastqc quality control of paired end reads
 # usage: bash 00a_qc.sh analysisType
 # usage ex: bash 00a_qc.sh raw
-# usage ex: bash 00a_qc.sh trimmed_s4q20
-# usage ex: bash 00a_qc.sh combined_s4q20
-# usage ex: bash 00a_qc.sh filtered_a_s4q20
-# usage ex: bash 00a_qc.sh trimmed_merged
-# usage ex: bash 00a_qc.sh combined_merged
-# usage ex: bash 00a_qc.sh filtered_merged
-# usage ex: bash 00a_qc.sh trimmed_avg
-# usage ex: bash 00a_qc.sh combined_avg
-# usage ex: bash 00a_qc.sh filtered_a_avg
-# usage ex: bash 00a_qc.sh trimmed_max
-# usage ex: bash 00a_qc.sh combined_max
-# usage ex: bash 00a_qc.sh filtered_a_max
-# usage ex: bash 00a_qc.sh trimmed_max56
-# usage ex: bash 00a_qc.sh combined_max56
-# usage ex: bash 00a_qc.sh filtered_a_max56
+# usage ex: bash 00a_qc.sh merged
+# usage ex: bash 00a_qc.sh trimmed
 
 # load software module for remote servers
 module load bio/2.0
