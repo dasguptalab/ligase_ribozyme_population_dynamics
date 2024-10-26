@@ -1,15 +1,11 @@
 #!/bin/bash
 
 # script to clean reads and keep only the variable 40bp region
-# usage: bash 04_clean.sh analysisSubType
-# usage: bash 04_clean.sh a
+# usage: bash 04_clean.sh
 
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
-
-# retrieve input analysis type
-analysisSubType=$1
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -40,7 +36,7 @@ for f1 in $inputsPath"/"*\.fq; do
 	# status message
 	echo "Processing $f1"
 	# trim to sample tag
-	newName=$(basename $f1 | sed 's/_filtered\.fq/_cleaned\.fa/')
+	newName=$(basename $f1 | sed 's/\.fq/\.fa/')
 	# filter to keep sequences with matching up- and down-stream sequences
 	cat $f1 | sed "s/^.*CGGTAGGTCCCTTAGCCAAAAAAGGACAGCG/START/g" | sed "s/CGCTGTCCGT.*$/END/g" | grep -Ex -B1 'START.{40}END' | grep -v "^--$" | sed "s/START//g" | sed "s/END//g" > $outputsPath"/"$newName
 done

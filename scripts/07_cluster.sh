@@ -7,24 +7,9 @@
 #$ -q largemem
 
 # script to cluster sequences using clustalo and --cluster-size=500
-# usage: qsub 06b_cluster.sh inputFile
-# merged
+# usage: qsub 07_cluster.sh inputFile
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_merged/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06b_cluster.sh "${fileList[$i]}"; done
-## jobs 895138 to 895148
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_merged/formatted_above10_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06b_cluster.sh "${fileList[$i]}"; done
-## jobs 892270 to 892280
-# avg
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_avg/formatted_a_avg/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06b_cluster.sh "${fileList[$i]}"; done
-## jobs 897264 to 897285
-# s4q20
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_s4q20/formatted_a_s4q20/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06b_cluster.sh "${fileList[$i]}"; done
-## jobs 898605 to 898633
-# max
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_max/formatted_a_max/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06b_cluster.sh "${fileList[$i]}"; done
-## jobs 899329 to 899350
-# max56
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_max56/formatted_a_max56/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06b_cluster.sh "${fileList[$i]}"; done
-## jobs 900027 to 900048
+## jobs 
 
 # load the software module
 module load bio/0724

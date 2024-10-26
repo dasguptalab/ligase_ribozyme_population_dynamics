@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # script to subset sequences and format headers
-# usage: bash 05_format.sh analysisSubType
-# usage: bash 05_format.sh a
-
-# retrieve input analysis type
-analysisSubType=$1
+# usage: bash 06_format.sh
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
