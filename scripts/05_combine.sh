@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# script to combine files of merged trimmed paired reads with trimmed unpaired reads
-# usage: bash 02_combine.sh
+# script to combine files of trimmed forward paired reads with trimmed forward unpaired reads with merged reads
+# usage: bash 05_combine.sh
 
 # retrieve analysis tag
 analysisTag=$(echo $1 | sed "s/trimmed_//g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/cleaned"
