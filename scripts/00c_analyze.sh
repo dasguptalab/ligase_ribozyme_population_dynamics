@@ -4,17 +4,21 @@
 # usage: bash 00c_analyze.sh analysisType
 # usage ex: bash 00c_analyze.sh merged
 # usage ex: bash 00c_analyze.sh trimmed
+# usage ex: bash 00c_analyze.sh filtered
+# usage ex: bash 00c_analyze.sh cleaned
+# usage ex: bash 00c_analyze.sh combined
+# usage ex: bash 00c_analyze.sh formatted
 
 # retrieve input analysis type
 analysisType=$1
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # check input analysis type
 if [[ $analysisType == "raw" ]]; then
 	# retrieve raw paired reads absolute path for alignment
-	readPath=$(grep "pairedReads:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/pairedReads://g")
+	readPath=$(grep "pairedReads:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/pairedReads://g")
 else 
 	# set reads path
 	readPath=$outputsPath"/"$analysisType
@@ -73,7 +77,7 @@ for f1 in $readPath"/"*; do
 	# status message
 	echo "Processing file: $f1"
 	# check analysis type
-	if [[ $analysisType == "cleaned_"* || $analysisType == "formatted_"* ]]; then
+	if [[ $analysisType == "cleaned" || $analysisType == "combined" || $analysisType == "formatted" ]]; then
 		# print read lengths
 		#cat $f1 | awk 'NR%2==0 {print length($0)}' | sort -n | uniq -c > $lengthsOut".tmp.txt"
 		cat $f1 | awk 'NR%2==0 {print length($0)}' | awk '!seen[$0]++' > $lengthsOut".tmp.txt"

@@ -5,6 +5,7 @@
 # usage ex: bash 00a_qc.sh raw
 # usage ex: bash 00a_qc.sh merged
 # usage ex: bash 00a_qc.sh trimmed
+# usage ex: bash 00a_qc.sh filtered
 
 # load software module for remote servers
 module load bio/2.0
