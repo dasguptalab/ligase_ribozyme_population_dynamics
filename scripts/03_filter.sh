@@ -12,7 +12,7 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set inputs path
-inputsPath=$outputsPath"/combined"
+inputsPath=$outputsPath"/trimmed"
 
 # make a new directory for analysis
 outputsPath=$outputsPath"/filtered"
