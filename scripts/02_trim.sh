@@ -39,9 +39,6 @@ cd $outputsPath
 # status message
 echo "Analyzing combined data..."
 
-# unzip any gz read files
-gunzip -v $inputsPath"/"*\.gz
-
 # loop over un-filtered merged reads for each run
 for f1 in $inputsPath"/"*\.extendedFrags.fastq; do
 	# trim to sample tag

@@ -24,9 +24,6 @@ fi
 # move to the new directory
 cd $outputsCombined
 
-# unzip any gz read files
-gunzip -v $inputsPath"/"*
-
 # loop through all samples
 for f1 in $inputsPath"/"*_trimmed\.fa; do
 	# trim to sample tag

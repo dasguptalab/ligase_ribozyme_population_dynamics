@@ -29,6 +29,9 @@ cd $outputsPath
 # status message
 echo "Beginning analysis..."
 
+# unzip any gz read files
+gunzip -v $inputsPath"/"*\.gz
+
 # loop through all samples
 for f1 in $inputsPath"/"*\.fq; do
 	# status message

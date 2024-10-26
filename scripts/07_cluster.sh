@@ -8,7 +8,7 @@
 
 # script to cluster sequences using clustalo and --cluster-size=500
 # usage: qsub 07_cluster.sh inputFile
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_merged/formatted_merged/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 06b_cluster.sh "${fileList[$i]}"; done
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
 ## jobs 
 
 # load the software module
