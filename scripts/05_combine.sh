@@ -34,7 +34,7 @@ for f1 in $inputsPath"/"*_trimmed\.fa; do
 	# status message
 	echo "Processing $sampleTag ..."
 	# combine un-filtered merged,.fqiled merged, and unpaired trimmed reads
-	cat $f1 $inputsPath"/"$sampleTag"_pForward.fq" $inputsPath"/"$sampleTag"_uForward.fq" >> $outputsPath"/"$sampleTag"_combined.fa"
+	cat $f1 $inputsPath"/"$sampleTag"_pForward.fa" $inputsPath"/"$sampleTag"_uForward.fa" >> $outputsPath"/"$sampleTag"_combined.fa"
 done
 
 # double check that there are no duplicate reads
