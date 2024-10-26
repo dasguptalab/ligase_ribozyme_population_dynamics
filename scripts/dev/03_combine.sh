@@ -37,11 +37,11 @@ for f1 in $inputsPath"/"*_trimmed.fq; do
 	# status message
 	echo "Processing $sampleTag ..."
 	# combine un-filtered merged,.fqiled merged, and unpaired trimmed reads
-	cat $f1 $inputsPath"/"$sampleTag".notCombined_1.fastq" > $outputsPath"/"$sampleTag"_combined.fq"
+	cat $f1 $inputsPath"/"$sampleTag"_pForward.fq" $inputsPath"/"$sampleTag"_uForward.fq" $inputsPath"/"$sampleTag"_uReverse.fq"  > $outputsPath"/"$sampleTag"_combined.fq"
 done
 
 # double check that there are no duplicate reads
-#for i in $outputsPath"/"*_combined\.fq; do echo $i; cat $i | awk 'NR%2==1' | cut -d' ' -f1 | sort | uniq -c | sort -n | head; done
+#for i in $outputsPath"/"*_combined\.fq; do echo $i; cat $i | awk 'NR%4==1' | cut -d' ' -f1 | sort | uniq -c | sort -n | head; done
 
 # status message
 echo "Analysis complete!"

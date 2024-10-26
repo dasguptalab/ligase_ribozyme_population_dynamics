@@ -6,10 +6,7 @@
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
-# primer: GGCUAAGG -> GGCTAAGG
-# RNA library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
-# DNA library: GACTCACTGACACAGATCCACTCAC GGACAGCG G(Nx40)CGCTGTCCTTTTTTGGCTAAGG
-# target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
+# DNA library: CGGTAGGTCCCTTAGCCAAAAAAGGACAGCG(Nx40)CGCTGTCCGT -> 81bp total
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
@@ -39,9 +36,7 @@ for f1 in $inputsPath"/"*\.fq; do
 	# trim to sample tag
 	newName=$(basename $f1 | sed 's/_combined\.fq/_filtered\.fq/')
 	# filter to keep sequences with matching up- and down-stream sequences
-	#cat $f1 | awk '/GGACAGCG.{40}CGCTGTCC/{if (a && a !~ /GGACAGCG.{40}CGCTGTCC/) print a; print} {a=$0}' | sed "s/^.*GGACAGCG//g" | sed "s/CGCTGTCC.*$//g" | grep -Ex -B1 '.{40}' > $outputsPath"/"$newName
-	#cat $f1 | grep -Ex -B1 '.*GGACAGCG.{40}CGCTGTCC.*' | sed "s/^.*GGACAGCG//g" | sed "s/CGCTGTCC.*$//g" | grep -Ex -B1 '.{40}' | grep -v "^--$" > $outputsPath"/"$newName
-	cat $f1 | grep -Ex -B1 -A2 '.*GGACAGCG.{40}CGCTGTCC.*' | grep -v "^--$" > $outputsPath"/"$newName
+	cat $f1 | grep -Ex -B1 -A2 '.*CGGTAGGTCCCTTAGCCAAAAAAGGACAGCG.{40}CGCTGTCCGT.*' | grep -v "^--$" > $outputsPath"/"$newName
 done
 
 # status message

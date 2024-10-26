@@ -3,9 +3,7 @@
 # script to perform trimmomatic trimming of paired end reads
 # usage: bash 01_merge.sh 
 
-# primer: GGCUAAGG -> GGCTAAGG
-# library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
-# target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
+# DNA library: CGGTAGGTCCCTTAGCCAAAAAAGGACAGCG(Nx40)CGCTGTCCGT -> 81bp total
 # raw data: all reads are 81 bp
 
 # retrieve paired reads absolute path for alignment

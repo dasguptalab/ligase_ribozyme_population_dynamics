@@ -42,7 +42,7 @@ for f1 in $inputsPath"/"*\.fq; do
 	# trim to sample tag
 	newName=$(basename $f1 | sed 's/_filtered\.fq/_cleaned\.fa/')
 	# filter to keep sequences with matching up- and down-stream sequences
-	cat $f1 | sed "s/^.*GGACAGCG/START/g" | sed "s/CGCTGTCC.*$/END/g" | grep -Ex -B1 'START.{40}END' | grep -v "^--$" | sed "s/START//g" | sed "s/END//g" > $outputsPath"/"$newName
+	cat $f1 | sed "s/^.*CGGTAGGTCCCTTAGCCAAAAAAGGACAGCG/START/g" | sed "s/CGCTGTCCGT.*$/END/g" | grep -Ex -B1 'START.{40}END' | grep -v "^--$" | sed "s/START//g" | sed "s/END//g" > $outputsPath"/"$newName
 done
 
 # status message
