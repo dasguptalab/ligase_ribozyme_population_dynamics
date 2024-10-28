@@ -32,7 +32,6 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 
 # make a directory for the clustering outputs
 clusterOut=$outputsPath"/clustered"
-#clusterOut=$outputsPath"/clustered_trimmed"
 mkdir $clusterOut
 
 # make a new directory for analysis
