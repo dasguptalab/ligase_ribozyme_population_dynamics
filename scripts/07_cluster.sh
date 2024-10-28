@@ -2,14 +2,18 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N RNA_cluster_jobOutput
+#$ -N 
 #$ -pe smp 8
 #$ -q largemem
 
 # script to cluster sequences using clustalo and --cluster-size=500
 # usage: qsub 07_cluster.sh inputFile
+# combined
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
-## jobs 
+## jobs 906100 to 906121
+# trimmed
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted_trimmed/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
+## jobs
 
 # load the software module
 module load bio/0724
@@ -27,7 +31,8 @@ nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # make a directory for the clustering outputs
-clusterOut=$outputsPath"/clustered"
+#clusterOut=$outputsPath"/clustered"
+clusterOut=$outputsPath"/clustered_trimmed"
 mkdir $clusterOut
 
 # make a new directory for analysis
