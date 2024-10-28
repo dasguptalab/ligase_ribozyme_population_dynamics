@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N 
+#$ -N RNA_cluster_jobOutput
 #$ -pe smp 8
 #$ -q largemem
 
