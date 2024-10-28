@@ -8,12 +8,12 @@
 
 # script to cluster sequences using clustalo and --cluster-size=500
 # usage: qsub 07_cluster.sh inputFile
-# usage ex: qsub 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r8_S8_L001_formatted_above9.fa
+# usage ex: qsub 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r8_S8_L001_formatted.fa
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/*_above9); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
 # alternate usage: bash 07_cluster.sh inputFile
-# usage ex: bash 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r8_S8_L001_formatted.fa
-# usage ex: bash 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r7_S7_L001_formatted.fa
-# usage ex: bash 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r6_S6_L001_formatted.fa
+# usage ex: bash 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r8_S8_L001_formatted_above9.fa
+# usage ex: bash 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r7_S7_L001_formatted_above9.fa
+# usage ex: bash 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r6_S6_L001_formatted_above9.fa
 
 # load the software module
 module load bio/0724
@@ -31,8 +31,8 @@ nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # make a directory for the clustering outputs
-#clusterOut=$outputsPath"/clustered"
-clusterOut=$outputsPath"/clustered_trimmed"
+clusterOut=$outputsPath"/clustered"
+#clusterOut=$outputsPath"/clustered_trimmed"
 mkdir $clusterOut
 
 # make a new directory for analysis
