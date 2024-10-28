@@ -26,7 +26,7 @@ else
 fi
 
 #Make a new directory for analysis
-outputsPath=$outputsPath"/0a_qc"
+outputsPath=$outputsPath"/00a_qc"
 mkdir $outputsPath
 
 #Make a new directory for analysis
