@@ -10,6 +10,10 @@
 # usage: qsub 07_cluster.sh inputFile
 # usage ex: qsub 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r8_S8_L001_formatted_above9.fa
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/*_above9); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
+# alternate usage: bash 07_cluster.sh inputFile
+# usage ex: bash 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r8_S8_L001_formatted.fa
+# usage ex: bash 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r7_S7_L001_formatted.fa
+# usage ex: bash 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r6_S6_L001_formatted.fa
 
 # load the software module
 module load bio/0724
@@ -47,7 +51,8 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # cluster sequences
-clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa" --cluster-size=500
+#clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa" --cluster-size=500
+clustalo --threads=8 -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa" --cluster-size=500
 
 # status message
 echo "Analysis complete!"
