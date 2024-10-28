@@ -6,7 +6,7 @@
 #$ -pe smp 8
 #$ -q largemem
 
-# script to cluster sequences using clustalo and --cluster-size=500
+# script to cluster sequences using clustalo
 # usage: qsub 07_cluster.sh inputFile
 # usage ex: qsub 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r8_S8_L001_formatted.fa
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/*_above9); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
