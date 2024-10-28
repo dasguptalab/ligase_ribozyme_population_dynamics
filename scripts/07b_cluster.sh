@@ -16,11 +16,11 @@
 # load the software module
 module load bio/0724
 
-# retrieve input file
-inputFile=$1
-
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+
+# retrieve input file
+inputFile=$outputsPath"/06_formatted/"$1
 
 # clean up input file name
 nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
