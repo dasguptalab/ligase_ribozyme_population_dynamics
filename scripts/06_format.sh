@@ -10,10 +10,10 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed 
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/combined"
+inputsPath=$outputsPath"/cleaned"
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/formatted"
+outputsPath=$outputsPath"/formatted_trimmed"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -28,11 +28,11 @@ cd $outputsPath
 echo "Beginning analysis..."
 
 # loop through all samples
-for f1 in $inputsPath"/"*\.fa; do
+for f1 in $inputsPath"/"*_trimmed\.fa; do
 	# status message
 	echo "Processing file: $f1"
 	# trim to sample tag
-	newName=$(basename $f1 | sed 's/_combined\.fa/_formatted/')
+	newName=$(basename $f1 | sed 's/_trimmed\.fa/_formatted/')
 	# print read counts
 	# for fasta files
 	cat $f1 | awk 'NR%2==0' | sort | uniq -c | sort -nrk1 > $outputsPath"/"$newName"_counts.tmp.txt"

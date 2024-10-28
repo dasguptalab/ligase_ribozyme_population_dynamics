@@ -13,6 +13,9 @@
 ## jobs 902313 to 902334
 # clustered
 # usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
+## jobs 902723 to 902745
+# clustered_trimmed
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
 ## jobs
 
 # load the software module
@@ -31,7 +34,7 @@ nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # make a directory for the clustering outputs
-clusterOut=$outputsPath"/clustered"
+clusterOut=$outputsPath"/clustered_trimmed"
 mkdir $clusterOut
 
 # make a new directory for analysis
@@ -50,8 +53,8 @@ cd $clusterOut
 echo "Beginning analysis of $nameTag ..."
 
 # cluster sequences
-#clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa" --cluster-size=500
-clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa"
+clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa" --cluster-size=500
+#clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa"
 
 # status message
 echo "Analysis complete!"
