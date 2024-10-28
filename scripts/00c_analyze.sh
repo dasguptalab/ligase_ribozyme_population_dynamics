@@ -49,12 +49,12 @@ lengthsOut=$outputsPath"/read_lengths.txt"
 countsOut=$outputsPath"/read_counts.txt"
 
 # add headers
-echo "run,count,length" > $lengthsOut
+echo "run,length" > $lengthsOut
 echo "run,count,sequence" > $countsOut
 #echo "run,total,quality,unique,diversity"
 
 # check analysis type
-if [[ $analysisType == "cleaned_"* || $analysisType == "formatted_"* ]]; then
+if [[ $analysisType == "cleaned" || $analysisType == "combined" || $analysisType == "formatted" ]]; then
 	# count read names
 	echo "Calculating read name counts..."
 	for i in $readPath"/"*; do echo $i; cat $i | awk 'NR%2==1' | wc -l; done > $namesOut

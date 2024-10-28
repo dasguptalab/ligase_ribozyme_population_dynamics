@@ -8,12 +8,8 @@
 
 # script to cluster sequences using clustalo and --cluster-size=500
 # usage: qsub 07_cluster.sh inputFile
-# combined
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
-## jobs 906100 to 906121
-# trimmed
-# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted_trimmed/*); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
-## jobs
+# usage ex: qsub 07_cluster.sh /scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/r8_S8_L001_formatted_above9.fa
+# usage ex: fileList=(/scratch365/ebrooks5/RNA_evolution/outputs_flash/formatted/*_above9); for ((i=${#fileList[@]}-1; i>=0; i--)); do qsub 07_cluster.sh "${fileList[$i]}"; done
 
 # load the software module
 module load bio/0724
