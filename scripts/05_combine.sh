@@ -10,10 +10,10 @@ analysisTag=$(echo $1 | sed "s/trimmed_//g")
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/cleaned"
+inputsPath=$outputsPath"/04_cleaned"
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/combined"
+outputsPath=$outputsPath"/05_combined"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then

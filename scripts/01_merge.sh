@@ -22,7 +22,7 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "
 mkdir $outputsPath
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/merged"
+outputsPath=$outputsPath"/01_merged"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then

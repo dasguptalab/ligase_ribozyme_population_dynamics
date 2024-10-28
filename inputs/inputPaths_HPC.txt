@@ -4,5 +4,5 @@ adapter_TruSeq: /scratch365/ebrooks5/RNA_evolution/data/adapters/TruSeq3-PE-2.fa
 software_cdhit: /afs/crc.nd.edu/user/e/ebrooks5/cdhit
 software_NGmerge: /afs/crc.nd.edu/user/e/ebrooks5/NGmerge
 software_FLASH: /afs/crc.nd.edu/user/e/ebrooks5/FLASH-1.2.11
-outputs: /scratch365/ebrooks5/RNA_evolution/outputs_flash
+outputs: /scratch365/ebrooks5/RNA_evolution/outputs
 analysis: flash

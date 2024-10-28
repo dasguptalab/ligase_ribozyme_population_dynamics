@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
-# usage: bash 00c_analyze.sh analysisType
-# usage ex: bash 00c_analyze.sh merged
-# usage ex: bash 00c_analyze.sh trimmed
-# usage ex: bash 00c_analyze.sh filtered
-# usage ex: bash 00c_analyze.sh cleaned
-# usage ex: bash 00c_analyze.sh combined
-# usage ex: bash 00c_analyze.sh formatted
+# usage: bash 00b_analyze.sh analysisType
+# usage ex: bash 00b_analyze.sh 01_merged
+# usage ex: bash 00b_analyze.sh 02_trimmed
+# usage ex: bash 00b_analyze.sh 03_filtered
+# usage ex: bash 00b_analyze.sh 04_cleaned
+# usage ex: bash 00b_analyze.sh 05_combined
+# usage ex: bash 00b_analyze.sh 06_formatted
 
 # retrieve input analysis type
 analysisType=$1
@@ -23,6 +23,10 @@ else
 	# set reads path
 	readPath=$outputsPath"/"$analysisType
 fi
+
+#Make a new directory for analysis
+outputsPath=$outputsPath"/0b_analyzed"
+mkdir $outputsPath
 
 #Make a new directory for analysis
 outputsPath=$outputsPath"/analyzed_"$analysisType
