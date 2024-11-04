@@ -16,21 +16,23 @@
 # load the software module
 module load bio/0724
 
-# retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-
-# retrieve input file
-inputFile=$outputsPath"/06_formatted/"$1
-
-# clean up input file name
-nameTag=$(basename $inputFile | sed "s/\.fa//g" | sed "s/\./_/g")
-
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
-# make a directory for the clustering outputs
-clusterOut=$outputsPath"/07b_clustered"
-mkdir $clusterOut
+# retrieve analysis outputs absolute path
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+
+# retrieve the inputs path
+inputsPath=$outputsPath"/06_formatted"
+
+# make a new directory for analysis
+clusterOut=$outputsPath"/07b_clustered_ID"
+mkdir $outputsPath
+# check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $outputsPath directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 # move to the new directory
 cd $clusterOut
@@ -40,7 +42,7 @@ echo "Beginning analysis of $nameTag ..."
 
 # cluster sequences
 #clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa"
-clustalo --threads=8 -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa"
+clustalo --threads=8 -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa" --percent-id
 
 # status message
 echo "Analysis complete!"

@@ -1,25 +1,4 @@
-# RNA_selection_amplification
-
-Repository for analyzing RNA sequences from in vitro selection-amplification to isolate RNA ligase ribozyme.
-
-## Analysis Workflow
-
-0. after each analysis step and for each run:
-- create QC reports for each set of raw and processed data using FastQC and MultiQC
-- analyze read numbers and lengths 
-1. trim reads to filter by quality reads using Trimmomatic
-2. merge the trimmed paired reads for each run using NGmerge
-3. filter trimmed unpaired forward and reverse, merged paired, failed merged forward and reverse reads by structure to keep only those that contain the constant up- (GGACAGCG) and down-stream (CGCTGTCC) regions with 40 bp in-between, then retain only the 40 bp in-between region using BASH
-4. combine filtered read files with trimmed unpaired reads and make sure there are no duplicate reads using BASH
-5. before clustering, remove sequences that appear less than 10 times and re-format read headers
-6. cluster read sequences for each run
-7. reproduce "Progress of in vitro selection"
-- total sequences
-- high quality sequences
-- unique sequences
-- diversity (%)
-- number of sequence families
-8. reproduce "Different classes of ribozymes after clustering" from the run 8 data
+# Notes
 
 ## Progress of in vitro selection - Update (14 October 2024)
 
@@ -147,7 +126,5 @@ for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/\*/\*\.fa; do echo \
 | Diversity% | 74 | 74 | 66 | 66 | 54 | 21 | 4 | 2 | 77 | 77 | 67 |
 | Families | N/A | N/A | N/A | N/A | N/A | R6 | R7 | R8 | N/A | N/A | N/A |
 
-## NOTES
-
-Check cluster numbers and sizes:
+## Check cluster numbers and sizes
 for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs_avg/clustered_size_500_avg/*_above10/*_clustered.aux; do echo $i; cat $i | cut -d":" -f1 | cut -d" " -f2 | sort -n | uniq -c; done
