@@ -4,13 +4,13 @@ Project for analyzing RNA sequences from in vitro selection-amplification to iso
 
 ## RNA Evolution Project
 
-The code repository for the analysis pipeline can be found [HERE](https://github.com/ElizabethBrooks/RNA_selection_amplification).
+The code repository for the analysis pipeline can be found [HERE][1].
 
 ### Analysis Workflow
 
 The following steps comprise the analysis workflow and correspond to scripts in the code repository.
 
-1. merge paired reads for each run using FLASh (see supplement of [this PNAS paper](https://doi.org/10.1073/pnas.2321592121))<br>
+1. merge paired reads for each run using FLASh (see supplement of [this PNAS paper][2])<br>
 <b>Note:</b> reads were not merged and only the forward reads were used in the original analysis workflow (see 0010\_qc\_slx.py from the original analysis code)
 2. filter reads by quality (AVGQUAL:30) and remove detected adapter content using Trimmomatic<br>
 <b>Note:</b> the quality filtering is similar in approach as the original analysis (see 0010\_qc\_slx.py from the original analysis code)
@@ -24,10 +24,11 @@ The following steps comprise the analysis workflow and correspond to scripts in 
 <b>Note:</b> only unique reeds were kept and the sequence headers were updated to contain the run name, arbitrary sequence ID, and read counts for the unique sequence
 7. cluster read sequences for each run using Clustal Omega<br>
 	<b>07a.</b>  cluster with a soft maximum of 500 sequences in sub-clusters (cluster-size=500), which is what the original analysis used (see 0020\_cluster\_slxn.py from the original analysis code)<br>
-	<b>07b.</b>  cluster with the default soft maximum of 100 sequences in sub-clusters (see [Clustal Omega README](https://github.com/GSLBiotech/clustal-omega/blob/master/README))
-8. create tables with cluster sequence information (run name, sequence ID, read counts, cluster ID, sequence counts, sequence)
-9. reproduce tables and plots from slides/paper using BASH and R (see 0030\_mk\_qc\_table.py from the original analysis code)
-10. create additional tables and plots, as needed
+	<b>07b.</b>  cluster with the default soft maximum of 100 sequences in sub-clusters (see [Clustal Omega README][3]
+8. create tables with cluster sequences and peak sequences information (run name, sequence ID, read counts, cluster ID, sequence counts, reverse complimented sequence)
+9. create tables with the statistics (average, standard deviation, highest, lowest) for the percent identity (see the JAX's [Introduction to Sequence Comparison][4] of cluster sequences relative to the peak sequence within each cluster
+10. reproduce tables and plots from slides/paper using BASH and R (see 0030\_mk\_qc\_table.py from the original analysis code)
+11. create additional tables and plots, as needed
 
 #### Progress Assessment
 For analysis steps 01 to 07 use BASH to:<br>
@@ -67,3 +68,9 @@ For analysis steps 01 to 07 use BASH to:<br>
 ### TO-DO
 - Add software versions
 - Create methods summary and references list
+
+
+[1]: https://github.com/ElizabethBrooks/RNA_selection_amplification
+[2]: https://doi.org/10.1073/pnas.2321592121
+[3]: https://github.com/GSLBiotech/clustal-omega/blob/master/README
+[4]: https://www.jax.org/-/media/jaxweb/files/education-and-learning/ttgg-seq-comparison/seqcomp_introduction.pdf?rev=93c9ff2010234a4bb0dfa0ed043de28e#:~:text=%F0%9D%91%83%F0%9D%91%92%F0%9D%91%9F%F0%9D%91%90%F0%9D%91%92%F0%9D%91%9B%F0%9D%91%A1%20%F0%9D%90%BC%F0%9D%91%91%F0%9D%91%92%F0%9D%91%9B%F0%9D%91%A1%F0%9D%91%96%F0%9D%91%A1%F0%9D%91%A6%20%3D%20%23%20%F0%9D%91%9D%F0%9D%91%9C%F0%9D%91%A0%F0%9D%91%96%F0%9D%91%A1%F0%9D%91%96%F0%9D%91%9C%F0%9D%91%9B%F0%9D%91%A0%20%E2%88%92%20%23,of%20sequences%20can%20be%20compared.

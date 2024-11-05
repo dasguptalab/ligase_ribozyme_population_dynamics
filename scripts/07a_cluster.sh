@@ -4,25 +4,24 @@
 #$ -r n
 #$ -N RNA_cluster_a_jobOutput
 #$ -pe smp 8
-#$ -q largemem
 
 # script to cluster sequences using clustalo
 # usage: qsub 07a_cluster.sh
 
 # load the software module
-module load bio/0724
+#module load bio/0724
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/06_formatted"
 
 # make a new directory for analysis
-clusterOut=$outputsPath"/07a_clustered_ID"
+outputsPath=$outputsPath"/07a_clustered"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -31,14 +30,19 @@ if [ $? -ne 0 ]; then
 fi
 
 # move to the new directory
-cd $clusterOut
+cd $outputsPath
 
-# status message
-echo "Beginning analysis of $nameTag ..."
-
-# cluster sequences
-#clustalo --threads=$NSLOTS -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa" --cluster-size=500 
-clustalo --threads=8 -i $inputFile --clustering-out=$clusterOut"/"$nameTag"_clustered.aux" -o $clusterOut"/"$nameTag"_aligned.fa" --cluster-size=500 --percent-id
+# loop through all samples
+for f1 in $inputsPath"/"*\.fa; do
+	# trim to sample tag
+	sampleTag=$(basename $f1 | sed 's/\.fa//')
+	# status message
+	echo "Processing $sampleTag ..."
+	# cluster sequences
+	#clustalo --threads=$NSLOTS -i $f1 --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=500 
+	#clustalo -i $f1 --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=500 --full --percent-id --distmat-out=$outputsPath"/"$sampleTag"_distances.txt"
+	clustalo -i $f1 --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=500
+done
 
 # status message
 echo "Analysis complete!"

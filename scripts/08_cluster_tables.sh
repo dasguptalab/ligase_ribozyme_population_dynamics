@@ -20,15 +20,15 @@ inputsPath=$outputsPath"/"$inputFile
 # make a new directory for analysis
 tablesOut=$outputsPath"/08_cluster_tables"
 mkdir $tablesOut
-# check if the folder already exists
-#if [ $? -ne 0 ]; then
-#	echo "The $tablesOut directory already exsists... please remove before proceeding."
-#	exit 1
-#fi
 
 # make a new directory for analysis
 tablesOut=$tablesOut"/"$inputFile
 mkdir $tablesOut
+# check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $tablesOut directory already exsists... please remove before proceeding."
+	exit 1
+fi
 
 # move to outputs directory
 cd $tablesOut
