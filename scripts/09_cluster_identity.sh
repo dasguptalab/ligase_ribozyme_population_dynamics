@@ -54,54 +54,48 @@ for f1 in $inputsPath"/"*_above9_cluster_peaks_table\.csv; do
 		if [ $peakCount -eq 1 ]; then
 			# adjust and output the header
 			echo $peakData",avg_ID,SD_ID,highest_ID,lowest_ID" > $tablesOut"/"$nameTag"_peaks_identity_table.csv"
+			echo $peakData",percent_ID" > $tablesOut"/"$nameTag"_sequences_identity_table.csv"
 		else
 			# get the current cluster number
 			clusterName=$(echo $peakData | cut -d"," -f4)
 			# status message
 			echo "Processing Cluster $clusterName ..."
+			# retrieve sequences for the current cluster
+			cat $f2 | grep ",$clusterName," > $tablesOut"/"$nameTag"_cluster_"$clusterName"_table.csv"
 			# initialize counters
-			lineCount=0
 			numSeqs=0
 			totalID=0
 			totalSqrVar=0
 			# loop over each sequence line and retrieve sequences
 			while read seqData; do
-				# increment line counter
-				lineCount=$(($lineCount+1))
-				# check if header line
-				if [ $lineCount -eq 1 ]; then
-					# adjust and output the header
-					echo $seqData",percent_ID" > $tablesOut"/"$nameTag"_sequences_identity_table.csv"
-				else
-					# retrieve the current cluster peak sequence
-					peakSeq=$(echo $peakData | cut -d"," -f6)
-					# retrieve the current sequence in the current cluster
-					currSeq=$(echo $seqData | cut -d"," -f5)
-					# initialize mismatch counter
-					numMismatch=0
-					# loop over each character of the sequence
-					#echo $sequence | awk '{for (i=0; ++i <= length($0);) printf "%s", substr($0, i, 1)}'
-					for (( i=0; i<${#currSeq}; i++ )); do
-						# compare each character with the peak
-						if [ "${currSeq:$i:1}" != "${peakSeq:$i:1}" ]; then
-							# increment the number of mismatches
-							numMismatch=$(($numMismatch+1))
-						fi
-					done
-					# calculate the number of matches
-					seqLength=40
-					# calculate the percent identity
-					distID=$(($seqLength - $numMismatch))
-					propID=$(echo "scale=4; $distID / $seqLength" | bc)
-					percentID=$(echo "scale=4; $propID * 100" | bc)
-					# add the percent identity to the running total for the cluster
-					totalID=$(echo "scale=4; $totalID + $percentID" | bc)
-					# increase the counter for the number of sequences in the cluster
-					numSeqs=$(($numSeqs + 1))
-					# add the percent identity to the current sequence information and output to a new table
-					echo $seqData","$percentID >> $tablesOut"/"$nameTag"_sequences_identity_table.csv"
-				fi
-			done < $f2
+				# retrieve the current cluster peak sequence
+				peakSeq=$(echo $peakData | cut -d"," -f6)
+				# retrieve the current sequence in the current cluster
+				currSeq=$(echo $seqData | cut -d"," -f5)
+				# initialize mismatch counter
+				numMismatch=0
+				# loop over each character of the sequence
+				#echo $sequence | awk '{for (i=0; ++i <= length($0);) printf "%s", substr($0, i, 1)}'
+				for (( i=0; i<${#currSeq}; i++ )); do
+					# compare each character with the peak
+					if [ "${currSeq:$i:1}" != "${peakSeq:$i:1}" ]; then
+						# increment the number of mismatches
+						numMismatch=$(($numMismatch+1))
+					fi
+				done
+				# calculate the number of matches
+				seqLength=40
+				# calculate the percent identity
+				distID=$(($seqLength - $numMismatch))
+				propID=$(echo "scale=4; $distID / $seqLength" | bc)
+				percentID=$(echo "scale=4; $propID * 100" | bc)
+				# add the percent identity to the running total for the cluster
+				totalID=$(echo "scale=4; $totalID + $percentID" | bc)
+				# increase the counter for the number of sequences in the cluster
+				numSeqs=$(($numSeqs + 1))
+				# add the percent identity to the current sequence information and output to a new table
+				echo $seqData","$percentID >> $tablesOut"/"$nameTag"_sequences_identity_table.csv"
+			done < $tablesOut"/"$nameTag"_cluster_"$clusterName"_table.csv"
 			# calculate the avg percent identity for the cluster
 			avgID=$(echo "scale=4; $totalID / $numSeqs" | bc)
 			# reset counter
@@ -128,6 +122,13 @@ for f1 in $inputsPath"/"*_above9_cluster_peaks_table\.csv; do
 			lowest=$(cat $tablesOut"/"$nameTag"_sequences_identity_table.csv" | cut -d"," -f6 | sort -rn | sed '$d' | tail -1)
 			# add the avg and SD percent identity to the peak sequence information and output to a new table
 			echo $peakData","$avgID","$sdID","$highest","$lowest >> $tablesOut"/"$nameTag"_peaks_identity_table.csv"
+			# clean up
+			rm $tablesOut"/"$nameTag"_cluster_"$clusterName"_table.csv"
+			# sanity checks
+			echo "avgID: "$avgID
+			echo "sdID: "$sdID
+			echo "highest: "$highest
+			echo "lowest: "$lowest
 		fi
 	done < $f1
 done
