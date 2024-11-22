@@ -133,5 +133,11 @@ for f1 in $inputsPath"/"*_above9_cluster_peaks_table\.csv; do
 	done < $f1
 done
 
+# combine tables from each run
+cat $tablesOut"/"*"_sequences_identity_table.csv" | head -1 > $tablesOut"/sequences_identity_table.csv"
+for i in $tablesOut"/"*"_sequences_identity_table.csv"; do tail -n+2 $i >> $tablesOut"/sequences_identity_table.csv"; done
+cat $tablesOut"/"*"_peaks_identity_table.csv" | head -1 > $tablesOut"/peaks_identity_table.csv"
+for i in $tablesOut"/"*"_peaks_identity_table.csv"; do tail -n+2 $i >> $tablesOut"/peaks_identity_table.csv"; done
+
 # status message
 echo "Analysis complete!"

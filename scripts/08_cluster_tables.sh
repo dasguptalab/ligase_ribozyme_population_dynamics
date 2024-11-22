@@ -49,7 +49,7 @@ for f1 in $inputsPath"/"*_clustered\.aux; do
 	# combine cluster numbers with sequence headers
 	paste -d "," $tablesOut"/"$nameTag"_seq_headers.tmp.txt" $tablesOut"/"$nameTag"_cluster_numbers.tmp.txt" > $tablesOut"/"$nameTag"_cluster_sequences_table.tmp.csv"
 	# add header to the output sequences file
-	echo "run_name,sequence_ID,read_counts,cluster_ID,sequence_counts,sequence" > $tablesOut"/"$nameTag"_cluster_sequences_table.clust.tmp.csv"
+	echo "run_name,sequence_ID,read_counts,cluster_ID,sequence" > $tablesOut"/"$nameTag"_cluster_sequences_table.clust.tmp.csv"
 	# loop over each sequence line and retrieve sequence data
 	while read line; do
 		# retrieve sequence header

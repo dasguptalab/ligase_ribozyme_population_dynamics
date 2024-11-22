@@ -21,7 +21,9 @@ outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed
 inputsPath=$outputsPath"/06_formatted"
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/07b_clustered"
+outputsPath=$outputsPath"/07_clustered"
+mkdir $outputsPath
+outputsPath=$outputsPath"/07_clustered/07b_clustered"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then

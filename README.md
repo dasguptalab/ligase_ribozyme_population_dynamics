@@ -11,22 +11,22 @@ The code repository for the analysis pipeline can be found [HERE][1].
 The following steps comprise the analysis workflow and correspond to scripts in the code repository.
 
 1. merge paired reads for each run using FLASh (see supplement of [this PNAS paper][2])<br>
-<b>Note:</b> reads were not merged and only the forward reads were used in the original analysis workflow (see 0010\_qc\_slx.py from the original analysis code)
+<b>Note:</b> reads were not merged in the original analysis and only the forward reads were used in the original analysis workflow (see 0010\_qc\_slx.py from the original analysis code)
 2. filter reads by quality (AVGQUAL:30) and remove detected adapter content using Trimmomatic<br>
 <b>Note:</b> the quality filtering is similar in approach as the original analysis (see 0010\_qc\_slx.py from the original analysis code)
 3. filter reads by structure to keep only those that contain the expected constant up- and down-stream regions (with 40 bp in-between in this workflow, but not the original) using BASH<br>
-<b>Note:</b> why did they take the reverse compliment of all reads rather than simply the constant regions? (see 0010\_qc\_slx.py from the original analysis code)
+<b>Note:</b> it is not recommended to take the reverse compliment of all reads at this early stage in the analysis, rather than simply the constant regions (see 0010\_qc\_slx.py from the original analysis code)
 4. clean reads to retain only the 40 bp in-between region using BASH<br>
-<b>Note:</b> I did not see a filter to keep reads that are only 40-bp in the original analysis workflow
+<b>Note:</b> there does not appear to be a filter in the original analysis to keep reads that are only 40-bp in the original analysis workflow
 5. combine merged read files with the unmerged forward read files using BASH<br>
 <b>Note:</b> reverse reads are lower quality and typically do not pass filtering by quality or structure 
 6. remove sequences that appear less than 10 times (see 0015\_g10\_seqs.py from the original analysis code) and re-format reads and headers using BASH<br>
-<b>Note:</b> only unique reeds were kept and the sequence headers were updated to contain the run name, arbitrary sequence ID, and read counts for the unique sequence
+<b>Note:</b> only unique reeds were kept in this analysis and the sequence headers were updated to contain the run name, arbitrary sequence ID, and read counts for the unique sequence
 7. cluster read sequences for each run using Clustal Omega<br>
 	<b>07a.</b>  cluster with a soft maximum of 500 sequences in sub-clusters (cluster-size=500), which is what the original analysis used (see 0020\_cluster\_slxn.py from the original analysis code)<br>
-	<b>07b.</b>  cluster with the default soft maximum of 100 sequences in sub-clusters (see [Clustal Omega README][3]
-8. create tables with cluster sequences and peak sequences information (run name, sequence ID, read counts, cluster ID, sequence counts, reverse complimented sequence)
-9. create tables with the statistics (average, standard deviation, highest, lowest) for the percent identity (see the JAX's [Introduction to Sequence Comparison][4] of cluster sequences relative to the peak sequence within each cluster
+	<b>07b.</b>  cluster with the default soft maximum of 100 sequences in sub-clusters (see [Clustal Omega README][3])
+8. create tables with the reverse compliment of cluster sequences and peak sequences, in addition to the cluster and sequence information (run name, sequence ID, read counts, cluster ID, sequence counts, reverse complimented sequence)
+9. create tables with the statistics (average, standard deviation, highest, lowest) for the percent identity of cluster sequences relative to the peak sequence within each cluster (see the JAX's [Introduction to Sequence Comparison][4])
 10. reproduce tables and plots from slides/paper using BASH and R (see 0030\_mk\_qc\_table.py from the original analysis code)
 11. create additional tables and plots, as needed
 
