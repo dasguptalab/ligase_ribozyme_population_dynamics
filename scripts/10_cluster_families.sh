@@ -40,22 +40,20 @@ mkdir $tablesOut
 # make a new directory for analysis
 tablesOut=$tablesOut"/"$inputFile
 mkdir $tablesOut
-tablesOut=$tablesOut"/"$inputFile"/"$2
-mkdir $tablesOut
 # check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $tablesOut directory already exsists... please remove before proceeding."
-	exit 1
-fi
+#if [ $? -ne 0 ]; then
+#	echo "The $tablesOut directory already exsists... please remove before proceeding."
+#	exit 1
+#fi
 
 # move to outputs directory
 cd $tablesOut
 
 # name output file
-countsOut=$tablesOut"/cluster_families_table.csv"
+countsOut=$tablesOut"/"$2"_cluster_families_table.csv"
 
 # retrieve header
-header=$(head -1 $inputsPath"/cluster_sequences_identity_table.csv")
+header=$(head -1 $inputSeqs)
 
 # add the run names to the header 
 header=$(echo $header",doped21-r1_counts,doped21-r2_counts,doped21-r3_counts,r1_counts,r2_counts,r3_counts,r4_counts,r5_counts,r6_counts,r7_counts,r8_counts")
