@@ -1,12 +1,25 @@
 #!/bin/bash
+#$ -M ebrooks5@nd.edu
+#$ -m abe
+#$ -r n
+#$ -N 10_cluster_families_jobOutput
+#$ -q largemem
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
 # usage: bash 10_cluster_families.sh inputFile
 # usage ex: bash 10_cluster_families.sh 07a_clustered
-# usage ex: bash 10_cluster_families.sh 07b_clustered
+# usage ex: bash 10_cluster_families.sh 07b_clustered r8_S8_L001
+# usage ex: bash 10_cluster_families.sh 07b_clustered r7_S7_L001
+# usage ex: bash 10_cluster_families.sh 07b_clustered r6_S6_L001
+# usage ex: bash 10_cluster_families.sh 07b_clustered r5_S5_L001
+# usage ex: bash 10_cluster_families.sh 07b_clustered doped21-r3_S12_L001
+# usage ex: bash 10_cluster_families.sh 07b_clustered doped21-r2_S11_L001
 
 # retrieve input file
 inputFile=$1
+
+# retrieve input sequences
+inputSeqs=$2"_formatted_above9_cluster_sequences_identity_table.csv"
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
@@ -71,7 +84,7 @@ while read seqData; do
 	done
 	# add the counts data to the tmp file
 	echo $countData >> $countsOut".tmp.csv"
-done < <(tail -n+2 $inputsPath"/cluster_sequences_identity_table.csv")
+done < <(tail -n+2 $inputsPath"/"$inputSeqs)
 
 # output the header and run counts
 echo $header > $countsOut
