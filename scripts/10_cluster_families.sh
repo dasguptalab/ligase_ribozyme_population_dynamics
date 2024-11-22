@@ -2,18 +2,17 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N 10_cluster_families_jobOutput
+#$ -N cluster_families_jobOutput
 #$ -q largemem
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
-# usage: bash 10_cluster_families.sh inputFile
-# usage ex: bash 10_cluster_families.sh 07a_clustered
-# usage ex: bash 10_cluster_families.sh 07b_clustered r8_S8_L001
-# usage ex: bash 10_cluster_families.sh 07b_clustered r7_S7_L001
-# usage ex: bash 10_cluster_families.sh 07b_clustered r6_S6_L001
-# usage ex: bash 10_cluster_families.sh 07b_clustered r5_S5_L001
-# usage ex: bash 10_cluster_families.sh 07b_clustered doped21-r3_S12_L001
-# usage ex: bash 10_cluster_families.sh 07b_clustered doped21-r2_S11_L001
+# usage: qsub 10_cluster_families.sh inputFile
+# usage ex: qsub 10_cluster_families.sh 07a_clustered r8_S8_L001
+# usage ex: qsub 10_cluster_families.sh 07a_clustered r7_S7_L001
+# usage ex: qsub 10_cluster_families.sh 07a_clustered r6_S6_L001
+# usage ex: qsub 10_cluster_families.sh 07a_clustered r5_S5_L001
+# usage ex: qsub 10_cluster_families.sh 07a_clustered doped21-r3_S12_L001
+# usage ex: qsub 10_cluster_families.sh 07a_clustered doped21-r2_S11_L001
 
 # retrieve input file
 inputFile=$1
