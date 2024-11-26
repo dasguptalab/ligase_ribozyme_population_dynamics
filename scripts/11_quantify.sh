@@ -7,8 +7,10 @@
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
 # usage: qsub 11_quantify.sh inputFile
-# usage ex: qsub 11_quantify.sh 07a_clustered r8_S8_L001
-## job 1004465
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); echo qsub 11_quantify.sh 07a_clustered $runInput; done
+## job 
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); echo qsub 11_quantify.sh 07b_clustered $runInput; done
+## job 
 
 # retrieve input file
 inputFile=$1
