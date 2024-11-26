@@ -8,16 +8,16 @@
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
 # usage: qsub 11_quantify.sh inputFile
 # usage ex: qsub 11_quantify.sh 07a_clustered r8_S8_L001
-## job 
+## job 1004465
 
 # retrieve input file
 inputFile=$1
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/06_formatted"
