@@ -8,27 +8,27 @@
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
 # usage: qsub 10_cluster_families.sh inputFile
 # usage ex: qsub 10_cluster_families.sh 07a_clustered r8_S8_L001
-## job 985948
+## job 985948 -> SUCCEEDED
 # usage ex: qsub 10_cluster_families.sh 07a_clustered r7_S7_L001
-## job 
+## job 985990 -> SUCCEEDED
 # usage ex: qsub 10_cluster_families.sh 07a_clustered r6_S6_L001
-## job 
+## job 985991 -> SUCCEEDED
 # usage ex: qsub 10_cluster_families.sh 07a_clustered doped21-r3_S12_L001
-## job 
+## job 985996 -> RUNNING
 # usage ex: qsub 10_cluster_families.sh 07a_clustered doped21-r2_S11_L001
-## job 
+## job 985997 -> QUEUED
 # usage ex: qsub 10_cluster_families.sh 07b_clustered r8_S8_L001
-## job 985986
+## job 985988 -> SUCCEEDED
 # usage ex: qsub 10_cluster_families.sh 07b_clustered r7_S7_L001
-## job 
+## job 985993 -> RUNNING
 # usage ex: qsub 10_cluster_families.sh 07b_clustered r6_S6_L001
-## job 
+## job 985994 -> RUNNING
 # usage ex: qsub 10_cluster_families.sh 07b_clustered r5_S5_L001
-## job 
+## job 985995 -> SUCCEEDED
 # usage ex: qsub 10_cluster_families.sh 07b_clustered doped21-r3_S12_L001
-## job 
+## job 985998 -> QUEUED
 # usage ex: qsub 10_cluster_families.sh 07b_clustered doped21-r2_S11_L001
-## job 
+## job 985999 -> QUEUED
 
 # retrieve input file
 inputFile=$1
@@ -81,17 +81,14 @@ while read seqData; do
 	# retrieve the seq
 	seq=$(echo $seqData | cut -d"," -f5)
 	# reverse complement
-	seq=$(echo $seq | tr ACGTacgt TGCAtgca | rev)
+	#seq=$(echo $seq | tr ACGTacgt TGCAtgca | rev)
 	# update the count data
 	countData=$seqData
 	# status message
 	echo "Processing $seq ..."
 	# loop over each round sequences file
 	for f2 in $outputsPath"/05_combined/"*_combined\.fa; do
-		# retrieve run name
-		#runName=$(basename $f2 | cut -d"_" -f1)
-		# status message
-		#echo "Processing $runName ..."
+	#for f2 in $outputsPath"/06_formatted/"*_formatted\.fa; do
 		# count the number of seq occurances in each round
 		numReads=$(cat $f2 | grep -wc $seq)
 		# add the number of seqs for the round
