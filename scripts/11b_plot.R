@@ -141,10 +141,10 @@ ggplot(data=cluster_abundances, aes(x=run_name, y=frac_abundance, group=cluster_
   ylab("Fraction Abundance") +
   xlab("Round Number")
 
-# TO-DO: make heatps of top 10 seqs for each round
+# TO-DO: sort sequences by largest counts for the specified round and make heatmaps of top 10 seqs for each round
 # heatmaps with the log counts for each of the top 10 sequences per round
 # round 8 peak seqs
-r8_peaks_family
+
 
 
 

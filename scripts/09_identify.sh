@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
-# usage: bash 09_cluster_identity.sh inputFile
-# usage ex: bash 09_cluster_identity.sh 07a_clustered
-# usage ex: bash 09_cluster_identity.sh 07b_clustered
+# usage: bash 09_identify.sh inputFile
+# usage ex: bash 09_identify.sh 07a_clustered
+# usage ex: bash 09_identify.sh 07b_clustered
 
 # retrieve input file
 inputFile=$1
@@ -15,10 +15,10 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_local.txt" | tr -d " " | se
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/08_cluster_tables/"$inputFile
+inputsPath=$outputsPath"/08_summarize/"$inputFile
 
 # make a new directory for analysis
-tablesOut=$outputsPath"/09_cluster_identity"
+tablesOut=$outputsPath"/09_identified"
 mkdir $tablesOut
 
 # make a new directory for analysis
