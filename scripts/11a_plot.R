@@ -197,7 +197,7 @@ r8_peaks_identity_plot <- ggplot(data=r8_peaks_identity, aes(x = cluster_ID)) +
   ylab("Percent Identity to Peak") +
   xlab("Cluster Number")
 # save the plot
-exportFile <- paste(out_dir, "r8_peaks_identity.png", sep = "")
+exportFile <- paste(out_dir, "r8_cluster_identity.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(r8_peaks_identity_plot)
 dev.off()
@@ -211,7 +211,7 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   ylab("Fraction Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "cluster_fraction_abundances.png", sep = "")
+exportFile <- paste(out_dir, "r8_cluster_fraction_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
 dev.off()
@@ -222,176 +222,10 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   geom_point() +
   theme_bw() +
   scale_color_identity(name = "Family", labels = cluster_list_out, breaks = safe_colors, guide = "legend") +
-  ylab("Fraction Abundance") +
+  ylab("Log Fraction Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "cluster_log_fraction_abundances.png", sep = "")
+exportFile <- paste(out_dir, "r8_cluster_log_fraction_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
-dev.off()
-
-# heatmaps with the log counts for each of the top peak sequences from round 8
-peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reorder(as.character(seq_num), log(counts)), fill= log(counts))) + 
-  theme_bw() +
-  geom_tile() +
-  ylab("Sequence ID") +
-  xlab("Round Number") +
-  scale_fill_gradient2(name = "Log Counts",
-                       low = safe_colors[3],
-                       mid = safe_colors[4],
-                       high = safe_colors[5],
-                       midpoint = log(max(peak_counts$counts))/2,
-                       na.value = "white")
-# save the plot
-exportFile <- paste(out_dir, "r8_log_counts_cluster_peaks.png", sep = "")
-png(exportFile, units="in", width=5, height=5, res=300)
-print(peak_counts_plot)
-dev.off()
-
-# heatmaps with the log counts for each of the top 10 sequences per round
-# all by sequence ID
-seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, sequence_ID, fill= log_counts, group=run_name)) + 
-  theme_bw() +
-  geom_tile() +
-  #facet_wrap(~ run_name, ncol=4) +
-  ylab("Sequence ID") +
-  xlab("Round Number") +
-  scale_fill_gradient2(name = "Log Counts",
-                       low = safe_colors[3],
-                       mid = safe_colors[4],
-                       high = safe_colors[5],
-                       midpoint = mid_log_counts,
-                       na.value = "white")
-# save the plot
-exportFile <- paste(out_dir, "sequence_ID_log_counts_heatmap_top10.png", sep = "")
-png(exportFile, units="in", width=10, height=10, res=600)
-print(seqs_counts_plot)
-dev.off()
-
-# all by sequence ID and reordered by log counts
-seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequence_ID, log_counts), fill= log_counts, group=run_name)) + 
-  theme_bw() +
-  geom_tile() +
-  #facet_wrap(~ run_name, ncol=4) +
-  ylab("Sequence ID") +
-  xlab("Round Number") +
-  scale_fill_gradient2(name = "Log Counts",
-                       low = safe_colors[3],
-                       mid = safe_colors[4],
-                       high = safe_colors[5],
-                       midpoint = mid_log_counts,
-                       na.value = "white")
-# save the plot
-exportFile <- paste(out_dir, "sequence_ID_ordered_log_counts_heatmap_top10.png", sep = "")
-png(exportFile, units="in", width=10, height=10, res=600)
-print(seqs_counts_plot)
-dev.off()
-
-# all by sequence
-#seqs_counts_summed <- ddply(seqs_counts,"sequence",numcolwise(sum))
-seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequence, log_counts), fill= log_counts, group=run_name)) + 
-  theme_bw() +
-  geom_tile() +
-  #facet_wrap(~ run_name, ncol=4) +
-  ylab("Sequence") +
-  xlab("Round Number") +
-  scale_fill_gradient2(name = "Log Counts",
-                       low = safe_colors[3],
-                       mid = safe_colors[4],
-                       high = safe_colors[5],
-                       midpoint = mid_log_counts,
-                       na.value = "white")
-# save the plot
-exportFile <- paste(out_dir, "sequence_log_counts_heatmap_top10.png", sep = "")
-png(exportFile, units="in", width=10, height=10, res=600)
-print(seqs_counts_plot)
-dev.off()
-
-# loop over each round and create heatmaps
-for (run_num in 1:8) {
-  # subset seq data
-  seqs_counts_subset <- seqs_counts[seqs_counts$run_name == run_num,]
-  # remove run tags
-  seqs_counts_subset[c("run", "ID")] <- do.call(rbind, strsplit(seqs_counts_subset$sequence_ID, "_"))
-  # set round plot title
-  run_title <- paste("Round", run_num, "Sequence Counts")
-  # create heatmap
-  counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, reorder(as.character(ID), log_counts), fill= log_counts)) + 
-    theme_bw() +
-    geom_tile() +
-    ggtitle(run_title) +
-    theme(plot.title = element_text(hjust = 0.5)) +
-    ylab("Sequence ID") +
-    xlab("Round Number") +
-    scale_fill_gradient2(name = "Log Counts",
-                         low = safe_colors[3],
-                         mid = safe_colors[4],
-                         high = safe_colors[5],
-                         midpoint = mid_log_counts,
-                         na.value = "white")
-  # save the plot
-  exportFile <- paste(out_dir, "r", run_num, "_log_counts_heatmap_top10.png", sep = "")
-  png(exportFile, units="in", width=5, height=5, res=300)
-  print(counts_heatmap_subset)
-  dev.off()
-}
-
-# heatmaps with the log counts for all sequences per round
-
-# heatmaps with the fraction abundance for each of the top 10 sequences per round
-# all by sequence ID
-seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, sequence_ID, fill= log_frac_abundance, group=run_name)) + 
-  theme_bw() +
-  geom_tile() +
-  #facet_wrap(~ run_name, ncol=4) +
-  ylab("Sequence ID") +
-  xlab("Round Number") +
-  scale_fill_gradient2(name = "Log FA",
-                       low = safe_colors[3],
-                       mid = safe_colors[4],
-                       high = safe_colors[5],
-                       midpoint = mid_log_frac_abundance,
-                       na.value = "white")
-# save the plot
-exportFile <- paste(out_dir, "sequence_ID_log_fraction_abundance_heatmap_top10.png", sep = "")
-png(exportFile, units="in", width=10, height=10, res=600)
-print(seqs_counts_plot)
-dev.off()
-
-# all by sequence ID and reordered by log counts
-seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequence_ID, log_frac_abundance), fill= log_frac_abundance, group=run_name)) + 
-  theme_bw() +
-  geom_tile() +
-  #facet_wrap(~ run_name, ncol=4) +
-  ylab("Sequence ID") +
-  xlab("Round Number") +
-  scale_fill_gradient2(name = "Log FA",
-                       low = safe_colors[3],
-                       mid = safe_colors[4],
-                       high = safe_colors[5],
-                       midpoint = mid_log_frac_abundance,
-                       na.value = "white")
-# save the plot
-exportFile <- paste(out_dir, "sequence_ID_ordered_log_fraction_abundance_heatmap_top10.png", sep = "")
-png(exportFile, units="in", width=10, height=10, res=600)
-print(seqs_counts_plot)
-dev.off()
-
-# all by sequence
-seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequence, log_frac_abundance), fill= log_frac_abundance, group=run_name)) + 
-  theme_bw() +
-  geom_tile() +
-  #facet_wrap(~ run_name, ncol=4) +
-  ylab("Sequence") +
-  xlab("Round Number") +
-  scale_fill_gradient2(name = "Log FA",
-                       low = safe_colors[3],
-                       mid = safe_colors[4],
-                       high = safe_colors[5],
-                       midpoint = mid_log_frac_abundance,
-                       na.value = "white")
-# save the plot
-exportFile <- paste(out_dir, "sequence_log_fraction_abundance_heatmap_top10.png", sep = "")
-png(exportFile, units="in", width=10, height=10, res=600)
-print(seqs_counts_plot)
 dev.off()
