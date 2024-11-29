@@ -2,7 +2,7 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N cluster_families_jobOutput
+#$ -N RNA_families_jobOutput
 #$ -q largemem
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
@@ -10,7 +10,8 @@
 # usage ex: qsub 10_families.sh 07a_clustered ...
 # r8_S8 to doped21-r2_S11
 ## job 985948 to 985999
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 10_families.sh 07a_clustered $runInput; done
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 10_families.sh 07a_clustered $runInput; done
+# job 1007692 to 1007702
 
 # retrieve input file
 inputFile=$1
@@ -42,7 +43,8 @@ mkdir $tablesOut
 cd $tablesOut
 
 # name output file
-countsOut=$tablesOut"/"$inputRun"_cluster_families_table.csv"
+countsOut=$tablesOut"/"$inputRun"_counts_table.csv"
+countsPlotOut=$tablesOut"/"$inputRun"_counts_plot_table.csv"
 
 # retrieve header
 inputHeader=$(head -1 $inputsPath"/"$inputSeqs)
