@@ -6,13 +6,13 @@
 #$ -q largemem
 
 # script to filter fastq files and keep sequences with matching up- and down-stream sequences
-# usage: qsub 10_quantify.sh inputFile inputRun
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 10_quantify.sh 07a_clustered $runInput; done
+# usage: qsub 11_quantify.sh inputFile inputRun
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 11_quantify.sh 07a_clustered $runInput; done
 ## job 1004471 to 1004481
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 10_quantify.sh 07b_clustered $runInput; done
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 11_quantify.sh 07b_clustered $runInput; done
 ## job 1004483 to 1004493
-# alternate usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 10_quantify.sh 07a_clustered $runInput; done
-# alternate usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 10_quantify.sh 07b_clustered $runInput; done
+# alternate usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 11_quantify.sh 07a_clustered $runInput; done
+# alternate usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 11_quantify.sh 07b_clustered $runInput; done
 
 # retrieve input file
 inputFile=$1
@@ -45,11 +45,6 @@ mkdir $tablesOut
 # make a new directory for analysis
 tablesOut=$tablesOut"/"$inputFile
 mkdir $tablesOut
-# check if the folder already exists
-#if [ $? -ne 0 ]; then
-#	echo "The $tablesOut directory already exsists... please remove before proceeding."
-#	exit 1
-#fi
 
 # move to outputs directory
 cd $tablesOut

@@ -12,7 +12,7 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_plotted/07a_clustered/"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/07a_clustered"
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
@@ -133,6 +133,9 @@ for (cluster_num in 0:max(cluster_list)) {
   }
 }
 
+# add log frac abundances
+cluster_abundances$log_frac_abundance <- log(cluster_abundances$frac_abundance)
+
 # calculate % unique per round
 unique_reads <- diversity
 
@@ -178,7 +181,7 @@ unique_rounds_plot <- ggplot(data=unique_rounds, aes(round_nums, unique_percent)
   ylab("Percent Unique Sequences") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "percent_unique.png", sep = "")
+exportFile <- paste(out_dir, "/percent_unique.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(unique_rounds_plot)
 dev.off()
@@ -197,7 +200,7 @@ r8_peaks_identity_plot <- ggplot(data=r8_peaks_identity, aes(x = cluster_ID)) +
   ylab("Percent Identity to Peak") +
   xlab("Cluster Number")
 # save the plot
-exportFile <- paste(out_dir, "r8_cluster_identity.png", sep = "")
+exportFile <- paste(out_dir, "/r8_cluster_identity.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(r8_peaks_identity_plot)
 dev.off()
@@ -211,13 +214,13 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   ylab("Fraction Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "r8_cluster_fraction_abundances.png", sep = "")
+exportFile <- paste(out_dir, "/r8_cluster_fraction_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
 dev.off()
 
 # line plot with log of the decimal from the fraction abundance per round for each of the families
-cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(run_name), y=log(frac_abundance), group=cluster_ID, color=cluster_color))+
+cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(run_name), y=log_frac_abundance, group=cluster_ID, color=cluster_color))+
   geom_line() +
   geom_point() +
   theme_bw() +
@@ -225,7 +228,12 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   ylab("Log Fraction Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "r8_cluster_log_fraction_abundances.png", sep = "")
+exportFile <- paste(out_dir, "/r8_cluster_log_fraction_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
 dev.off()
+
+# export plotting data
+write.csv(unique_rounds, file = paste(out_dir, "/data/percent_unique.csv", sep = ""))
+write.csv(r8_peaks_identity, file = paste(out_dir, "/data/r8_cluster_identity.csv", sep = ""))
+write.csv(cluster_abundances, file = paste(out_dir, "/data/r8_cluster_fraction_abundances.csv", sep = ""))

@@ -12,7 +12,7 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_plotted/07a_clustered"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/07a_clustered"
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
@@ -136,3 +136,6 @@ exportFile <- paste(out_dir, "/sequence/sequence_log_fraction_abundance_heatmap_
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
+
+# export plotting data
+write.csv(seqs_counts, file = paste(out_dir, "/data/sequence_counts_top10.csv", sep = ""))

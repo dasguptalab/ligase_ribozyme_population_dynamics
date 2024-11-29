@@ -15,7 +15,7 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_local.txt" | tr -d " " | se
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/08_summarize/"$inputFile
+inputsPath=$outputsPath"/08_summarized/"$inputFile
 
 # make a new directory for analysis
 tablesOut=$outputsPath"/09_identified"
