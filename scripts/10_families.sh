@@ -10,8 +10,8 @@
 # usage ex: qsub 10_families.sh 07a_clustered ...
 # r8_S8 to doped21-r2_S11
 ## job 985948 to 985999
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 10_families.sh 07a_clustered $runInput; done
-# job 1007692 to 1007702
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/08_summarized/*_formatted_above9_cluster_sequences_table.csv; do runInput=$(basename $i | sed "s/_formatted_above9_cluster_sequences_table\.csv//g"); qsub 10_families.sh 07a_clustered $runInput; done
+# job 1007705 to 1007715
 
 # retrieve input file
 inputFile=$1
@@ -20,7 +20,7 @@ inputFile=$1
 inputRun=$2
 
 # retrieve input sequences
-inputSeqs=$inputRun"_formatted_above9_cluster_peaks_table.csv"
+inputSeqs=$inputRun"_formatted_above9_cluster_sequences_table.csv"
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -65,9 +65,9 @@ while read data; do
 	# clean up the run name
 	seqData=$(echo $data | sed "s/>r//g")
 	# remove the sequence
-	dataNoSeq=$(echo $seqData | cut -d"," -f1-3)
+	dataNoSeq=$(echo $seqData | cut -d"," -f1-4)
 	# retrieve the seq
-	seq=$(echo $seqData | cut -d"," -f4)
+	seq=$(echo $seqData | cut -d"," -f5)
 	# reverse compliment the sequence
 	seqRev=$(echo $seq | tr ACGTacgt TGCAtgca | rev)
 	# update the count data
