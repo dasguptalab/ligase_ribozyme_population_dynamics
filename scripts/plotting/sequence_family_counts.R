@@ -130,7 +130,7 @@ for (run_num in 1:8) {
 # heatmaps with the log counts for each of sequence families from round 8
 peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reorder(as.character(fam_num), log(counts)), fill= log(counts))) + 
   theme_bw() +
-  geom_tile() +
+  geom_tile(colour = "black") +
   ylab("Family ID") +
   xlab("Round Number") +
   scale_fill_gradient2(name = "Log Counts",
@@ -148,7 +148,7 @@ dev.off()
 # heatmap with the log fraction abundances for each of sequence families from round 8
 peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reorder(as.character(fam_num), log(frac_abundance)), fill= log(frac_abundance))) + 
   theme_bw() +
-  geom_tile() +
+  geom_tile(colour = "black") +
   ylab("Family ID") +
   xlab("Round Number") +
   scale_fill_gradient2(name = "Log FA",

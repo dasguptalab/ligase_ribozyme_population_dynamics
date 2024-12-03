@@ -32,7 +32,7 @@ quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_top10/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
 
 # reverse complement the sequences
-seqs_counts$sequence <- rev(chartr("ATGC","TACG",seqs_counts$sequence))
+#seqs_counts$sequence <- rev(chartr("ATGC","TACG",seqs_counts$sequence))
 
 # add the fraction abundances
 seqs_counts$frac_abundance <- NA
@@ -61,7 +61,7 @@ mid_log_frac_abundance <- log(min(seqs_counts_noNA[seqs_counts_noNA$frac_abundan
 #seqs_counts_summed <- ddply(seqs_counts,"sequence",numcolwise(sum))
 seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequence, log_counts), fill= log_counts, group=run_name)) + 
   theme_bw() +
-  geom_tile() +
+  geom_tile(colour = "black") +
   #facet_wrap(~ run_name, ncol=4) +
   ylab("Sequence") +
   xlab("Round Number") +
@@ -86,7 +86,7 @@ for (run_num in 1:8) {
   # create heatmap
   counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, reorder(sequence, log_counts), fill= log_counts)) + 
     theme_bw() +
-    geom_tile() +
+    geom_tile(colour = "black") +
     ggtitle(run_title) +
     theme(plot.title = element_text(hjust = 0.5)) +
     ylab("Sequence") +
@@ -108,7 +108,7 @@ for (run_num in 1:8) {
 # all by sequence
 seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequence, log_frac_abundance), fill= log_frac_abundance, group=run_name)) + 
   theme_bw() +
-  geom_tile() +
+  geom_tile(colour = "black") +
   #facet_wrap(~ run_name, ncol=4) +
   ylab("Sequence") +
   xlab("Round Number") +

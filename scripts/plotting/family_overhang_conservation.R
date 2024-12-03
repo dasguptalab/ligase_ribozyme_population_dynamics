@@ -17,6 +17,9 @@ out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots"
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
 
+# set expected overhang sequence
+#expected_overhang <- c("U","G","C","G","G")
+
 # read in cluster sequence family data
 seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table_atLeast90.csv")
 
@@ -29,7 +32,8 @@ base_counts <- data.frame(
   fam_ID = rep(NA, 40*4),
   base_ID = rep(NA, 40*4),
   base = rep(NA, 40*4),
-  conservation = rep(NA, 40*4)
+  conservation = rep(NA, 40*4),
+  comparison = rep(NA, 40*4)
 )
 base_counts_out <- data.frame()
 
@@ -63,12 +67,20 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   }
   # change zeros to NAs for plotting
   base_counts$conservation_na <- ifelse(base_counts$conservation == 0, NA, base_counts$conservation)
+  # subset the sequence family data to the overhang bases
+  base_counts_subset <- base_counts[base_counts$base_ID >= 16 & base_counts$base_ID <= 20,]
   # set round plot title
-  run_title <- paste("Family", fam_num, "Base Conservation")
+  run_title <- paste("Family", fam_num, "Overhang Comparison")
   # create heatmap of base conservation
-  base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
+  base_counts_plot <- ggplot(data = base_counts_subset, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
     theme_bw() +
-    geom_tile() +
+    geom_tile(colour = "black") +
+    annotate("rect", 
+             xmin = c(0.5, 1.5, 2.5, 3.5, 4.5), xmax = c(1.5, 2.5, 3.5, 4.5, 5.5), 
+             ymin = c(3.5, 2.5, 1.5, 2.5, 2.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5), 
+             colour = safe_colors[6], 
+             fill = "transparent", 
+             linewidth = 1) +
     ylab("Base") +
     xlab("Base Number") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7)) +
@@ -79,15 +91,16 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
                          mid = safe_colors[4],
                          high = safe_colors[5],
                          midpoint = max(base_counts$conservation)/2,
-                         na.value = "white")
+                         na.value = "white") +
+    geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 4)
   # save the plot
-  exportFile <- paste(out_dir, "/r8_sequence_family", fam_num, "_base_counts.png", sep = "")
+  exportFile <- paste(out_dir, "/family_overhang_comparison/r8_sequence_family", fam_num, ".png", sep = "")
   png(exportFile, units="in", width=5, height=5, res=300)
   print(base_counts_plot)
   dev.off()
   # add current family data to outputs
-  base_counts_out <- rbind(base_counts_out, base_counts)
+  base_counts_out <- rbind(base_counts_out, base_counts_subset)
 }
 
 # export plotting data
-write.csv(base_counts_out, file = paste(out_dir, "/data/sequence_family_base_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)
+#write.csv(base_counts_out, file = paste(out_dir, "/data/sequence_family_overhang_comparison.csv", sep = ""), row.names = FALSE, quote = FALSE)

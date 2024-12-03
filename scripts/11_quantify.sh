@@ -104,11 +104,11 @@ done < $fmtSeqs
 
 # after processing the last round of data, combine all plotting data files
 #head -1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r8_S8_L001_counts_plot_table.csv > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/counts_plot_table_noDoped.csv
-#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/counts_plot_table_noDoped.csv; done
+#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/counts_plot_table_noDoped.csv; done
 
 # clean up
 rm $fmtSeqs
-#rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/r*_counts_plot_table.csv.fmt
+#rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv.fmt
 
 # status message
 echo "Analysis complete!"
