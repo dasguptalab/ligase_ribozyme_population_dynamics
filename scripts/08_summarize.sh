@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# script to filter fastq files and keep sequences with matching up- and down-stream sequences
+# script to summarize clustering information
 # usage: bash 08_summarize.sh inputFile
 # usage ex: bash 08_summarize.sh 07a_clustered
 # usage ex: bash 08_summarize.sh 07b_clustered
@@ -15,10 +15,10 @@ analysisTag=$(grep "analysis:" ../"inputs/inputPaths_local.txt" | tr -d " " | se
 outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/"$inputFile
+inputsPath=$outputsPath"/07_clustered/"$inputFile
 
 # make a new directory for analysis
-tablesOut=$outputsPath"/08_summarized"
+tablesOut=$outputsPath"/08_summarized/test"
 mkdir $tablesOut
 
 # make a new directory for analysis
@@ -70,8 +70,11 @@ for f1 in $inputsPath"/"*_clustered\.aux; do
 	while read line; do
 		# retrieve cluster number
 		clusterName=$(echo $line | cut -d"," -f4)
+		# status message
+		echo "Processing $clusterName ..."
 		# count the number of sequences in the current cluster
 		clusterCount=$(cat $tablesOut"/"$nameTag"_cluster_sequences_table.clust.tmp.csv" | grep -c $clusterName)
+		#clusterCount=$(cat $tablesOut"/"$nameTag"_cluster_sequences_table.clust.tmp.csv" | awk -F',' -v clusterIn="$clusterName" '$4==clusterIn')
 		# separate sequence from the other data
 		seqHeader=$(echo $line | cut -d"," -f1-4)
 		seqData=$(echo $line | cut -d"," -f5)

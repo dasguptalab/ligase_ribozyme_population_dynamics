@@ -12,7 +12,7 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/07a_clustered"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots"
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
@@ -38,6 +38,8 @@ peaks_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/0
 r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_cluster_families/07a_clustered/r8_S8_L001_cluster_families_table.csv")
 #r8_peaks_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_cluster_families/07a_clustered/r8_cluster_peaks_families_table.csv")
 r8_peaks_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_cluster_families/07a_clustered/r8_S8_L001_cluster_peaks_families_table.csv")
+
+# TO-DO: retain counts for sequences with ID >= 90%
 
 # list of cluster IDs
 cluster_list <- unique(r8_seqs_family$cluster_ID)
@@ -158,4 +160,4 @@ print(peak_counts_plot)
 dev.off()
 
 # export plotting data
-write.csv(peak_counts, file = paste(out_dir, "/data/r8_cluster_families_counts.csv", sep = ""))
+write.csv(peak_counts, file = paste(out_dir, "/data/r8_cluster_families_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

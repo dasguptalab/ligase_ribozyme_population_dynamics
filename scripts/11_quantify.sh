@@ -5,52 +5,50 @@
 #$ -N RNA_quantify_jobOutput
 #$ -q largemem
 
-# script to filter fastq files and keep sequences with matching up- and down-stream sequences
-# usage: qsub 11_quantify.sh inputFile inputRun
+# script to count the number of sequences shared across runs
+# usage: qsub 11_quantify.sh inputRun
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 11_quantify.sh 07a_clustered $runInput; done
-## job 1004471 to 1004481
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 11_quantify.sh 07b_clustered $runInput; done
-## job 1004483 to 1004493
-# alternate usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 11_quantify.sh 07a_clustered $runInput; done
-# alternate usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 11_quantify.sh 07b_clustered $runInput; done
-
-# retrieve input file
-inputFile=$1
+# usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 11_quantify.sh $runInput; done
+# usage ex: bash 11_quantify.sh r8_S8_L001
+# usage ex: bash 11_quantify.sh r7_S7_L001
+# usage ex: bash 11_quantify.sh r6_S6_L001
+# usage ex: bash 11_quantify.sh r5_S5_L001
+# usage ex: bash 11_quantify.sh r4_S4_L001
+# usage ex: bash 11_quantify.sh r3_S3_L001
+# usage ex: bash 11_quantify.sh r2_S2_L001
+# usage ex: bash 11_quantify.sh r1_S1_L001
 
 # retrieve input run name
-inputRun=$2
+inputRun=$1
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
-#analysisTag=$(grep "analysis:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+#analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-#outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/06_formatted"
 
 # retrieve input sequences
-inputSeqs=$inputsPath"/"$inputRun"_formatted.fa"
+#inputSeqs=$inputsPath"/"$inputRun"_formatted.fa"
+inputSeqs=$inputsPath"/"$inputRun"_formatted_above9.fa"
 
 # name of a new directory for analysis
-tablesOut=$outputsPath"/10_quantified"
+tablesOut=$outputsPath"/11_quantified"
 # process just the top 10 most abundant sequences
-#tablesOut=$outputsPath"/10_quantified_top10"
+#tablesOut=$outputsPath"/11_quantified_top10"
 
 # make a new directory for analysis
-mkdir $tablesOut
-
-# make a new directory for analysis
-tablesOut=$tablesOut"/"$inputFile
 mkdir $tablesOut
 
 # move to outputs directory
 cd $tablesOut
 
 # name formatted sequences file
-fmtSeqs=$inputsPath"/"$inputRun"_formatted.tmp.fa"
+fmtSeqs=$tablesOut"/"$inputRun"_formatted.tmp.fa"
 
 # re-format input sequences for processing
 cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space:]]*$/d' > $fmtSeqs
@@ -71,7 +69,7 @@ inputHeader="run_name,sequence_ID,read_counts,sequence"
 header=$(echo $inputHeader",doped21-r1_counts,doped21-r2_counts,doped21-r3_counts,r1_counts,r2_counts,r3_counts,r4_counts,r5_counts,r6_counts,r7_counts,r8_counts")
 headerPlot=$(echo $inputHeader",counts,counts_run_name")
 
-# add a header to the counts data tmp file
+# add a header to the counts data outputs files
 echo $header > $countsOut
 echo $headerPlot > $countsPlotOut
 
@@ -101,10 +99,10 @@ while read data; do
 		numReads=$(cat $f2 | grep -wc $seq)
 		# add the number of seqs for the round
 		countData=$(echo $countData","$numReads)
-		# add the counts data to the tmp file
+		# add the counts data to the outputs file
 		echo $seqData","$numReads","$runName >> $countsPlotOut
 	done
-	# add the counts data to the tmp file
+	# add the counts data to the outputs file
 	echo $countData >> $countsOut
 done < $fmtSeqs
 
@@ -116,6 +114,7 @@ done < $fmtSeqs
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/counts_plot_table_noDoped.csv; done
 
 # clean up
+rm $fmtSeqs
 #rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/r*_counts_plot_table.csv.fmt
 
 # status message

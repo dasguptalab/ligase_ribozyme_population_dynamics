@@ -53,15 +53,15 @@ for f1 in $inputsPath"/"*_above9_cluster_peaks_table\.csv; do
 		# check if header line
 		if [ $peakCount -eq 1 ]; then
 			# adjust and output the header
-			echo "run_name,sequence_ID,read_counts,cluster_ID,sequence,percent_ID" > $tablesOut"/"$nameTag"_sequences_identity_table.csv"
+			echo $peakData",avg_ID,SD_ID,highest_ID,lowest_ID" > $tablesOut"/"$nameTag"_peaks_identity_table.csv"
+			echo $peakData",percent_ID" > $tablesOut"/"$nameTag"_sequences_identity_table.csv"
 		else
 			# get the current cluster number
 			clusterName=$(echo $peakData | cut -d"," -f4)
 			# status message
 			echo "Processing Cluster $clusterName ..."
 			# retrieve sequences for the current cluster
-			#cat $f2 | grep ",$clusterName," > $tablesOut"/"$nameTag"_cluster_"$clusterName"_table.csv"
-			cat $f2 | awk -F',' -v clusterIn="$clusterName" '$4==clusterIn' > $tablesOut"/"$nameTag"_cluster_"$clusterName"_table.csv"
+			cat $f2 | grep ",$clusterName," > $tablesOut"/"$nameTag"_cluster_"$clusterName"_table.csv"
 			# initialize counters
 			numSeqs=0
 			totalID=0
@@ -96,20 +96,48 @@ for f1 in $inputsPath"/"*_above9_cluster_peaks_table\.csv; do
 				# add the percent identity to the current sequence information and output to a new table
 				echo $seqData","$percentID >> $tablesOut"/"$nameTag"_sequences_identity_table.csv"
 			done < $tablesOut"/"$nameTag"_cluster_"$clusterName"_table.csv"
+			# calculate the avg percent identity for the cluster
+			avgID=$(echo "scale=4; $totalID / $numSeqs" | bc)
+			# reset counter
+			lineCount=0
+			# loop over each sequence line and calculate the sd percent identity for the cluster
+			while read seqID; do
+				# increment line counter
+				lineCount=$(($lineCount + 1))
+				# check if not the header line
+				if [ $lineCount -ne 1 ]; then
+					# retrieve the current percent identity
+					currID=$(echo $seqID | cut -d"," -f7)
+					# begin to calculate the sd
+					varID=$(echo "scale=4; $currID - $avgID" | bc)
+					sqrVar=$(echo "scale=4; $varID * $varID" | bc)
+					totalSqrVar=$(echo "scale=4; $totalSqrVar + $sqrVar" | bc)
+				fi
+			done < $tablesOut"/"$nameTag"_sequences_identity_table.csv"
+			# complete the sd calculation
+			divSD=$(echo "scale=4; $totalSqrVar / $numSeqs" | bc)
+			sdID=$(bc <<< "scale=4; sqrt($divSD)")
+			# find the highest and lowest values
+			highest=$(cat $tablesOut"/"$nameTag"_sequences_identity_table.csv" | cut -d"," -f6 | sort -rn | head -1)
+			lowest=$(cat $tablesOut"/"$nameTag"_sequences_identity_table.csv" | cut -d"," -f6 | sort -rn | sed '$d' | tail -1)
+			# add the avg and SD percent identity to the peak sequence information and output to a new table
+			echo $peakData","$avgID","$sdID","$highest","$lowest >> $tablesOut"/"$nameTag"_peaks_identity_table.csv"
 			# clean up
 			rm $tablesOut"/"$nameTag"_cluster_"$clusterName"_table.csv"
+			# sanity checks
+			echo "avgID: "$avgID
+			echo "sdID: "$sdID
+			echo "highest: "$highest
+			echo "lowest: "$lowest
 		fi
 	done < $f1
 done
 
-# filter input sequences to keep only those with >= 90% ID to peak
-for i in $tablesOut"/"*"_sequences_identity_table.csv"; do fileOut=$(echo $i | sed "s/\.csv//g"); cat $i | awk -F',' '$6 >= 90' > $fileOut"_atLeast90.csv"; done
-
 # combine tables from each run
-#head -1 $tablesOut"/"*"_sequences_identity_table.csv" > $tablesOut"/sequences_identity_table.csv"
-#for i in $tablesOut"/"*"_sequences_identity_table.csv"; do tail -n+2 $i >> $tablesOut"/sequences_identity_table.csv"; done
-#head -1 $tablesOut"/"*"_sequences_identity_table_atLeast90.csv" > $tablesOut"/sequences_identity_table_atLeast90.csv"
-#for i in $tablesOut"/"*"_sequences_identity_table_atLeast90.csv"; do tail -n+2 $i >> $tablesOut"/sequences_identity_table_atLeast90.csv"; done
+cat $tablesOut"/"*"_sequences_identity_table.csv" | head -1 > $tablesOut"/sequences_identity_table.csv"
+for i in $tablesOut"/"*"_sequences_identity_table.csv"; do tail -n+2 $i >> $tablesOut"/sequences_identity_table.csv"; done
+cat $tablesOut"/"*"_peaks_identity_table.csv" | head -1 > $tablesOut"/peaks_identity_table.csv"
+for i in $tablesOut"/"*"_peaks_identity_table.csv"; do tail -n+2 $i >> $tablesOut"/peaks_identity_table.csv"; done
 
 # status message
 echo "Analysis complete!"
