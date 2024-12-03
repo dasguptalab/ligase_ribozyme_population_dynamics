@@ -10,13 +10,6 @@
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 11_quantify.sh 07a_clustered $runInput; done
 # usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 11_quantify.sh $runInput; done
 # usage ex: bash 11_quantify.sh r8_S8_L001
-# usage ex: bash 11_quantify.sh r7_S7_L001
-# usage ex: bash 11_quantify.sh r6_S6_L001
-# usage ex: bash 11_quantify.sh r5_S5_L001
-# usage ex: bash 11_quantify.sh r4_S4_L001
-# usage ex: bash 11_quantify.sh r3_S3_L001
-# usage ex: bash 11_quantify.sh r2_S2_L001
-# usage ex: bash 11_quantify.sh r1_S1_L001
 
 # retrieve input run name
 inputRun=$1
@@ -100,22 +93,22 @@ while read data; do
 		# add the number of seqs for the round
 		countData=$(echo $countData","$numReads)
 		# add the counts data to the outputs file
-		echo $seqData","$numReads","$runName >> $countsPlotOut
+		echo $countData","$runName >> $countsPlotOut
 	done
 	# add the counts data to the outputs file
 	echo $countData >> $countsOut
 done < $fmtSeqs
 
 # add run tags to sequence IDs
-#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done
+#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done
 
 # after processing the last round of data, combine all plotting data files
-#head -1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/r8_S8_L001_counts_plot_table.csv > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/counts_plot_table_noDoped.csv
-#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/counts_plot_table_noDoped.csv; done
+#head -1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r8_S8_L001_counts_plot_table.csv > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/counts_plot_table_noDoped.csv
+#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/counts_plot_table_noDoped.csv; done
 
 # clean up
 rm $fmtSeqs
-#rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/r*_counts_plot_table.csv.fmt
+#rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/r*_counts_plot_table.csv.fmt
 
 # status message
 echo "Analysis complete!"

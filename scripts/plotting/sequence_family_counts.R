@@ -28,18 +28,17 @@ diversity <- c(99.67, 99.66, 99.65, 99.62, 98.44, 54.61, 15.86, 12.20)
 #quality_doped <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374, 865509, 807849, 1143871)
 quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 
+# read in cluster peaks data
+r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized/07a_clustered/r8_S8_L001_formatted_above9_cluster_peaks_table.csv")
+
 # read in cluster identity data
-r8_peaks_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_peaks_identity_table.csv")
-peaks_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/peaks_identity_table.csv")
-#seqs_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/sequences_identity_table.csv")
+r8_seqs_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table_atLeast90.csv")
 
-# TO-DO: double check for duplicate data... (low ID cluster peak entries)
 # read in cluster family sequence data
-r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_cluster_families/07a_clustered/r8_S8_L001_cluster_families_table.csv")
-#r8_peaks_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_cluster_families/07a_clustered/r8_cluster_peaks_families_table.csv")
-r8_peaks_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_cluster_families/07a_clustered/r8_S8_L001_cluster_peaks_families_table.csv")
+r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_families/r8_S8_L001_counts_plot_table.csv")
 
-# TO-DO: retain counts for sequences with ID >= 90%
+# retain peak counts for sequences with ID >= 90%
+r8_peaks_family <- merge(r8_peaks, r8_seqs_family)
 
 # list of cluster IDs
 cluster_list <- unique(r8_seqs_family$cluster_ID)
@@ -72,13 +71,15 @@ for (cluster_num in 0:max(cluster_list)) {
     # add cluster plotting color
     cluster_abundances$cluster_color[index] <- safe_colors[cluster_out]
     # setup the column name
-    curr_col <- paste("r", run_num, "_counts", sep="")
+    #curr_col <- paste("r", run_num, "_counts", sep="")
     # add fraction abundance
-    cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num, curr_col])/quality[1]
-    # add log fraction abundance
-    #cluster_abundances$frac_abundance_log[index] <- log(sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num, curr_col]))-log(quality[1])
+    #cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num, curr_col])/quality[1]
+    cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num & r8_seqs_family$counts_run_name == run_num, "counts"])/quality[1]
   }
 }
+
+# add log frac abundances
+cluster_abundances$log_frac_abundance <- log(cluster_abundances$frac_abundance)
 
 # calculate % unique per round
 unique_reads <- diversity
@@ -93,26 +94,29 @@ unique_rounds <- data.frame(
 # round 8 peak seqs
 # setup length of counts
 counts_length <- 13*8
+
 # tmp data frame for peak counts
 subset_peak_counts <- data.frame(
   round_num = rep(NA, counts_length),
   fam_num = rep(NA, counts_length),
   counts = rep(NA, counts_length)
 )
+
 # data frame for peak counts
 peak_counts <- data.frame()
+
 # seq numbers for plotting
 for (round_index in 1:8) {
   # set the index
   index <- ((round_index-1)*8)+1
   # setup the column name
-  curr_col <- paste("r", round_index, "_counts", sep="")
+  #curr_col <- paste("r", round_index, "_counts", sep="")
   # add round num
   subset_peak_counts$round_num <- rep(round_index, 13)
   # add seq num
   subset_peak_counts$fam_num <- seq(from = 1, to = 13, by = 1)
   # add peak seq counts
-  subset_peak_counts$counts <- r8_peaks_family[, curr_col]
+  subset_peak_counts$counts <- r8_peaks_family[r8_peaks_family$counts_run_name == round_index, "counts"]
   # add rows
   peak_counts <- rbind(peak_counts, subset_peak_counts)
 }
@@ -136,7 +140,7 @@ peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reor
                        midpoint = log(max(peak_counts$counts))/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/r8_log_counts_cluster_families.png", sep = "")
+exportFile <- paste(out_dir, "/r8_sequence_family_log_counts.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(peak_counts_plot)
 dev.off()
@@ -154,10 +158,10 @@ peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reor
                        midpoint = log(min(peak_counts[peak_counts$frac_abundance != 0,"frac_abundance"]))/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/r8_log_fraction_abundance_cluster_families.png", sep = "")
+exportFile <- paste(out_dir, "/r8_sequence_family_log_fraction_abundance.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(peak_counts_plot)
 dev.off()
 
 # export plotting data
-write.csv(peak_counts, file = paste(out_dir, "/data/r8_cluster_families_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(peak_counts, file = paste(out_dir, "/data/r8_sequence_family_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

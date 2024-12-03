@@ -28,19 +28,8 @@ diversity <- c(99.67, 99.66, 99.65, 99.62, 98.44, 54.61, 15.86, 12.20)
 #quality_doped <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374, 865509, 807849, 1143871)
 quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 
-# read in cluster identity data
-r8_peaks_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_peaks_identity_table.csv")
-peaks_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/peaks_identity_table.csv")
-#seqs_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/sequences_identity_table.csv")
-
-# TO-DO: double check for duplicate data... (low ID cluster peak entries)
-# read in cluster family sequence data
-r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tmp/10_cluster_families/07a_clustered/r8_S8_L001_cluster_families_table.csv")
-#r8_peaks_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tmp/10_cluster_families/07a_clustered/r8_cluster_peaks_families_table.csv")
-r8_peaks_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tmp/10_cluster_families/07a_clustered/r8_S8_L001_cluster_peaks_families_table.csv")
-
 # read in sequence count data
-seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_top10/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
 
 # reverse complement the sequences
 seqs_counts$sequence <- rev(chartr("ATGC","TACG",seqs_counts$sequence))
@@ -82,7 +71,7 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, sequence_ID,
                        midpoint = mid_log_counts,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence_ID/sequence_ID_log_counts_heatmap_top10.png", sep = "")
+exportFile <- paste(out_dir, "/top10_sequence_IDs/log_counts.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
@@ -101,7 +90,7 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequ
                        midpoint = mid_log_counts,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence_ID/sequence_ID_ordered_log_counts_heatmap_top10.png", sep = "")
+exportFile <- paste(out_dir, "/top10_sequence_IDs/ordered_log_counts.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
@@ -129,13 +118,11 @@ for (run_num in 1:8) {
                          midpoint = mid_log_counts,
                          na.value = "white")
   # save the plot
-  exportFile <- paste(out_dir, "/sequence_ID/r", run_num, "_log_counts_heatmap_top10.png", sep = "")
+  exportFile <- paste(out_dir, "/top10_sequence_IDs/r", run_num, "_log_counts.png", sep = "")
   png(exportFile, units="in", width=5, height=5, res=300)
   print(counts_heatmap_subset)
   dev.off()
 }
-
-# heatmaps with the log counts for all sequences per round
 
 # heatmaps with the fraction abundance for each of the top 10 sequences per round
 # all by sequence ID
@@ -152,7 +139,7 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, sequence_ID,
                        midpoint = mid_log_frac_abundance,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence_ID/sequence_ID_log_fraction_abundance_heatmap_top10.png", sep = "")
+exportFile <- paste(out_dir, "/top10_sequence_IDs/log_fraction_abundance.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
@@ -171,10 +158,10 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequ
                        midpoint = mid_log_frac_abundance,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence_ID/sequence_ID_ordered_log_fraction_abundance_heatmap_top10.png", sep = "")
+exportFile <- paste(out_dir, "/top10_sequence_IDs/ordered_log_fraction_abundance.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
 
 # export plotting data
-write.csv(seqs_counts, file = paste(out_dir, "/data/sequence_ID_counts_top10.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_counts, file = paste(out_dir, "/data/top10_sequence_ID_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

@@ -29,7 +29,7 @@ diversity <- c(99.67, 99.66, 99.65, 99.62, 98.44, 54.61, 15.86, 12.20)
 quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 
 # read in sequence count data
-seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_top10/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
 
 # reverse complement the sequences
 seqs_counts$sequence <- rev(chartr("ATGC","TACG",seqs_counts$sequence))
@@ -72,7 +72,7 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequ
                        midpoint = mid_log_counts,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence/sequence_log_counts_heatmap_top10.png", sep = "")
+exportFile <- paste(out_dir, "/top10_sequences/log_counts.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
@@ -98,13 +98,11 @@ for (run_num in 1:8) {
                          midpoint = mid_log_counts,
                          na.value = "white")
   # save the plot
-  exportFile <- paste(out_dir, "/sequence/r", run_num, "_log_counts_heatmap_top10.png", sep = "")
+  exportFile <- paste(out_dir, "/top10_sequences/r", run_num, "_log_counts.png", sep = "")
   png(exportFile, units="in", width=10, height=5, res=500)
   print(counts_heatmap_subset)
   dev.off()
 }
-
-# heatmaps with the log counts for all sequences per round
 
 # heatmaps with the fraction abundance for each of the top 10 sequences per round
 # all by sequence
@@ -121,10 +119,10 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequ
                        midpoint = mid_log_frac_abundance,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence/sequence_log_fraction_abundance_heatmap_top10.png", sep = "")
+exportFile <- paste(out_dir, "/top10_sequences/log_fraction_abundance.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
 
 # export plotting data
-write.csv(seqs_counts, file = paste(out_dir, "/data/sequence_counts_top10.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_counts, file = paste(out_dir, "/data/top10_sequence_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

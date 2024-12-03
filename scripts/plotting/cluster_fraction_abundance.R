@@ -22,10 +22,10 @@ safe_colors <- c(carto_pal(name="Safe"), "#000000")
 quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 
 # read in cluster family sequence data
-r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_families/07a_clustered/r8_S8_L001_cluster_families_table.csv")
+r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_families/r8_S8_L001_counts_plot_table.csv")
 
 # read in sequence count data
-seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_quantified_top10/07a_clustered/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_top10/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
 
 # reverse complement the sequences
 #seqs_counts$sequence <- rev(chartr("ATGC","TACG",seqs_counts$sequence))
@@ -83,11 +83,10 @@ for (cluster_num in 0:max(cluster_list)) {
     # add cluster plotting color
     cluster_abundances$cluster_color[index] <- safe_colors[cluster_out]
     # setup the column name
-    curr_col <- paste("r", run_num, "_counts", sep="")
+    #curr_col <- paste("r", run_num, "_counts", sep="")
     # add fraction abundance
-    cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num, curr_col])/quality[1]
-    # add log fraction abundance
-    #cluster_abundances$frac_abundance_log[index] <- log(sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num, curr_col]))-log(quality[1])
+    #cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num, curr_col])/quality[1]
+    cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num & r8_seqs_family$counts_run_name == run_num, "counts"])/quality[1]
   }
 }
 
@@ -127,4 +126,4 @@ print(cluster_abundances_plot)
 dev.off()
 
 # export plotting data
-write.csv(r8_peaks_identity, file = paste(out_dir, "/data/r8_cluster_identity.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(cluster_abundances, file = paste(out_dir, "/data/r8_cluster_fraction_abundances.csv", sep = ""), row.names = FALSE, quote = FALSE)
