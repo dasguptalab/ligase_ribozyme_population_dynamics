@@ -15,12 +15,12 @@
 inputRun=$1
 
 # retrieve the analysis type
-#analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
-analysisTag=$(grep "analysis:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-#outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/06_formatted"
@@ -31,8 +31,6 @@ inputSeqs=$inputsPath"/"$inputRun"_formatted_above9.fa"
 
 # name of a new directory for analysis
 tablesOut=$outputsPath"/11_quantified"
-# process just the top 10 most abundant sequences
-#tablesOut=$outputsPath"/11_quantified_top10"
 
 # make a new directory for analysis
 mkdir $tablesOut
@@ -45,8 +43,6 @@ fmtSeqs=$tablesOut"/"$inputRun"_formatted.tmp.fa"
 
 # re-format input sequences for processing
 cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space:]]*$/d' > $fmtSeqs
-# process just the top 10 most abundant sequences
-#cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space:]]*$/d' | sort -k3 -n | head -10 > $fmtSeqs
 
 # add final new line
 #echo "" >> $fmtSeqs

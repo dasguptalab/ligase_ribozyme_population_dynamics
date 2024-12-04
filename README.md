@@ -10,7 +10,7 @@ The code repository for the analysis pipeline can be found [HERE][1].
 
 The following steps comprise the analysis workflow and correspond to scripts in the code repository.
 
-#### scripts directory
+#### Analysis
 
 1. merge paired reads for each run using FLASh (see supplement of [this PNAS paper][2])<br>
 <b>Note:</b> reads were not merged in the original analysis and only the forward reads were used in the original analysis workflow (see 0010\_qc\_slx.py from the original analysis code)
@@ -30,20 +30,20 @@ The following steps comprise the analysis workflow and correspond to scripts in 
 8. create tables with the reverse compliment of cluster sequences and peak sequences, in addition to the cluster and sequence information (run name, sequence ID, read counts, cluster ID, sequence counts, reverse complimented sequence)
 9. create tables with the statistics (average, standard deviation, highest, lowest) for the percent identity of cluster sequences relative to the peak sequence within each cluster (see the JAX's [Introduction to Sequence Comparison][4])
 
-<b>Note</b> that the 00a_qc.sh script can be used to assess the quality of the fastq data after the 01_merged, 02_trimmed, and 03_filtered stages. The 00b_analyze.sh script can be used to assess the resulting fasta data from the 01_merged, 02_trimmed, 03_filtered, 04_cleaned, 05_combined, and 06_formatted stages.
+<b>Note</b> that the 00a\_qc.sh script can be used to assess the quality of the fastq data after the 01\_merged, 02\_trimmed, and 03\_filtered stages. The 00b\_analyze.sh script can be used to assess the resulting fasta data from the 01\_merged, 02\_trimmed, 03\_filtered, 04\_cleaned, 05\_combined, and 06\_formatted stages.
 
 ### Data Visualization Workflow
 
 The following steps reproduce tables and plots from the slides/paper (see 0030\_mk\_qc\_table.py from the original analysis code) and additional interesting tables and plots.
 
-#### scripts directory
+#### Analysis
 
 10. count the number of sequences in each round 8 cluster sequence family across sequencing rounds
-11. count the number of sequences shared across sequencing rounds for:
-	<b>11a.</b> all sequences that appear at least 10 times per round
+11. count the number of sequences shared across sequencing rounds for:<br>
+	<b>11a.</b> all sequences that appear at least 10 times per round<br>
 	<b>11b.</b> the top 10 sequences per round
 
-#### plotting directory
+#### Plotting
 
 1. create a line plot with the percent unique sequences
 2. create line plots with the round 8 cluster sequence family fraction abundances and log fraction abundances
@@ -55,7 +55,7 @@ The following steps reproduce tables and plots from the slides/paper (see 0030\_
 
 <b>Note</b> that the sequence data analysis plots with the round 8 cluster sequence families were produced from stage 07a.
 
-<b>Additionally note</b> that the 00a_cluster_sequence_identity.R and 00b_cluster_sequence_identity.R scripts can be used to analyze the percent identities across clusters from stages 07a and 07b respectively.
+<b>Additionally note</b> that the 00a\_cluster\_sequence\_identity.R and 00b\_cluster\_sequence\_identity.R scripts can be used to analyze the percent identities across clusters from stages 07a and 07b respectively.
 
 #### Progress Assessment
 For analysis steps 01 to 07 use BASH to:<br>

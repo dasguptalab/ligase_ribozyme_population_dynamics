@@ -13,13 +13,13 @@ module load bio/2.0
 score=33
 
 # retrieve adapter absolute path for alignment
-adapterPath=$(grep "adapter_TruSeq:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/adapter_TruSeq://g")
+adapterPath=$(grep "adapter_TruSeq:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/adapter_TruSeq://g")
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set inputs path
 inputsPath=$outputsPath"/01_merged"

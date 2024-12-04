@@ -7,16 +7,16 @@
 # raw data: all reads are 81 bp
 
 # retrieve paired reads absolute path for alignment
-inputsPath=$(grep "pairedReads:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/pairedReads://g")
+inputsPath=$(grep "pairedReads:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/pairedReads://g")
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve software absolute path
-softwarePath=$(grep "software_FLASH:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/software_FLASH://g")
+softwarePath=$(grep "software_FLASH:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/software_FLASH://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # create outputs directory, if needed
 mkdir $outputsPath
