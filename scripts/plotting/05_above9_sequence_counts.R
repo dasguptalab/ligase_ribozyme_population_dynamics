@@ -12,7 +12,7 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/05_above9_sequence_ID_counts"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/05_above9_sequence_counts"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
