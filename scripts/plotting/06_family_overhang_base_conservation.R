@@ -67,7 +67,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   # change zeros to NAs for plotting
   base_counts$conservation_na <- ifelse(base_counts$conservation == 0, NA, base_counts$conservation)
   # set round plot title
-  run_title <- paste("Family", fam_num, "Base Conservation")
+  run_title <- paste("Family", fam_num, "Overhang Base Conservation")
   # create heatmap of base conservation
   base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
     theme_bw() +
@@ -84,7 +84,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7)) +
     ggtitle(run_title) +
     theme(plot.title = element_text(hjust = 0.5)) +
-    scale_fill_gradient2(name = "Conservation",
+    scale_fill_gradient2(name = "PA",
                          low = safe_colors[3],
                          mid = safe_colors[4],
                          high = safe_colors[5],
@@ -92,7 +92,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
                          na.value = "white") 
     #geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 4)
   # save the plot
-  exportFile <- paste(out_dir, "/r8_sequence_family", fam_num, ".png", sep = "")
+  exportFile <- paste(out_dir, "/family_overhang_percent_abundance", fam_num, ".png", sep = "")
   png(exportFile, units="in", width=5, height=5, res=300)
   print(base_counts_plot)
   dev.off()
@@ -101,4 +101,4 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
 }
 
 # export plotting data
-write.csv(base_counts_out, file = paste(out_dir, "/sequence_family_base_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(base_counts_out, file = paste(out_dir, "/family_overhang_base_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)

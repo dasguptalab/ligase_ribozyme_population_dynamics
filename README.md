@@ -43,6 +43,8 @@ The following steps reproduce tables and plots from the slides/paper (see 0030\_
 	<b>11a.</b> all sequences that appear at least 10 times per round<br>
 	<b>11b.</b> the top 10 sequences per round
 
+<b>Note:</b> the round 8 cluster sequence families include sequences at least 90 percent identical to the cluster peak (see the 09\_identify.sh script).
+
 #### Plotting
 
 1. create a line plot with the percent unique sequences
@@ -54,9 +56,7 @@ The following steps reproduce tables and plots from the slides/paper (see 0030\_
 7. create hetamaps with the round 8 cluster sequence family base conservation of the substrate 3' overhang
 8. create hetamaps with the base conservation of the substrate 3' overhang for all sequences that appear at least 10 times per round
 
-<b>Note</b> that the sequence data analysis plots with the round 8 cluster sequence families were produced from stage 07a.
-
-<b>Additionally note</b> that the 00a\_cluster\_sequence\_identity.R and 00b\_cluster\_sequence\_identity.R scripts can be used to analyze the percent identities across clusters from stages 07a and 07b respectively.
+<b>Note:</b> the sequence data analysis plots with the round 8 cluster sequence families were produced from stage 07a. Additionally, the 00a\_cluster\_sequence\_identity.R and 00b\_cluster\_sequence\_identity.R scripts can be used to analyze the percent identities across clusters from stages 07a and 07b respectively.
 
 #### Progress Assessment
 For analysis steps 01 to 07 use BASH to:<br>

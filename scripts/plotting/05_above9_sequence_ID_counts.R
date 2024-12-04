@@ -129,4 +129,4 @@ for (run_num in 1:8) {
 }
 
 # export plotting data
-write.csv(seqs_counts, file = paste(out_dir, "/above9_sequence_ID_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_counts, file = paste(out_dir, "/above9_sequence_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

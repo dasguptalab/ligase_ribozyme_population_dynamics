@@ -12,7 +12,7 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/04_top10_sequence_ID_counts"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/04_top10_sequence_counts"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -128,4 +128,4 @@ for (run_num in 1:8) {
 }
 
 # export plotting data
-write.csv(seqs_counts, file = paste(out_dir, "/top10_sequence_ID_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_counts, file = paste(out_dir, "/top10_sequence_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

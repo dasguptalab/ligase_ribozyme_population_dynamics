@@ -110,7 +110,7 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   ylab("Fraction Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/r8_family_counts.png", sep = "")
+exportFile <- paste(out_dir, "/family_counts.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
 dev.off()
@@ -124,7 +124,7 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   ylab("Log Fraction Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/r8_family_log_counts.png", sep = "")
+exportFile <- paste(out_dir, "/family_log_counts.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
 dev.off()
@@ -138,7 +138,7 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   ylab("Fraction Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/r8_family_fraction_abundances.png", sep = "")
+exportFile <- paste(out_dir, "/family_fraction_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
 dev.off()
@@ -152,10 +152,10 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/r8_family_percent_abundances.png", sep = "")
+exportFile <- paste(out_dir, "/family_percent_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
 dev.off()
 
 # export plotting data
-write.csv(cluster_abundances, file = paste(out_dir, "/r8_family_abundances.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(cluster_abundances, file = paste(out_dir, "/family_abundances.csv", sep = ""), row.names = FALSE, quote = FALSE)

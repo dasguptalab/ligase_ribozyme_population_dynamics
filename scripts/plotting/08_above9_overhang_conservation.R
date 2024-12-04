@@ -117,7 +117,7 @@ base_counts_plot <- ggplot(data = overhang_counts_out, aes(reorder(as.character(
                        midpoint = max(overhang_counts_out$counts)/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence_overhang_counts.png", sep = "")
+exportFile <- paste(out_dir, "/overhang_counts.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(base_counts_plot)
 dev.off()
@@ -137,7 +137,7 @@ base_counts_plot <- ggplot(data = overhang_counts_out, aes(reorder(as.character(
                        midpoint = max(log(overhang_counts_out$counts))/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence_overhang_log_counts.png", sep = "")
+exportFile <- paste(out_dir, "/overhang_log_counts.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(base_counts_plot)
 dev.off()
@@ -157,7 +157,7 @@ base_counts_plot <- ggplot(data = overhang_counts_out, aes(reorder(as.character(
                        midpoint = max(overhang_counts_out$frac_abundance)/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence_overhang_fraction_abundances.png", sep = "")
+exportFile <- paste(out_dir, "/overhang_fraction_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(base_counts_plot)
 dev.off()
@@ -177,10 +177,10 @@ base_counts_plot <- ggplot(data = overhang_counts_out, aes(reorder(as.character(
                        midpoint = max(overhang_counts_out$perc_abundance)/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/sequence_overhang_percent_abundance.png", sep = "")
+exportFile <- paste(out_dir, "/overhang_percent_abundance.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(base_counts_plot)
 dev.off()
 
 # export plotting data
-write.csv(overhang_counts_out, file = paste(out_dir, "/sequence_overhang_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(overhang_counts_out, file = paste(out_dir, "/above9_overhang_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)
