@@ -51,7 +51,8 @@ The following steps reproduce tables and plots from the slides/paper (see 0030\_
 4. create hetamaps with the log counts for the top10 sequences per round
 5. create hetamaps with the log counts for all sequences that appear at least 10 times per round
 6. create hetamaps with the round 8 cluster sequence family base conservation
-7. create hetamaps with the round 8 cluster sequence family base conservation for the substrate 3' overhang
+7. create hetamaps with the round 8 cluster sequence family base conservation of the substrate 3' overhang
+8. create hetamaps with the base conservation of the substrate 3' overhang for all sequences that appear at least 10 times per round
 
 <b>Note</b> that the sequence data analysis plots with the round 8 cluster sequence families were produced from stage 07a.
 

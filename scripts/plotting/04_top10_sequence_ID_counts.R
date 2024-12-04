@@ -127,44 +127,5 @@ for (run_num in 1:8) {
   dev.off()
 }
 
-# heatmaps with the fraction abundance for each of the top 10 sequences per round
-# all by sequence ID
-seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, sequence_ID, fill= log_frac_abundance, group=run_name)) + 
-  theme_bw() +
-  geom_tile(colour = "black") +
-  #facet_wrap(~ run_name, ncol=4) +
-  ylab("Sequence ID") +
-  xlab("Round Number") +
-  scale_fill_gradient2(name = "Log FA",
-                       low = safe_colors[3],
-                       mid = safe_colors[4],
-                       high = safe_colors[5],
-                       midpoint = mid_log_frac_abundance,
-                       na.value = "white")
-# save the plot
-exportFile <- paste(out_dir, "/log_fraction_abundance.png", sep = "")
-png(exportFile, units="in", width=10, height=10, res=600)
-print(seqs_counts_plot)
-dev.off()
-
-# all by sequence ID and reordered by log counts
-seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequence_ID, log_frac_abundance), fill= log_frac_abundance, group=run_name)) + 
-  theme_bw() +
-  geom_tile(colour = "black") +
-  #facet_wrap(~ run_name, ncol=4) +
-  ylab("Sequence ID") +
-  xlab("Round Number") +
-  scale_fill_gradient2(name = "Log FA",
-                       low = safe_colors[3],
-                       mid = safe_colors[4],
-                       high = safe_colors[5],
-                       midpoint = mid_log_frac_abundance,
-                       na.value = "white")
-# save the plot
-exportFile <- paste(out_dir, "/reordered_log_fraction_abundance.png", sep = "")
-png(exportFile, units="in", width=10, height=10, res=600)
-print(seqs_counts_plot)
-dev.off()
-
 # export plotting data
 write.csv(seqs_counts, file = paste(out_dir, "/top10_sequence_ID_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

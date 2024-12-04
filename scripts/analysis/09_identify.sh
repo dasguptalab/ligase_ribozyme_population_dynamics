@@ -74,7 +74,7 @@ for f1 in $inputsPath"/"*_above9_cluster_peaks_table\.csv; do
 				currSeq=$(echo $seqData | cut -d"," -f5)
 				# initialize mismatch counter
 				numMismatch=0
-				# loop over each character of the sequence
+				# loop over each character base in the sequence
 				#echo $sequence | awk '{for (i=0; ++i <= length($0);) printf "%s", substr($0, i, 1)}'
 				for (( i=0; i<${#currSeq}; i++ )); do
 					# compare each character with the peak

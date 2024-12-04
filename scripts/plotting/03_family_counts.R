@@ -76,8 +76,8 @@ for (cluster_num in 0:max(cluster_list)) {
     # setup the column name
     #curr_col <- paste("r", run_num, "_counts", sep="")
     # add fraction abundance
-    #cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num, curr_col])/quality[1]
-    cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num & r8_seqs_family$counts_run_name == run_num, "counts"])/quality[1]
+    #cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num, curr_col])/quality[run_num]
+    cluster_abundances$frac_abundance[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num & r8_seqs_family$counts_run_name == run_num, "counts"])/quality[run_num]
   }
 }
 
@@ -130,8 +130,11 @@ for (run_num in 1:8) {
   peak_counts[peak_counts$round_num == run_num, "frac_abundance"] <- peak_counts[peak_counts$round_num == run_num, "counts"]/quality[run_num]
 }
 
+# change zeros to NAs for plotting
+peak_counts$frac_abundance_na <- ifelse(peak_counts$frac_abundance == 0, NA, peak_counts$frac_abundance)
+
 # heatmaps with the log counts for each of sequence families from round 8
-peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reorder(as.character(fam_num), log(counts)), fill= log(counts))) + 
+peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reorder(as.character(fam_num), fam_num, decreasing = TRUE), fill= log(counts))) + 
   theme_bw() +
   geom_tile(colour = "black") +
   ylab("Family ID") +
@@ -148,20 +151,20 @@ png(exportFile, units="in", width=5, height=5, res=300)
 print(peak_counts_plot)
 dev.off()
 
-# heatmap with the log fraction abundances for each of sequence families from round 8
-peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reorder(as.character(fam_num), log(frac_abundance)), fill= log(frac_abundance))) + 
+# heatmap with the fraction abundances for each of sequence families from round 8
+peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reorder(as.character(fam_num), fam_num, decreasing = TRUE), fill= frac_abundance_na)) + 
   theme_bw() +
   geom_tile(colour = "black") +
   ylab("Family ID") +
   xlab("Round Number") +
-  scale_fill_gradient2(name = "Log FA",
+  scale_fill_gradient2(name = "FA",
                        low = safe_colors[3],
                        mid = safe_colors[4],
                        high = safe_colors[5],
-                       midpoint = log(min(peak_counts[peak_counts$frac_abundance != 0,"frac_abundance"]))/2,
+                       midpoint = max(peak_counts$frac_abundance)/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/r8_family_log_fraction_abundance.png", sep = "")
+exportFile <- paste(out_dir, "/r8_family_fraction_abundance.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(peak_counts_plot)
 dev.off()

@@ -73,8 +73,9 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
     theme_bw() +
     geom_tile(colour = "black") +
     annotate("rect", 
-             xmin = c(15.5, 16.5, 17.5, 18.5, 19.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5), 
-             ymin = c(3.5, 2.5, 1.5, 2.5, 2.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5), 
+             #expected_overhang <- c("U","G","C","G","G","A","A","U","G","C")
+             xmin = c(15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5), 
+             ymin = c(3.5, 2.5, 1.5, 2.5, 2.5, 0.5, 0.5, 3.5, 2.5, 1.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5, 1.5, 1.5, 4.5, 3.5, 2.5), 
              colour = safe_colors[6], 
              fill = "transparent", 
              linewidth = 1) +
