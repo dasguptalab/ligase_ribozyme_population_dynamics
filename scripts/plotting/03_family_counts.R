@@ -12,7 +12,10 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/03_family_counts"
+
+# create outputs directory
+dir.create(out_dir, showWarnings = FALSE)
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
@@ -140,7 +143,7 @@ peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reor
                        midpoint = log(max(peak_counts$counts))/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/r8_sequence_family_log_counts.png", sep = "")
+exportFile <- paste(out_dir, "/r8_family_log_counts.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(peak_counts_plot)
 dev.off()
@@ -158,10 +161,10 @@ peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reor
                        midpoint = log(min(peak_counts[peak_counts$frac_abundance != 0,"frac_abundance"]))/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/r8_sequence_family_log_fraction_abundance.png", sep = "")
+exportFile <- paste(out_dir, "/r8_family_log_fraction_abundance.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(peak_counts_plot)
 dev.off()
 
 # export plotting data
-write.csv(peak_counts, file = paste(out_dir, "/data/r8_sequence_family_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(peak_counts, file = paste(out_dir, "/r8_family_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

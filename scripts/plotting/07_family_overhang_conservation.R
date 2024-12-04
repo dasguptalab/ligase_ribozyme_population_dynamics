@@ -12,7 +12,10 @@ library(rcartocolor)
 library(stringr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/07_family_overhang_conservation"
+
+# create outputs directory
+dir.create(out_dir, showWarnings = FALSE)
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
@@ -94,7 +97,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
                          na.value = "white") +
     geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 4)
   # save the plot
-  exportFile <- paste(out_dir, "/family_overhang_comparison/r8_sequence_family", fam_num, ".png", sep = "")
+  exportFile <- paste(out_dir, "/r8_sequence_family", fam_num, ".png", sep = "")
   png(exportFile, units="in", width=5, height=5, res=300)
   print(base_counts_plot)
   dev.off()
@@ -103,4 +106,4 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
 }
 
 # export plotting data
-#write.csv(base_counts_out, file = paste(out_dir, "/data/sequence_family_overhang_comparison.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(base_counts_out, file = paste(out_dir, "/sequence_family_overhang_comparison.csv", sep = ""), row.names = FALSE, quote = FALSE)

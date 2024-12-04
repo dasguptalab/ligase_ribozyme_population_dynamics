@@ -11,14 +11,22 @@ library(scales)
 library(rcartocolor)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/00_cluster_sequence_identity"
+
+# create outputs directory
+dir.create(out_dir, showWarnings = FALSE)
+
+# set outputs directory
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/00_cluster_sequence_identity/07b_clustered"
+
+# create outputs directory
+dir.create(out_dir, showWarnings = FALSE)
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
 
 # read in cluster identity data
-r8_seqs_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table.csv")
-#r8_seqs_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07b_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table.csv")
+r8_seqs_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07b_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table.csv")
 
 # list of cluster IDs
 cluster_list <- unique(r8_seqs_identity$cluster_ID)
@@ -66,12 +74,10 @@ r8_peaks_identity_plot <- ggplot(data=cluster_identities, aes(x = cluster_ID)) +
   ylab("Percent Identity to Peak") +
   xlab("Cluster Number")
 # save the plot
-exportFile <- paste(out_dir, "/07a_clustered_r8_sequence_identity.png", sep = "")
-#exportFile <- paste(out_dir, "/07b_clustered_r8_sequence_identity.png", sep = "")
+exportFile <- paste(out_dir, "/r8_sequence_identity.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(r8_peaks_identity_plot)
 dev.off()
 
 # export plotting data
-write.csv(cluster_identities, file = paste(out_dir, "/data/07a_clustered_r8_sequence_identity.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(cluster_identities, file = paste(out_dir, "/data/07b_clustered_r8_sequence_identity.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(cluster_identities, file = paste(out_dir, "/r8_sequence_identity.csv", sep = ""), row.names = FALSE, quote = FALSE)

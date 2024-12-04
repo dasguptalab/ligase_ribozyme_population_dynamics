@@ -12,7 +12,10 @@ library(rcartocolor)
 library(stringr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/06_family_base_conservation"
+
+# create outputs directory
+dir.create(out_dir, showWarnings = FALSE)
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
@@ -69,6 +72,12 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
     theme_bw() +
     geom_tile(colour = "black") +
+    annotate("rect", 
+             xmin = c(15.5, 16.5, 17.5, 18.5, 19.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5), 
+             ymin = c(3.5, 2.5, 1.5, 2.5, 2.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5), 
+             colour = safe_colors[6], 
+             fill = "transparent", 
+             linewidth = 1) +
     ylab("Base") +
     xlab("Base Number") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7)) +
@@ -79,9 +88,10 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
                          mid = safe_colors[4],
                          high = safe_colors[5],
                          midpoint = max(base_counts$conservation)/2,
-                         na.value = "white")
+                         na.value = "white") 
+    #geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 4)
   # save the plot
-  exportFile <- paste(out_dir, "/family_base_conservation/r8_sequence_family", fam_num, ".png", sep = "")
+  exportFile <- paste(out_dir, "/r8_sequence_family", fam_num, ".png", sep = "")
   png(exportFile, units="in", width=5, height=5, res=300)
   print(base_counts_plot)
   dev.off()
@@ -90,4 +100,4 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
 }
 
 # export plotting data
-write.csv(base_counts_out, file = paste(out_dir, "/data/sequence_family_base_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(base_counts_out, file = paste(out_dir, "/sequence_family_base_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)

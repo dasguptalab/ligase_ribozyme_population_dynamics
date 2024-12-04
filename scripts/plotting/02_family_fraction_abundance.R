@@ -12,7 +12,10 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/02_family_fraction_abundance"
+
+# create outputs directory
+dir.create(out_dir, showWarnings = FALSE)
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
@@ -106,7 +109,7 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   ylab("Fraction Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/r8_cluster_fraction_abundances.png", sep = "")
+exportFile <- paste(out_dir, "/r8_family_fraction_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
 dev.off()
@@ -120,10 +123,10 @@ cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(ru
   ylab("Log Fraction Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/r8_cluster_log_fraction_abundances.png", sep = "")
+exportFile <- paste(out_dir, "/r8_family_log_fraction_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(cluster_abundances_plot)
 dev.off()
 
 # export plotting data
-write.csv(cluster_abundances, file = paste(out_dir, "/data/r8_cluster_fraction_abundances.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(cluster_abundances, file = paste(out_dir, "/r8_family_fraction_abundances.csv", sep = ""), row.names = FALSE, quote = FALSE)

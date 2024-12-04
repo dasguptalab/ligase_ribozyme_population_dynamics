@@ -9,7 +9,10 @@ options(scipen=10000)
 library(ggplot2)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/07a_clustered"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/01_percent_unique"
+
+# create outputs directory
+dir.create(out_dir, showWarnings = FALSE)
 
 # round numbers
 rounds <- c(1, 2, 3, 4, 5, 6, 7, 8)
@@ -42,4 +45,4 @@ print(unique_rounds_plot)
 dev.off()
 
 # export plotting data
-write.csv(unique_rounds, file = paste(out_dir, "/data/percent_unique.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(unique_rounds, file = paste(out_dir, "/percent_unique.csv", sep = ""), row.names = FALSE, quote = FALSE)

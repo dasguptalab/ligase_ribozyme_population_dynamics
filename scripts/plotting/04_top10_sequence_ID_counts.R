@@ -12,7 +12,10 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/04_top10_sequence_ID_counts"
+
+# create outputs directory
+dir.create(out_dir, showWarnings = FALSE)
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
@@ -71,7 +74,7 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, sequence_ID,
                        midpoint = mid_log_counts,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/top10_sequence_IDs/log_counts.png", sep = "")
+exportFile <- paste(out_dir, "/log_counts.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
@@ -90,7 +93,7 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequ
                        midpoint = mid_log_counts,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/top10_sequence_IDs/reordered_log_counts.png", sep = "")
+exportFile <- paste(out_dir, "/reordered_log_counts.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
@@ -118,7 +121,7 @@ for (run_num in 1:8) {
                          midpoint = mid_log_counts,
                          na.value = "white")
   # save the plot
-  exportFile <- paste(out_dir, "/top10_sequence_IDs/r", run_num, "_log_counts.png", sep = "")
+  exportFile <- paste(out_dir, "/r", run_num, "_log_counts.png", sep = "")
   png(exportFile, units="in", width=5, height=5, res=300)
   print(counts_heatmap_subset)
   dev.off()
@@ -139,7 +142,7 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, sequence_ID,
                        midpoint = mid_log_frac_abundance,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/top10_sequence_IDs/log_fraction_abundance.png", sep = "")
+exportFile <- paste(out_dir, "/log_fraction_abundance.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
@@ -158,10 +161,10 @@ seqs_counts_plot <- ggplot(data = seqs_counts, aes(counts_run_name, reorder(sequ
                        midpoint = mid_log_frac_abundance,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/top10_sequence_IDs/reordered_log_fraction_abundance.png", sep = "")
+exportFile <- paste(out_dir, "/reordered_log_fraction_abundance.png", sep = "")
 png(exportFile, units="in", width=10, height=10, res=600)
 print(seqs_counts_plot)
 dev.off()
 
 # export plotting data
-#write.csv(seqs_counts, file = paste(out_dir, "/data/top10_sequence_ID_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_counts, file = paste(out_dir, "/top10_sequence_ID_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

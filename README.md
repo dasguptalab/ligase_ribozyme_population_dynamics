@@ -6,16 +6,18 @@ Project for analyzing RNA sequences from in vitro selection-amplification to iso
 
 The code repository for the analysis pipeline can be found [HERE][1].
 
-### Analysis Workflow
+### Data Analysis Workflow
 
 The following steps comprise the analysis workflow and correspond to scripts in the code repository.
+
+#### scripts directory
 
 1. merge paired reads for each run using FLASh (see supplement of [this PNAS paper][2])<br>
 <b>Note:</b> reads were not merged in the original analysis and only the forward reads were used in the original analysis workflow (see 0010\_qc\_slx.py from the original analysis code)
 2. filter reads by quality (AVGQUAL:30) and remove detected adapter content using Trimmomatic<br>
 <b>Note:</b> the quality filtering is similar in approach as the original analysis (see 0010\_qc\_slx.py from the original analysis code)
 3. filter reads by structure to keep only those that contain the expected constant up- and down-stream regions (with 40 bp in-between in this workflow, but not the original) using BASH<br>
-<b>Note:</b> it is not recommended to take the reverse compliment of all reads at this early stage in the analysis, rather than simply the constant regions (see 0010\_qc\_slx.py from the original analysis code)
+<b>Note:</b> it is recommended to simply reverse complement the constant regions instead of all reads, at this stage in the analysis (see 0010\_qc\_slx.py from the original analysis code)
 4. clean reads to retain only the 40 bp in-between region using BASH<br>
 <b>Note:</b> there does not appear to be a filter in the original analysis to keep reads that are only 40-bp in the original analysis workflow
 5. combine merged read files with the unmerged forward read files using BASH<br>
@@ -27,8 +29,33 @@ The following steps comprise the analysis workflow and correspond to scripts in 
 	<b>07b.</b>  cluster with the default soft maximum of 100 sequences in sub-clusters (see [Clustal Omega README][3])
 8. create tables with the reverse compliment of cluster sequences and peak sequences, in addition to the cluster and sequence information (run name, sequence ID, read counts, cluster ID, sequence counts, reverse complimented sequence)
 9. create tables with the statistics (average, standard deviation, highest, lowest) for the percent identity of cluster sequences relative to the peak sequence within each cluster (see the JAX's [Introduction to Sequence Comparison][4])
-10. reproduce tables and plots from slides/paper using BASH and R (see 0030\_mk\_qc\_table.py from the original analysis code)
-11. create additional tables and plots, as needed
+
+<b>Note</b> that the 00a_qc.sh script can be used to assess the quality of the fastq data after the 01_merged, 02_trimmed, and 03_filtered stages. The 00b_analyze.sh script can be used to assess the resulting fasta data from the 01_merged, 02_trimmed, 03_filtered, 04_cleaned, 05_combined, and 06_formatted stages.
+
+### Data Visualization Workflow
+
+The following steps reproduce tables and plots from the slides/paper (see 0030\_mk\_qc\_table.py from the original analysis code) and additional interesting tables and plots.
+
+#### scripts directory
+
+10. count the number of sequences in each round 8 cluster sequence family across sequencing rounds
+11. count the number of sequences shared across sequencing rounds for:
+	<b>11a.</b> all sequences that appear at least 10 times per round
+	<b>11b.</b> the top 10 sequences per round
+
+#### plotting directory
+
+1. create a line plot with the percent unique sequences
+2. create line plots with the round 8 cluster sequence family fraction abundances and log fraction abundances
+3. create hetamaps with the round 8 cluster sequence family log counts and log fraction abundances
+4. create hetamaps with the log counts for the top10 sequences per round
+5. create hetamaps with the log counts for all sequences that appear at least 10 times per round
+6. create hetamaps with the round 8 cluster sequence family base conservation
+7. create hetamaps with the round 8 cluster sequence family base conservation for the substrate 3' overhang
+
+<b>Note</b> that the sequence data analysis plots with the round 8 cluster sequence families were produced from stage 07a.
+
+<b>Additionally note</b> that the 00a_cluster_sequence_identity.R and 00b_cluster_sequence_identity.R scripts can be used to analyze the percent identities across clusters from stages 07a and 07b respectively.
 
 #### Progress Assessment
 For analysis steps 01 to 07 use BASH to:<br>
