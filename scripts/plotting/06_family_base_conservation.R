@@ -40,13 +40,13 @@ base_counts_out <- data.frame()
 for (cluster_num in min(cluster_list):max(cluster_list)) {
   # convert list of sequences into a matrix
   seqs_matrix <- do.call(rbind, type.convert(strsplit(seqs_family[seqs_family$cluster_ID == cluster_num, "sequence"], ""), as.is = TRUE))
+  # set family number
+  fam_num <- cluster_num+1
   # loop over each base
   for (base_num in 1:40) {
     # update indicies
     index <- ((base_num-1)*4)+1
     index_max <- index+3
-    # set family number
-    fam_num <- cluster_num+1
     # add cluster ID
     base_counts$cluster_ID[index:index_max] <- rep(cluster_num, 4)
     # add family ID
@@ -66,19 +66,25 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   }
   # change zeros to NAs for plotting
   base_counts$conservation_na <- ifelse(base_counts$conservation == 0, NA, base_counts$conservation)
-  # set round plot title
-  run_title <- paste("Family", fam_num, "Overhang Base Conservation")
+  # change the bases to factors for plotting
+  #base_counts$base <- factor(base_counts$base, levels=c("U", "G", "C", "A"))
+  # set family plot title
+  run_title <- paste("Family", fam_num, "Base Conservation")
   # create heatmap of base conservation
   base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
     theme_bw() +
     geom_tile(colour = "black") +
+    # left stem
+    annotate("rect", xmin = c(5.5), xmax = c(12.5), ymin = c(0.5), ymax = c(4.5), 
+             colour = safe_colors[2], fill = "transparent", linewidth = 1) +
+    # right stem
+    annotate("rect", xmin = c(25.5), xmax = c(32.5), ymin = c(0.5), ymax = c(4.5), 
+             colour = safe_colors[2], fill = "transparent", linewidth = 1) +
+    # overhang
     annotate("rect", 
-             #expected_overhang <- c("U","G","C","G","G","A","A","U","G","C")
              xmin = c(15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5), 
              ymin = c(3.5, 2.5, 1.5, 2.5, 2.5, 0.5, 0.5, 3.5, 2.5, 1.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5, 1.5, 1.5, 4.5, 3.5, 2.5), 
-             colour = safe_colors[6], 
-             fill = "transparent", 
-             linewidth = 1) +
+             colour = safe_colors[1], fill = "transparent", linewidth = 1) +
     ylab("Base") +
     xlab("Base Number") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7)) +
@@ -92,7 +98,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
                          na.value = "white") 
     #geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 4)
   # save the plot
-  exportFile <- paste(out_dir, "/family_overhang_percent_abundance", fam_num, ".png", sep = "")
+  exportFile <- paste(out_dir, "/family", fam_num, "_base_conservation.png", sep = "")
   png(exportFile, units="in", width=5, height=5, res=300)
   print(base_counts_plot)
   dev.off()
@@ -101,4 +107,4 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
 }
 
 # export plotting data
-write.csv(base_counts_out, file = paste(out_dir, "/family_overhang_base_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(base_counts_out, file = paste(out_dir, "/family_base_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)

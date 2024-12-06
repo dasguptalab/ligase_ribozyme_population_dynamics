@@ -146,7 +146,7 @@ peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reor
                        midpoint = log(max(peak_counts$counts))/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/r8_family_log_counts.png", sep = "")
+exportFile <- paste(out_dir, "/family_log_counts.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(peak_counts_plot)
 dev.off()
@@ -164,10 +164,28 @@ peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reor
                        midpoint = max(peak_counts$frac_abundance)/2,
                        na.value = "white")
 # save the plot
-exportFile <- paste(out_dir, "/r8_family_fraction_abundance.png", sep = "")
+exportFile <- paste(out_dir, "/family_fraction_abundance.png", sep = "")
+png(exportFile, units="in", width=5, height=5, res=300)
+print(peak_counts_plot)
+dev.off()
+
+# heatmap with the fraction abundances for each of sequence families from round 8
+peak_counts_plot <- ggplot(data = peak_counts, aes(as.character(round_num), reorder(as.character(fam_num), fam_num, decreasing = TRUE), fill= 100*frac_abundance_na)) + 
+  theme_bw() +
+  geom_tile(colour = "black") +
+  ylab("Family ID") +
+  xlab("Round Number") +
+  scale_fill_gradient2(name = "PA",
+                       low = safe_colors[3],
+                       mid = safe_colors[4],
+                       high = safe_colors[5],
+                       midpoint = 100*(max(peak_counts$frac_abundance)/2),
+                       na.value = "white")
+# save the plot
+exportFile <- paste(out_dir, "/family_percent_abundance.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(peak_counts_plot)
 dev.off()
 
 # export plotting data
-write.csv(peak_counts, file = paste(out_dir, "/r8_family_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(peak_counts, file = paste(out_dir, "/family_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)

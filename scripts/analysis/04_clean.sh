@@ -3,9 +3,17 @@
 # script to clean reads and keep only the variable 40bp region
 # usage: bash 04_clean.sh
 
+# constant region: GGACAGCG
 # primer: GGCUAAGG -> GGCTAAGG
 # library: GACUCACUGACACAGAUCCACUCACGGACAGCGG(Nx40)CGCUGUCCUUUUUUGGCUAAGG -> 96bp total
 # target trimmed -> GGACAGCG(Nx40)CGCTGTCC(NxM) -> at least 56bp total
+
+# from original code
+# Define start and end sequences
+#start_seq = 'ACGGACAGCG'
+# reverse compliment: CGCTGTCCGT
+#end_seq = 'CGCTGTCCTTTTTTGGCTAAGGGACCTACCG'
+# reverse compliment: CGGTAGGTCCCTTAGCCAAAAAAGGACAGCG
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")

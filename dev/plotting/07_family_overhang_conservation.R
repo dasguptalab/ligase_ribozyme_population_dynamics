@@ -12,7 +12,7 @@ library(rcartocolor)
 library(stringr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/07_family_overhang_conservation"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/07_family_overhang_only_conservation"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -67,6 +67,8 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   }
   # change zeros to NAs for plotting
   base_counts$conservation_na <- ifelse(base_counts$conservation == 0, NA, base_counts$conservation)
+  # change the bases to factors for plotting
+  #base_counts$base <- factor(base_counts$base, levels=c("U", "G", "C", "A"))
   # subset the sequence family data to the overhang bases
   base_counts_subset <- base_counts[base_counts$base_ID >= 16 & base_counts$base_ID <= 25,]
   # set round plot title
@@ -95,7 +97,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
                          na.value = "white") +
     geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 3)
   # save the plot
-  exportFile <- paste(out_dir, "/family_overhang_percent_abundance", fam_num, ".png", sep = "")
+  exportFile <- paste(out_dir, "/family", fam_num, "_overhang_only_percent_abundance.png", sep = "")
   png(exportFile, units="in", width=5, height=5, res=300)
   print(base_counts_plot)
   dev.off()
@@ -104,4 +106,4 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
 }
 
 # export plotting data
-write.csv(base_counts_out, file = paste(out_dir, "/family_overhang_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(base_counts_out, file = paste(out_dir, "/family_overhang_only_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)

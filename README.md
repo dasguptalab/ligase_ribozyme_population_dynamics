@@ -6,55 +6,60 @@ Project for analyzing RNA sequences from in vitro selection-amplification to iso
 
 The code repository for the analysis pipeline can be found [HERE][1].
 
-### Data Analysis Workflow
+### Methods
 
-The following steps comprise the analysis workflow and correspond to scripts in the code repository.
+#### Assignment of sequence families
+Sequencing reads from each round were pre-processed using custom BASH scripts. Paired reads were merged using FLASh. The merged sequence files were combined with the unmerged forward read files, since reverse reads were low in quality. Read sequences were filtered by quality (AVGQUAL:30) and adapter content was removed using Trimmomatic. Sequences were filtered to keep only those that contain the predefined constant up- and down-stream stem regions (Fig. 1) and with 40 bp in-between. The filtered sequences were trimmed to the 40-nt randomized region by removing constant regions on both 5′ and 3′ ends. The resulting trimmed sequences were filtered to remove sequences that appeared less than 10 times, then re-formatted to keep only the unique sequences. Sequences from rounds R6, R7, and R8 were clustered into sequence families using Clustal Omega, which uses mBed-like clustering for a given maximum number of sequences per cluster (N = 500). Since we were interested in tracking conservation or sustained variability of all nucleotide positions across all rounds of selection, sequences from all eight rounds of selection with > 90% similarity to the most abundant peak sequences in the final selection round (R8) were quantified.
 
-#### Analysis
+### Data Analysis Workflow Steps
+
+The steps 1 through 8 comprise the analysis workflow and correspond to scripts in the code repository. Steps 9 through 11 were performed to prepare data for visualization and plotting.
+
+#### Analysis Scripts
 
 1. merge paired reads for each run using FLASh (see supplement of [this PNAS paper][2])<br>
 <b>Note:</b> reads were not merged in the original analysis and only the forward reads were used in the original analysis workflow (see 0010\_qc\_slx.py from the original analysis code)
 2. filter reads by quality (AVGQUAL:30) and remove detected adapter content using Trimmomatic<br>
-<b>Note:</b> the quality filtering is similar in approach as the original analysis (see 0010\_qc\_slx.py from the original analysis code)
+<b>Note:</b> the quality filtering is similar in approach as the original analysis (see 0010\_qc\_slx.py from the original analysis code).
 3. filter reads by structure to keep only those that contain the expected constant up- and down-stream regions (with 40 bp in-between in this workflow, but not the original) using BASH<br>
-<b>Note:</b> it is recommended to simply reverse complement the constant regions instead of all reads, at this stage in the analysis (see 0010\_qc\_slx.py from the original analysis code)
+<b>Note:</b> the defined start sequence was "ACGGACAGCG" and the end sequence was "CGCTGTCCTTTTTTGGCTAAGGGACCTACCG". Additionally, it is recommended to simply reverse complement the constant regions instead of all reads, at this stage in the analysis (see 0010\_qc\_slx.py from the original analysis code).
 4. clean reads to retain only the 40 bp in-between region using BASH<br>
-<b>Note:</b> there does not appear to be a filter in the original analysis to keep reads that are only 40-bp in the original analysis workflow
+<b>Note:</b> there does not appear to be a filter in the original analysis to keep reads that are only 40-bp in the original analysis workflow.
 5. combine merged read files with the unmerged forward read files using BASH<br>
-<b>Note:</b> reverse reads are lower quality and typically do not pass filtering by quality or structure 
+<b>Note:</b> reverse reads are lower quality and typically do not pass filtering by quality or structure .
 6. remove sequences that appear less than 10 times (see 0015\_g10\_seqs.py from the original analysis code) and re-format reads and headers using BASH<br>
-<b>Note:</b> only unique reeds were kept in this analysis and the sequence headers were updated to contain the run name, arbitrary sequence ID, and read counts for the unique sequence
+<b>Note:</b> only unique reeds were kept in this analysis and the sequence headers were updated to contain the run name, arbitrary sequence ID, and read counts for the unique sequence.
 7. cluster read sequences for each run using Clustal Omega<br>
 	<b>07a.</b>  cluster with a soft maximum of 500 sequences in sub-clusters (cluster-size=500), which is what the original analysis used (see 0020\_cluster\_slxn.py from the original analysis code)<br>
 	<b>07b.</b>  cluster with the default soft maximum of 100 sequences in sub-clusters (see [Clustal Omega README][3])
 8. create tables with the reverse compliment of cluster sequences and peak sequences, in addition to the cluster and sequence information (run name, sequence ID, read counts, cluster ID, sequence counts, reverse complimented sequence)
 9. create tables with the statistics (average, standard deviation, highest, lowest) for the percent identity of cluster sequences relative to the peak sequence within each cluster (see the JAX's [Introduction to Sequence Comparison][4])
-
-<b>Note</b> that the 00a\_qc.sh script can be used to assess the quality of the fastq data after the 01\_merged, 02\_trimmed, and 03\_filtered stages. The 00b\_analyze.sh script can be used to assess the resulting fasta data from the 01\_merged, 02\_trimmed, 03\_filtered, 04\_cleaned, 05\_combined, and 06\_formatted stages.
-
-### Data Visualization Workflow
-
-The following steps reproduce tables and plots from the slides/paper (see 0030\_mk\_qc\_table.py from the original analysis code) and additional interesting tables and plots.
-
-#### Analysis
-
-10. count the number of sequences in each round 8 cluster sequence family across sequencing rounds
-11. count the number of sequences shared across sequencing rounds for:<br>
+10. create tables with counts of the number of sequences in each round 8 cluster sequence family across sequencing rounds
+11. create tables with counts of the number of sequences shared across sequencing rounds for:<br>
 	<b>11a.</b> all sequences that appear at least 10 times per round<br>
 	<b>11b.</b> the top 10 sequences per round
 
+<b>Note</b> that the 00a\_qc.sh script can be used to assess the quality of the fastq data after the 01\_merged, 02\_trimmed, and 03\_filtered stages. The 00b\_analyze.sh script can be used to assess the resulting fasta data from the 01\_merged, 02\_trimmed, 03\_filtered, 04\_cleaned, 05\_combined, and 06\_formatted stages.
+
+### Data Visualization Workflow Steps
+
+The following steps were taken to reproduce tables and plots from the slides (see the "For Elizabeth\_Population dynamics during RNA evolution.pptx" file) and additional interesting tables and plots.
+
 <b>Note:</b> the round 8 cluster sequence families include sequences at least 90 percent identical to the cluster peak (see the 09\_identify.sh script).
 
-#### Plotting
+#### Plotting Scripts
 
-1. create a line plot with the percent unique sequences
-2. create line plots with the round 8 cluster sequence family fraction abundances and log fraction abundances
-3. create hetamaps with the round 8 cluster sequence family log counts and log fraction abundances
-4. create hetamaps with the log counts for the top10 sequences per round
-5. create hetamaps with the log counts for all sequences that appear at least 10 times per round
-6. create hetamaps with the round 8 cluster sequence family base conservation
-7. create hetamaps with the round 8 cluster sequence family base conservation of the substrate 3' overhang
-8. create hetamaps with the base conservation of the substrate 3' overhang for all sequences that appear at least 10 times per round
+1. create a line plot with the percent unique sequences (see slide 4)
+2. create line plots with the round 8 cluster sequence family counts and abundances (see slide 4)
+3. create hetamaps with the round 8 cluster sequence family counts and abundances (expanding on slide 4)
+4. create hetamaps with the log counts for the top10 sequences per round (see slide 5)
+5. create hetamaps with the log counts for all sequences that appear at least 10 times per round (expanding on slide 5)
+6. create hetamaps with the round 8 cluster sequence family base conservation with the substrate 3' overhang bases highlighted (see slide 6)
+7. create heatmaps with the base conservation of the substrate 3' overhang for all sequences that appear at least 10 times per round (see slide 7)
+8. create line plots with the summed counts and abundances of the top 10 sequences per round (expanding on slide 5)
+9. create heatmaps with the round 8 cluster sequence family stem base pairing conservation (see slide 8)
+10. create sequence logos with the round 8 cluster family sequences
+11. create combined plots with the sequence logos, base conservation heatmap, and stem base pairing conservation heatmaps for the round 8 cluster family sequences
 
 <b>Note:</b> the sequence data analysis plots with the round 8 cluster sequence families were produced from stage 07a. Additionally, the 00a\_cluster\_sequence\_identity.R and 00b\_cluster\_sequence\_identity.R scripts can be used to analyze the percent identities across clusters from stages 07a and 07b respectively.
 
@@ -79,7 +84,7 @@ For analysis steps 01 to 07 use BASH to:<br>
 
 ![qc_statistics_table - from original code repository data directory](images/qc_statistics_table.png)
 
-<b>Note:</b> the number of "Sequences with >10 reads" is actually the number of sequences with greater than 9 reads (see 0015\_g10\_seqs.py from the original analysis code)
+<b>Note:</b> the number of "Sequences with >10 reads" is actually the number of sequences with greater than 9 reads (see 0015\_g10\_seqs.py from the original analysis code).
 
 #### Progress of in vitro selection - from original slides
 
