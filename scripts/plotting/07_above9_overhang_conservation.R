@@ -100,13 +100,13 @@ for (run_num in min(round_list):max(round_list)) {
 # add percent counts
 overhang_counts_out$perc_abundance <- 100*overhang_counts_out$frac_abundance
 
+# subset the overhang counts by identity
+overhang_counts_subset <- overhang_counts_out[overhang_counts_out$identity >= 80,]
+
 # change zeros to NAs for plotting
 overhang_counts_out$counts_na <- ifelse(overhang_counts_out$counts == 0, NA, overhang_counts_out$counts)
 overhang_counts_out$perc_abundance_na <- ifelse(overhang_counts_out$perc_abundance == 0, NA, overhang_counts_out$perc_abundance)
 overhang_counts_out$frac_abundance_na <- ifelse(overhang_counts_out$frac_abundance == 0, NA, overhang_counts_out$frac_abundance)
-
-# subset the overhang counts by identity
-#overhang_counts_subset <- overhang_counts_out[overhang_counts_out$identity >= 80,]
 
 # create heatmap of overhang identity log counts
 base_counts_plot <- ggplot(data = overhang_counts_out, aes(reorder(as.character(run_ID), run_ID), reorder(as.character(identity), identity), fill = log(counts_na))) + 
@@ -178,6 +178,20 @@ base_counts_plot <- ggplot(data=overhang_counts_out, aes(x=as.character(run_ID),
   xlab("Round Number")
 # save the plot
 exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_lines.png", sep = "")
+png(exportFile, units="in", width=5, height=5, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of overhang identity percent
+base_counts_plot <- ggplot(data=overhang_counts_subset, aes(x=as.character(run_ID), y=perc_abundance, group=identity, color=identity_color))+
+  geom_line() +
+  geom_point() +
+  theme_bw() +
+  scale_color_identity(name = "Identity", labels = unique(overhang_counts_subset$identity), breaks = unique(overhang_counts_subset$identity_color), guide = "legend") +
+  ylab("Percent Abundance") +
+  xlab("Round Number")
+# save the plot
+exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_lines_atLeast80.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(base_counts_plot)
 dev.off()
