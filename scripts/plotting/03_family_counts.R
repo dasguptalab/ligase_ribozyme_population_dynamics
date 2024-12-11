@@ -116,6 +116,7 @@ for (round_index in 1:8) {
   #curr_col <- paste("r", round_index, "_counts", sep="")
   # add round num
   subset_peak_counts$round_num <- rep(round_index, 13)
+  # TO-DO: fix family numbers
   # add seq num
   subset_peak_counts$fam_num <- seq(from = 1, to = 13, by = 1)
   # add peak seq counts

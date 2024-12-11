@@ -26,7 +26,10 @@ The steps 1 through 8 comprise the analysis workflow and correspond to scripts i
 4. clean reads to retain only the 40 bp in-between region using BASH<br>
 <b>Note:</b> there does not appear to be a filter in the original analysis to keep reads that are only 40-bp in the original analysis workflow.
 5. combine merged read files with the unmerged forward read files using BASH<br>
-<b>Note:</b> reverse reads are lower quality and typically do not pass filtering by quality or structure .
+<b>Note:</b> reverse reads are lower quality and typically do not pass filtering by quality or structure.
+
+TO-DO: add the reverse complimenting of sequences to step 6 for downstream analysis
+
 6. remove sequences that appear less than 10 times (see 0015\_g10\_seqs.py from the original analysis code) and re-format reads and headers using BASH<br>
 <b>Note:</b> only unique reeds were kept in this analysis and the sequence headers were updated to contain the run name, arbitrary sequence ID, and read counts for the unique sequence.
 7. cluster read sequences for each run using Clustal Omega<br>
