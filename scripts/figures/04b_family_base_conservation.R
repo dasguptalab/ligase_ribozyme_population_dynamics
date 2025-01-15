@@ -12,7 +12,7 @@ library(rcartocolor)
 library(stringr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/04_family_base_conservation"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/04a_family_base_conservation"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -21,7 +21,39 @@ dir.create(out_dir, showWarnings = FALSE)
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
 
 # read in cluster sequence family data
-seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table_atLeast90.csv")
+seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table_atLeast90.csv")
+
+# read in sequences that have at least 90% identity to any peak
+seqs_identities <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/00a_family_identification_above9/family_identities_above9_atLeast90.csv")
+
+# subset to keep round 8 data
+seqs_identities <- seqs_identities[seqs_identities$run_name == 8,]
+
+# initialize data frame
+seqs_family <- data.frame()
+peak_cluster_IDs <- NULL
+
+# loop over each sequences that has at least 90% identity to any peak
+for (seq_num in 1:nrow(seqs_identities)) {
+  # keep count data for sequences that have at least 90% identity to any peak
+  seqs_90_data <- seqs_input[seqs_input$sequence_ID == strsplit(seqs_identities$sequence_ID[seq_num], "_")[[1]][2],]
+  # add counts
+  seqs_family <- rbind(seqs_family, seqs_90_data)
+  # add peak cluster ID to vector
+  peak_cluster_IDs <- c(peak_cluster_IDs, rep(seqs_identities$peak_cluster_ID[seq_num], nrow(seqs_90_data)))
+}
+
+# add peak cluster IDs
+seqs_family <- cbind(seqs_family, peak_cluster_IDs)
+
+# list of cluster IDs
+fam_list_out <- seq(1, 13)
+
+# list of cluster IDs in order of abundance in round 8
+r8_fams <- data.frame(
+  fam_ID = fam_list_out,
+  cluster_ID = c(1, 3, 0, 2, 5, 8, 4, 7, 11, 6, 10, 12, 9)
+)
 
 # list of cluster IDs
 cluster_list <- unique(seqs_family$cluster_ID)
@@ -38,10 +70,11 @@ base_counts_out <- data.frame()
 
 # loop over each cluster
 for (cluster_num in min(cluster_list):max(cluster_list)) {
+  #cluster_num <- 1
   # convert list of sequences into a matrix
   seqs_matrix <- do.call(rbind, type.convert(strsplit(seqs_family[seqs_family$cluster_ID == cluster_num, "sequence"], ""), as.is = TRUE))
   # set family number
-  fam_num <- cluster_num+1
+  fam_num <- r8_fams[r8_fams$cluster_ID == cluster_num, "fam_ID"]
   # loop over each base
   for (base_num in 1:40) {
     # update indicies
@@ -74,16 +107,18 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
     theme_bw() +
     geom_tile(colour = "black") +
-    # left stem
+    # left P2
     annotate("rect", xmin = c(5.5), xmax = c(12.5), ymin = c(0.5), ymax = c(4.5), 
              colour = safe_colors[2], fill = "transparent", linewidth = 1) +
-    # right stem
+    # right P2
     annotate("rect", xmin = c(25.5), xmax = c(32.5), ymin = c(0.5), ymax = c(4.5), 
              colour = safe_colors[2], fill = "transparent", linewidth = 1) +
-    # overhang
+    # overhang compliment
     annotate("rect", 
-             xmin = c(15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5), 
-             ymin = c(3.5, 2.5, 1.5, 2.5, 2.5, 0.5, 0.5, 3.5, 2.5, 1.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5, 1.5, 1.5, 4.5, 3.5, 2.5), 
+             #xmin = c(15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5), 
+             #ymin = c(3.5, 2.5, 1.5, 2.5, 2.5, 0.5, 0.5, 3.5, 2.5, 1.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5, 1.5, 1.5, 4.5, 3.5, 2.5), 
+             xmin = c(15.5, 16.5, 17.5, 18.5, 19.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5), 
+             ymin = c(3.5, 2.5, 1.5, 2.5, 2.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5), 
              colour = safe_colors[1], fill = "transparent", linewidth = 1) +
     ylab("Base") +
     xlab("Base Number") +

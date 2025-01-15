@@ -12,7 +12,7 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/02_family_abundances"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/02_family_abundances"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -90,7 +90,6 @@ for (cluster_num in 0:max(cluster_list)) {
     #curr_col <- paste("r", run_num, "_counts", sep="")
     # add counts
     cluster_abundances$counts[index] <- sum(r8_seqs_family[r8_seqs_family$cluster_ID == cluster_num & r8_seqs_family$counts_run_name == run_num, "counts"])
-    #cluster_abundances$counts[index] <- sum(r8_seqs_family[r8_seqs_family$run_name == paste("r", run_num, sep="") & r8_seqs_family$counts_run_name == run_num & r8_seqs_family$cluster_ID == cluster_num, "counts"])
     # add fraction abundance
     cluster_abundances$frac_abundance[index] <- cluster_abundances$counts[index]/quality[run_num]
   }

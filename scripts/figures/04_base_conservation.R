@@ -10,8 +10,9 @@ library(ggplot2)
 library(scales)
 library(rcartocolor)
 library(stringr)
+
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/plots/13_doped_base_conservation"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/04_base_conservation"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -19,36 +20,38 @@ dir.create(out_dir, showWarnings = FALSE)
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
 
-# set sequence lengths
-seqLength <- 40
+# read in cluster sequence family data
+seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table_atLeast90.csv")
 
-# set must abundant peak sequence from clustering round 8
-peakSeq <- "GAATGCTGCCAACCGTGCGGGCTAATTGGCAGACTGAGCT"
-
-# read in doped sequence data
-seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/doped21-r3_S12_L001_table.csv")
-
-# reverse complement the sequences
-seqs_family$sequence <- rev(chartr("ATGC","TACG",seqs_family$sequence))
-
-# TO-DO
-# filter sequences to those with >= 90% identity to the peak sequence
+# list of cluster IDs
+cluster_list <- unique(seqs_family$cluster_ID)
 
 # initialize data frame for base counts
 base_counts <- data.frame(
+  cluster_ID = rep(NA, 40*4),
+  fam_ID = rep(NA, 40*4),
   base_ID = rep(NA, 40*4),
   base = rep(NA, 40*4),
   conservation = rep(NA, 40*4)
 )
+base_counts_out <- data.frame()
+
+# set cluster number
+cluster_num <- 1
 
 # convert list of sequences into a matrix
-seqs_matrix <- do.call(rbind, type.convert(strsplit(seqs_family$sequence, ""), as.is = TRUE))
-
+seqs_matrix <- do.call(rbind, type.convert(strsplit(seqs_family[seqs_family$cluster_ID == cluster_num, "sequence"], ""), as.is = TRUE))
+# set family number
+fam_num <- cluster_num+1
 # loop over each base
 for (base_num in 1:40) {
   # update indicies
   index <- ((base_num-1)*4)+1
   index_max <- index+3
+  # add cluster ID
+  base_counts$cluster_ID[index:index_max] <- rep(cluster_num, 4)
+  # add family ID
+  base_counts$fam_ID[index:index_max] <- rep(fam_num, 4)
   # add base ID
   base_counts$base_ID[index:index_max] <- rep(base_num, 4)
   # add percent conservation of each base character
@@ -62,16 +65,12 @@ for (base_num in 1:40) {
   base_counts$base[index+2] <- "G"
   base_counts$base[index_max] <- "U"
 }
-
 # change zeros to NAs for plotting
 base_counts$conservation_na <- ifelse(base_counts$conservation == 0, NA, base_counts$conservation)
-
 # change the bases to factors for plotting
 #base_counts$base <- factor(base_counts$base, levels=c("U", "G", "C", "A"))
-
 # set family plot title
-run_title <- paste("Base Conservation")
-
+run_title <- paste("Family", fam_num, "Base Conservation")
 # create heatmap of base conservation
 base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
   theme_bw() +
@@ -97,13 +96,16 @@ base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID)
                        mid = safe_colors[4],
                        high = safe_colors[5],
                        midpoint = max(base_counts$conservation)/2,
-                       na.value = "white") 
-#geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 4)
+                       na.value = "white") +
+  coord_fixed() +
+  geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 3)
 # save the plot
-exportFile <- paste(out_dir, "/doped_base_conservation.png", sep = "")
+exportFile <- paste(out_dir, "/family", fam_num, "_base_conservation.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(base_counts_plot)
 dev.off()
+# add current family data to outputs
+base_counts_out <- rbind(base_counts_out, base_counts)
 
 # export plotting data
-write.csv(base_counts, file = paste(out_dir, "/doped_base_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(base_counts_out, file = paste(out_dir, "/family_base_conservation.csv", sep = ""), row.names = FALSE, quote = FALSE)

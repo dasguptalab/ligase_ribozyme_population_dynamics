@@ -9,20 +9,20 @@ The code repository for the analysis pipeline can be found [HERE][1].
 ### Methods
 
 #### Assignment of sequence families
-Sequencing reads from each round were pre-processed using custom BASH scripts. Paired reads were merged using FLASh. The merged sequence files were combined with the unmerged forward read files, since reverse reads were low in quality. Read sequences were filtered by quality (AVGQUAL:30) and adapter content was removed using Trimmomatic. Sequences were filtered to keep only those that contain the predefined constant up- and down-stream stem regions (Fig. 1) and with 40 bp in-between. The filtered sequences were trimmed to the 40-nt randomized region by removing constant regions on both 5′ and 3′ ends. The resulting trimmed sequences were filtered to remove sequences that appeared less than 10 times, then re-formatted to keep only the unique sequences. Sequences from rounds R6, R7, and R8 were clustered into sequence families using Clustal Omega, which uses mBed-like clustering for a given maximum number of sequences per cluster (N = 500). Since we were interested in tracking conservation or sustained variability of all nucleotide positions across all rounds of selection, sequences from all eight rounds of selection with > 90% similarity to the most abundant peak sequences in the final selection round (R8) were quantified.
+Sequencing reads from each round were pre-processed using custom BASH and R scripts that are available on GitHub (https://github.com/ElizabethBrooks/RNA_selection_amplification.git). Paired reads were merged using FLASh (v1.2.11) (Magoč & Salzberg, 2011). The merged sequence files were combined with the unmerged forward read files, since reverse reads were low in quality. Read sequences were filtered by quality (AVGQUAL:30) and adapter content was removed using Trimmomatic (v0.39) (Bolger et al., 2014). Sequences were filtered to keep only those that contain the predefined constant up- and down-stream stem regions (Figure 1) and with 40 bp in-between. The filtered sequences were trimmed to the 40-nt randomized region by removing constant regions on both 5′ and 3′ ends. The resulting trimmed sequences were filtered to remove sequences that appeared less than 10 times, then de-replicated to keep only the unique sequences. After pre-processing, between 92,366 and 1,063,996 unique sequences remained per round. Unique sequences from rounds 6 to 8 were clustered into sequence families using Clustal Omega (v1.2.4) (Sievers & Higgins, 2018), which uses mBed-like clustering for a given maximum number of sequences per cluster (N = 500). Since we were interested in tracking conservation or sustained variability of all nucleotide positions across all rounds of selection, sequences from all eight rounds of selection with greater than or equal to  90% similarity to the most abundant peak sequences in the final selection round (round 8) were quantified.
 
 #### Progress of selection across eight rounds (12 January 2025)
 
-| | Statistic | Round 1 | Round 2 | Round 3 | Round 4 | Round 5 | Round 6 | Round 7 | Round 8 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| A | Reaction Time (min)| 120 | 60 |30 | 20 | 30 | 10 | 10 |10 |
-| B | [Mg<sup>2+</sup>] (mM) | 20 | 20 | 20 | 20 | 20 | 20 | 10 | 5 |
-| C | Total Raw Reads | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 |
-| D | High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
-| E | Unique Reads | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
-| F | Diversity (%) | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
-| G | Sequences with > 9 Reads | 5 | 3 | 5 | 4 | 283 | 4,001 | 2,703 | 2,100 |
-| H | Sequence Families | NA | NA | NA | NA | NA | 15 | 13 | 12 |
+|     | <div style="width:175px">Statistic</div> | <b>Round 1</b> | <b>Round 2</b> | <b>Round 3</b> | <b>Round 4</b> | <b>Round 5</b> | <b>Round 6</b> | <b>Round 7</b> | <b>Round 8</b> |
+| --- | ---------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
+| <b>A</b> | Reaction Time (min)| 120 | 60 |30 | 20 | 30 | 10 | 10 |10 |
+| <b>B</b> | \[Mg<sup>2+</sup>] (mM) | 20 | 20 | 20 | 20 | 20 | 20 | 10 | 5 |
+| <b>C</b> | Total Raw Reads | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 |
+| <b>D</b> | High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
+| <b>E</b> | Unique Reads | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
+| <b>F</b> | Diversity (%) | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
+| <b>G</b> | Sequences with > 9 Reads | 5 | 3 | 5 | 4 | 283 | 4,001 | 2,703 | 2,100 |
+| <b>H</b> | Sequence Families | NA | NA | NA | NA | NA | 16 | 14 | 13 |
 
 ### Data Analysis Workflow Steps
 
@@ -92,12 +92,12 @@ For analysis steps 01 to 07 use BASH to:<br>
 | E | Unique Reads | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 | 842,149 | 746,445 | 988,626 |
 | F | Diversity (%) | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 | 97.30 | 92.40 | 86.43 |
 | G | Sequences with > 9 Reads | 5 | 3 | 5 | 4 | 283 | 4,001 | 2,703 | 2,100 | 62 | 749 | 1,690 |
-| H | Sequence Families | NA | NA | NA | NA | NA | 15 | 13 | 12 | NA | 3 | 5 |
+| H | Sequence Families | NA | NA | NA | NA | NA | 16 | 14 | 13 | NA | 4 | 6 |
 
 ##### Additional Analysis Results
 | | Statistic | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| G | Sequence Families (100) | NA | NA | NA | NA | 6 | 67 | 44 | 40 | NA | 11 | 26 |
+| G | Sequence Families (100) | NA | NA | NA | NA | 7 | 68 | 45 | 41 | NA | 12 | 27 |
 
 #### qc\_statistics\_table - from original code repository data directory
 

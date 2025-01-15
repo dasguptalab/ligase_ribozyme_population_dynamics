@@ -30,7 +30,7 @@ inputsPath=$outputsPath"/06_formatted"
 inputSeqs=$inputsPath"/"$inputRun"_formatted_above9.fa"
 
 # name of a new directory for analysis
-tablesOut=$outputsPath"/11_quantified"
+tablesOut=$outputsPath"/11_quantified_above9"
 
 # make a new directory for analysis
 mkdir $tablesOut
