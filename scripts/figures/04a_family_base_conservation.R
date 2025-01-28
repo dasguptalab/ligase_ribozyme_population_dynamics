@@ -70,6 +70,7 @@ base_counts_out <- data.frame()
 
 # loop over each cluster
 for (cluster_num in min(cluster_list):max(cluster_list)) {
+#for (cluster_num in 1:1) {
   #cluster_num <- 1
   # convert list of sequences into a matrix
   seqs_matrix <- do.call(rbind, type.convert(strsplit(seqs_family[seqs_family$cluster_ID == cluster_num, "sequence"], ""), as.is = TRUE))
@@ -114,11 +115,11 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
     annotate("rect", xmin = c(25.5), xmax = c(32.5), ymin = c(0.5), ymax = c(4.5), 
              colour = safe_colors[2], fill = "transparent", linewidth = 1) +
     # overhang compliment
-    annotate("rect", 
+    annotate("rect", xmin = c(15.5), xmax = c(23.5), ymin = c(0.5), ymax = c(4.5),
              #xmin = c(15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5), 
              #ymin = c(3.5, 2.5, 1.5, 2.5, 2.5, 0.5, 0.5, 3.5, 2.5, 1.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5, 1.5, 1.5, 4.5, 3.5, 2.5), 
-             xmin = c(15.5, 16.5, 17.5, 18.5, 19.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5), 
-             ymin = c(3.5, 2.5, 1.5, 2.5, 2.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5), 
+             #xmin = c(15.5, 16.5, 17.5, 18.5, 19.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5), 
+             #ymin = c(3.5, 2.5, 1.5, 2.5, 2.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5), 
              colour = safe_colors[1], fill = "transparent", linewidth = 1) +
     ylab("Base") +
     xlab("Base Number") +

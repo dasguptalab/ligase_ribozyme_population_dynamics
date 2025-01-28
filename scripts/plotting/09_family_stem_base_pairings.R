@@ -48,6 +48,7 @@ base_counts_out <- data.frame()
 
 # loop over each cluster
 for (cluster_num in min(cluster_list):max(cluster_list)) {
+  #cluster_num <- 1
   # convert list of sequences into a matrix
   seqs_matrix <- do.call(rbind, type.convert(strsplit(seqs_family[seqs_family$cluster_ID == cluster_num, "sequence"], ""), as.is = TRUE))
   # initialize right stem base counter
