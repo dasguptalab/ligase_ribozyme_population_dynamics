@@ -45,7 +45,7 @@ fmtSeqs=$tablesOut"/"$inputRun"_formatted.tmp.fa"
 cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space:]]*$/d' > $fmtSeqs
 
 # add final new line
-#echo "" >> $fmtSeqs
+echo "" >> $fmtSeqs
 
 # name output file
 countsOut=$tablesOut"/"$inputRun"_counts_table.csv"
@@ -103,7 +103,7 @@ done < $fmtSeqs
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/counts_plot_table_noDoped.csv; done
 
 # clean up
-rm $fmtSeqs
+#rm $fmtSeqs
 #rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv.fmt
 
 # status message

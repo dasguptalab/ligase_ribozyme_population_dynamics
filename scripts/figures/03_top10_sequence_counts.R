@@ -96,7 +96,7 @@ for (run_num in 1:8) {
   #counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, reorder(as.character(ID), log_counts), fill= log_counts)) + 
   counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, ID, fill= log_counts)) + 
   #counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, reorder(as.character(Sequence), log_counts), fill= log_counts)) + 
-    theme_bw() +
+    theme_classic() +
     geom_tile(colour = "black") +
     ggtitle(run_title) +
     theme(plot.title = element_text(hjust = 0.5)) +
@@ -108,7 +108,8 @@ for (run_num in 1:8) {
                          mid = safe_colors[4],
                          high = safe_colors[5],
                          midpoint = mid_log_counts,
-                         na.value = "white") #+
+                         na.value = "white") +
+    coord_fixed() #+
     #scale_y_discrete(labels=seqs_counts_subset$ID)
   # save the plot
   exportFile <- paste(out_dir, "/r", run_num, "_top10_sequence_log_counts.png", sep = "")
@@ -124,7 +125,7 @@ for (run_num in 1:8) {
 grid_log_counts_plot <- plot_grid(plotlist=counts_heatmap_list,  ncol = 4, align = 'v')
 # save the plot
 exportFile <- paste(out_dir, "/top10_sequence_log_counts.png", sep = "")
-png(exportFile, units="in", width=40, height=10, res=300)
+png(exportFile, units="in", width=20, height=10, res=300)
 print(grid_log_counts_plot)
 dev.off()
 
@@ -159,10 +160,10 @@ lt = list(
 )
 m = make_comb_mat(lt)
 cs = comb_size(m)
-ht = UpSet(m, comb_col="#0000FF", bg_col="#F0F0FF", bg_pt_col="#CCCCFF", top_annotation = upset_top_annotation(m, ylim = c(0, 1.1*max(cs))))
+ht = UpSet(m, comb_col=safe_colors[5], bg_col="#F0F0FF", bg_pt_col="#CCCCFF", top_annotation = upset_top_annotation(m, ylim = c(0, 1.1*max(cs))))
 ht = draw(ht)
 # save the plot
 exportFile <- paste(out_dir, "/top10_sequences_upset.png", sep = "")
-png(exportFile, units="in", width=40, height=10, res=300)
+png(exportFile, units="in", width=10, height=5, res=300)
 print(ht)
 dev.off()

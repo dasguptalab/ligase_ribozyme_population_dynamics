@@ -2,6 +2,8 @@
 
 # R script to create analysis plots for the RNA evolution project
 
+# To-do: replace inputs with the fixed quantification results
+
 # turn of scientific notation
 options(scipen=10000)
 
@@ -376,43 +378,43 @@ complement_counts_gap <- complement_counts_out[complement_counts_out$type == "G"
 
 # create line plot of total overhang identity percent
 base_counts_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=identity_color))+
-  geom_line() +
+  geom_line(size = 1) +
   geom_point() +
-  theme_bw() +
+  theme_classic() +
   scale_color_identity(name = "Identity", labels = complement_counts_total$identity, breaks = complement_counts_total$identity_color, guide = "legend") +
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
 exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_total.png", sep = "")
-png(exportFile, units="in", width=5, height=5, res=300)
+png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
 
 # create line plot of consecutive overhang identity percent
 base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=identity_color))+
-  geom_line() +
+  geom_line(size = 1) +
   geom_point() +
-  theme_bw() +
+  theme_classic() +
   scale_color_identity(name = "Identity", labels = complement_counts_consecutive$identity, breaks = complement_counts_consecutive$identity_color, guide = "legend") +
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
 exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_consecutive.png", sep = "")
-png(exportFile, units="in", width=5, height=5, res=300)
+png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
 
 # create line plot of gaped overhang identity percent
 base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=identity_color))+
-  geom_line() +
+  geom_line(size = 1) +
   geom_point() +
-  theme_bw() +
+  theme_classic() +
   scale_color_identity(name = "Identity", labels = complement_counts_gap$identity, breaks = complement_counts_gap$identity_color, guide = "legend") +
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
 exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_gaped.png", sep = "")
-png(exportFile, units="in", width=5, height=5, res=300)
+png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
 

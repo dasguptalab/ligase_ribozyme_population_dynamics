@@ -40,8 +40,12 @@ cd $tablesOut
 # name formatted sequences file
 fmtSeqs=$tablesOut"/"$inputRun"_formatted.tmp.fa"
 
+# re-format input sequences for processing
 # process just the top 10 most abundant sequences
 cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space:]]*$/d' | sort -k3 -n | head -10 > $fmtSeqs
+
+# add final new line
+echo "" >> $fmtSeqs
 
 # name output file
 countsOut=$tablesOut"/"$inputRun"_counts_table.csv"
@@ -99,7 +103,7 @@ done < $fmtSeqs
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/counts_plot_table_noDoped.csv; done
 
 # clean up
-rm $fmtSeqs
+#rm $fmtSeqs
 #rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv.fmt
 
 # status message

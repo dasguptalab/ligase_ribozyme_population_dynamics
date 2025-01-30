@@ -68,6 +68,9 @@ base_counts <- data.frame(
 )
 base_counts_out <- data.frame()
 
+# initialize data frame for sequences
+seqs_matrix <- data.frame()
+
 # loop over each cluster
 for (cluster_num in min(cluster_list):max(cluster_list)) {
 #for (cluster_num in 1:1) {
@@ -106,7 +109,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   run_title <- paste("Family", fam_num, "Base Conservation")
   # create heatmap of base conservation
   base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
-    theme_bw() +
+    theme_classic() +
     geom_tile(colour = "black") +
     # left P2
     annotate("rect", xmin = c(5.5), xmax = c(12.5), ymin = c(0.5), ymax = c(4.5), 
@@ -123,9 +126,11 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
              colour = safe_colors[1], fill = "transparent", linewidth = 1) +
     ylab("Base") +
     xlab("Base Number") +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 7)) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 10), 
+          axis.text.y = element_text(size = 10),
+          axis.title = element_text(size = 18)) +
     ggtitle(run_title) +
-    theme(plot.title = element_text(hjust = 0.5)) +
+    theme(plot.title = element_text(hjust = 0.5, size = 18)) +
     scale_fill_gradient2(name = "PA",
                          low = safe_colors[3],
                          mid = safe_colors[4],
@@ -133,10 +138,10 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
                          midpoint = max(base_counts$conservation)/2,
                          na.value = "white") +
     coord_fixed() +
-    geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 3)
+    geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 4)
   # save the plot
   exportFile <- paste(out_dir, "/family", fam_num, "_base_conservation.png", sep = "")
-  png(exportFile, units="in", width=5, height=5, res=300)
+  png(exportFile, units="in", width=20, height=3, res=300)
   print(base_counts_plot)
   dev.off()
   # add current family data to outputs

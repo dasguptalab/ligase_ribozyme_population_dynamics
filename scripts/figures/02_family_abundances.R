@@ -101,59 +101,17 @@ cluster_abundances$perc_abundance <- 100*cluster_abundances$frac_abundance
 # setup length of counts
 counts_length <- 13*8
 
-# line plot with counts per round for each of the families
-cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(run_name), y=counts, group=cluster_ID, color=cluster_color))+
-  geom_line() +
-  geom_point() +
-  theme_bw() +
-  scale_color_identity(name = "Family", labels = cluster_list_out, breaks = safe_colors, guide = "legend") +
-  ylab("Fraction Abundance") +
-  xlab("Round Number")
-# save the plot
-exportFile <- paste(out_dir, "/family_counts.png", sep = "")
-png(exportFile, units="in", width=5, height=5, res=300)
-print(cluster_abundances_plot)
-dev.off()
-
-# line plot with log counts per round for each of the families
-cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(run_name), y=log(counts), group=cluster_ID, color=cluster_color))+
-  geom_line() +
-  geom_point() +
-  theme_bw() +
-  scale_color_identity(name = "Family", labels = cluster_list_out, breaks = safe_colors, guide = "legend") +
-  ylab("Log Fraction Abundance") +
-  xlab("Round Number")
-# save the plot
-exportFile <- paste(out_dir, "/family_log_counts.png", sep = "")
-png(exportFile, units="in", width=5, height=5, res=300)
-print(cluster_abundances_plot)
-dev.off()
-
-# line plot with fraction abundance per round for each of the families
-cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(run_name), y=frac_abundance, group=cluster_ID, color=cluster_color))+
-  geom_line() +
-  geom_point() +
-  theme_bw() +
-  scale_color_identity(name = "Family", labels = cluster_list_out, breaks = safe_colors, guide = "legend") +
-  ylab("Fraction Abundance") +
-  xlab("Round Number")
-# save the plot
-exportFile <- paste(out_dir, "/family_fraction_abundances.png", sep = "")
-png(exportFile, units="in", width=5, height=5, res=300)
-print(cluster_abundances_plot)
-dev.off()
-
 # line plot with percent abundance per round for each of the families
 cluster_abundances_plot <- ggplot(data=cluster_abundances, aes(x=as.character(run_name), y=perc_abundance, group=cluster_ID, color=cluster_color))+
-  geom_line() +
+  geom_line(size = 1) +
   geom_point() +
-  theme_bw() +
+  theme_classic() +
   scale_color_identity(name = "Family", labels = cluster_list_out, breaks = safe_colors, guide = "legend") +
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
 exportFile <- paste(out_dir, "/family_percent_abundances.png", sep = "")
-png(exportFile, units="in", width=5, height=5, res=300)
+png(exportFile, units="in", width=5, height=4, res=300)
 print(cluster_abundances_plot)
 dev.off()
 
