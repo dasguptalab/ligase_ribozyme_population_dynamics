@@ -28,32 +28,29 @@ quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_families/r8_S8_L001_counts_plot_table.csv")
 
 # read in sequence count data
-seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_top10/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
-
-# reverse complement the sequences
-#seqs_counts$sequence <- rev(chartr("ATGC","TACG",seqs_counts$sequence))
+#seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_top10/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
 
 # add the fraction abundances
-seqs_counts$frac_abundance <- NA
-for (run_num in 1:8) {
-  seqs_counts[seqs_counts$counts_run_name == run_num, "frac_abundance"] <- seqs_counts[seqs_counts$counts_run_name == run_num, "counts"]/quality[run_num]
-}
+#seqs_counts$frac_abundance <- NA
+#for (run_num in 1:8) {
+#  seqs_counts[seqs_counts$counts_run_name == run_num, "frac_abundance"] <- seqs_counts[seqs_counts$counts_run_name == run_num, "counts"]/quality[run_num]
+#}
 
 # add log values
-seqs_counts$log_counts <- log(seqs_counts$counts)
-seqs_counts$log_frac_abundance <- log(seqs_counts$frac_abundance)
+#seqs_counts$log_counts <- log(seqs_counts$counts)
+#seqs_counts$log_frac_abundance <- log(seqs_counts$frac_abundance)
 
 # set infinite and NA values equal to zero
-is.na(seqs_counts)<-sapply(seqs_counts, is.infinite)
+#is.na(seqs_counts)<-sapply(seqs_counts, is.infinite)
 
 # re-order the data for plotting
-seqs_counts <- seqs_counts[order(seqs_counts$log_counts, decreasing=TRUE),]
+#seqs_counts <- seqs_counts[order(seqs_counts$log_counts, decreasing=TRUE),]
 
 # setup midpoint values for plotting
-seqs_counts_noNA <- seqs_counts
-seqs_counts_noNA[is.na(seqs_counts_noNA)] <- 0
-mid_log_counts <- max(seqs_counts_noNA$log_counts)/2
-mid_log_frac_abundance <- log(min(seqs_counts_noNA[seqs_counts_noNA$frac_abundance != 0,"frac_abundance"]))/2
+#seqs_counts_noNA <- seqs_counts
+#seqs_counts_noNA[is.na(seqs_counts_noNA)] <- 0
+#mid_log_counts <- max(seqs_counts_noNA$log_counts)/2
+#mid_log_frac_abundance <- log(min(seqs_counts_noNA[seqs_counts_noNA$frac_abundance != 0,"frac_abundance"]))/2
 
 # list of cluster IDs
 cluster_list <- unique(r8_seqs_family$cluster_ID)

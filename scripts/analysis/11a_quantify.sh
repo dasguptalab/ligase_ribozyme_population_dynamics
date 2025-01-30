@@ -6,10 +6,10 @@
 #$ -q largemem
 
 # script to count the number of sequences shared across runs
-# usage: qsub 11_quantify.sh inputRun
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 11_quantify.sh 07a_clustered $runInput; done
-# usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 11_quantify.sh $runInput; done
-# usage ex: bash 11_quantify.sh r8_S8_L001
+# usage: qsub 11a_quantify.sh inputRun
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 11a_quantify.sh 07a_clustered $runInput; done
+# usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 11a_quantify.sh $runInput; done
+# usage ex: bash 11a_quantify.sh r1_S1_L001
 
 # retrieve input run name
 inputRun=$1

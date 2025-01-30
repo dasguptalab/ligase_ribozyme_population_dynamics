@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 
+# To-do: replace inputs with the fixed quantification results
+
 # R script to create analysis plots for the RNA evolution project
 
 # turn of scientific notation
