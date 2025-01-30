@@ -12,7 +12,7 @@ library(rcartocolor)
 library(stringr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/05_above9_overhang_conservation_wobble"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/05_above9_overhang_conservation_reads_wobble"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -375,7 +375,7 @@ complement_counts_consecutive <- complement_counts_out[complement_counts_out$typ
 complement_counts_gap <- complement_counts_out[complement_counts_out$type == "G",]
 
 # create line plot of total overhang identity percent
-base_counts_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_name), y=perc_abundance_unique, group=identity, color=identity_color))+
+base_counts_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=identity_color))+
   geom_line() +
   geom_point() +
   theme_bw() +
@@ -383,13 +383,13 @@ base_counts_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_unique_total.png", sep = "")
+exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_total.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(base_counts_plot)
 dev.off()
 
 # create line plot of consecutive overhang identity percent
-base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.character(run_name), y=perc_abundance_unique, group=identity, color=identity_color))+
+base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=identity_color))+
   geom_line() +
   geom_point() +
   theme_bw() +
@@ -397,13 +397,13 @@ base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.characte
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_unique_consecutive.png", sep = "")
+exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_consecutive.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(base_counts_plot)
 dev.off()
 
 # create line plot of gaped overhang identity percent
-base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_name), y=perc_abundance_unique, group=identity, color=identity_color))+
+base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=identity_color))+
   geom_line() +
   geom_point() +
   theme_bw() +
@@ -411,7 +411,7 @@ base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_na
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_unique_gaped.png", sep = "")
+exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_gaped.png", sep = "")
 png(exportFile, units="in", width=5, height=5, res=300)
 print(base_counts_plot)
 dev.off()

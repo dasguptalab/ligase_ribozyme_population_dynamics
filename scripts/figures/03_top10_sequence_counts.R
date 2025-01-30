@@ -10,6 +10,7 @@ library(ggplot2)
 library(scales)
 library(rcartocolor)
 library(dplyr)
+library(ComplexHeatmap)
 
 # supress cowplot package messages
 suppressMessages( require(cowplot) )
@@ -73,7 +74,8 @@ for (i in 2:10) {
   ID_list <- c(ID_list, rep(i,8))
 }
 ID_data <- as.factor(ID_list)
-ID_data <- factor(ID_data, levels = levels(ID_data)[c(1, 3:10, 2)])
+#ID_data <- factor(ID_data, levels = levels(ID_data)[c(1, 3:10, 2)])
+ID_data <- factor(ID_data, levels = levels(ID_data)[rev(c(1, 3:10, 2))])
 
 # initialize plot data
 counts_heatmap_list <- vector('list', 8)
@@ -128,3 +130,39 @@ dev.off()
 
 # export plotting data
 write.csv(seqs_counts, file = paste(out_dir, "/top10_sequence_counts.csv", sep = ""), row.names = FALSE, quote = FALSE)
+
+# create table of top 10 sequences per run
+sequence_data <- data.frame(
+  run_1 = seqs_counts[seqs_counts$run_name == 1 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_2 = seqs_counts[seqs_counts$run_name == 2 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_3 = seqs_counts[seqs_counts$run_name == 3 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_4 = seqs_counts[seqs_counts$run_name == 4 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_5 = seqs_counts[seqs_counts$run_name == 5 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_6 = seqs_counts[seqs_counts$run_name == 6 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_7 = seqs_counts[seqs_counts$run_name == 7 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_8 = seqs_counts[seqs_counts$run_name == 8 & seqs_counts$counts_run_name == 8, "sequence"]
+)
+
+# export sequence data
+write.csv(sequence_data, file = paste(out_dir, "/top10_sequences.csv", sep = ""), row.names = FALSE, quote = FALSE)
+
+# setup and create upset plot
+lt = list(
+          run_1 = seqs_counts[seqs_counts$run_name == 1 & seqs_counts$counts_run_name == 8, "sequence"],
+          run_2 = seqs_counts[seqs_counts$run_name == 2 & seqs_counts$counts_run_name == 8, "sequence"],
+          run_3 = seqs_counts[seqs_counts$run_name == 3 & seqs_counts$counts_run_name == 8, "sequence"],
+          run_4 = seqs_counts[seqs_counts$run_name == 4 & seqs_counts$counts_run_name == 8, "sequence"],
+          run_5 = seqs_counts[seqs_counts$run_name == 5 & seqs_counts$counts_run_name == 8, "sequence"],
+          run_6 = seqs_counts[seqs_counts$run_name == 6 & seqs_counts$counts_run_name == 8, "sequence"],
+          run_7 = seqs_counts[seqs_counts$run_name == 7 & seqs_counts$counts_run_name == 8, "sequence"],
+          run_8 = seqs_counts[seqs_counts$run_name == 8 & seqs_counts$counts_run_name == 8, "sequence"]
+)
+m = make_comb_mat(lt)
+cs = comb_size(m)
+ht = UpSet(m, comb_col="#0000FF", bg_col="#F0F0FF", bg_pt_col="#CCCCFF", top_annotation = upset_top_annotation(m, ylim = c(0, 1.1*max(cs))))
+ht = draw(ht)
+# save the plot
+exportFile <- paste(out_dir, "/top10_sequences_upset.png", sep = "")
+png(exportFile, units="in", width=40, height=10, res=300)
+print(ht)
+dev.off()
