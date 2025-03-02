@@ -1,7 +1,5 @@
 #!/usr/bin/env Rscript
 
-# To-do: replace inputs with the fixed quantification results
-
 # R script to create analysis plots for the RNA evolution project
 
 # turn of scientific notation
@@ -49,13 +47,26 @@ for (seq_num in 1:nrow(seqs_identities)) {
 seqs_family <- cbind(seqs_family, peak_cluster_IDs)
 
 # list of cluster IDs
-fam_list_out <- seq(1, 13)
+cluster_list <- unique(seqs_family$peak_cluster_IDs)
 
-# list of cluster IDs in order of abundance in round 8
-r8_fams <- data.frame(
-  fam_ID = fam_list_out,
-  cluster_ID = c(1, 3, 0, 2, 5, 8, 4, 7, 11, 6, 10, 12, 9)
+# list of cluster IDs and abundances
+cluster_read_counts <- c(40999, 256601, 34117, 82079, 14439, 26345, 6555, 12539, 15921, 2572, 4227, 8543, 4043)
+cluster_seq_counts <- c(108, 1114, 98, 116, 269, 85, 33, 49, 75, 153, 275, 286, 271)
+cluster_read_abun <- 100*cluster_read_counts/889374
+
+# create cluster data frame
+cluster_data <- data.frame(
+  cluster_ID = cluster_list,
+  read_counts = cluster_read_counts,
+  seq_counts = cluster_seq_counts,
+  read_abun = cluster_read_abun
 )
+
+# sort cluster data
+cluster_data <- cluster_data[order(cluster_data$read_abun, decreasing = TRUE),]  
+
+# add family numbers
+cluster_data$fam_num <- seq(from = 1, to = 13, by = 1)
 
 # list of cluster IDs
 cluster_list <- unique(seqs_family$cluster_ID)
@@ -80,7 +91,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   # convert list of sequences into a matrix
   seqs_matrix <- do.call(rbind, type.convert(strsplit(seqs_family[seqs_family$cluster_ID == cluster_num, "sequence"], ""), as.is = TRUE))
   # set family number
-  fam_num <- r8_fams[r8_fams$cluster_ID == cluster_num, "fam_ID"]
+  fam_num <- cluster_data[cluster_data$cluster_ID == cluster_num, "fam_ID"]
   # loop over each base
   for (base_num in 1:40) {
     # update indicies

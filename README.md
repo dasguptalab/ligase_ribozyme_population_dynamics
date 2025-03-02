@@ -13,16 +13,170 @@ Sequencing reads from each round were pre-processed using custom BASH and R scri
 
 #### Progress of selection across eight rounds (12 January 2025)
 
-|     | <div style="width:175px">Statistic</div> | <b>Round 1</b> | <b>Round 2</b> | <b>Round 3</b> | <b>Round 4</b> | <b>Round 5</b> | <b>Round 6</b> | <b>Round 7</b> | <b>Round 8</b> |
-| --- | ---------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- |
-| <b>A</b> | Reaction Time (min)| 120 | 60 |30 | 20 | 30 | 10 | 10 |10 |
-| <b>B</b> | \[Mg<sup>2+</sup>] (mM) | 20 | 20 | 20 | 20 | 20 | 20 | 10 | 5 |
-| <b>C</b> | Total Raw Reads | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 |
-| <b>D</b> | High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
-| <b>E</b> | Unique Reads | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
-| <b>F</b> | Diversity (%) | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
-| <b>G</b> | Sequences with > 9 Reads | 5 | 3 | 5 | 4 | 283 | 4,001 | 2,703 | 2,100 |
-| <b>H</b> | Sequence Families | NA | NA | NA | NA | NA | 16 | 14 | 13 |
+| <div style="width:175px">Statistic</div> | <b>Round 1</b> | <b>Round 2</b> | <b>Round 3</b> | <b>Round 4</b> | <b>Round 5</b> | <b>Round 6</b> | <b>Round 7</b> | <b>Round 8</b> |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Reaction Time (min)| 120 | 60 |30 | 20 | 30 | 10 | 10 |10 |
+| \[Mg<sup>2+</sup>] (mM) | 20 | 20 | 20 | 20 | 20 | 20 | 10 | 5 |
+| Total Raw Reads | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 |
+| High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
+| Unique Reads | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
+| Diversity (%) | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
+| Sequences with > 9 Reads | 5 | 3 | 5 | 4 | 283 | 4,001 | 2,703 | 2,100 |
+| Sequence Families | NA | NA | NA | NA | NA | 16 | 14 | 13 |
+
+#### Supplemental
+
+##### Analysis Steps
+
+| Step | Analysis | Method |
+| --- | --- | --- |
+|  1 | Merge the paired-end RNA sequencing reads for each round | FLASh |
+|  2 | Combine the merged read files with the unmerged forward read files | BASH |
+|  3 | Filter reads by quality and remove any detected adapter content | Trimmomatic |
+|  4 | Filter reads by structure to keep only those that contain the expected constant up- and down-stream regions with 40 bp in-between | BASH |
+|  5 | Clean reads to retain only the 40 bp in-between region | BASH |
+|  6 | Filter to keep unique sequences that have at least 10 sequencing reads | BASH |
+|  7 | Cluster the unique sequences for each round | Clustal Omega |
+
+##### Top 10 seqeunces four each round
+
+| Round Number | Sequence Ranking | Sequence |
+| --- | --- | --- |
+| 1 | 1 | AGCTCAGTCTGCCAATTAGCCCGCACGGTTGGCAGCATTC |
+| 1 | 2 | GGGTGAGCAATTACACCTCTTAAGGTCTTCCGCAGTGGCT |
+| 1 | 3 | TTTCACCAGCATTCTGGTAAGAGTGTAAGCGTCACTTTGA |
+| 1 | 4 | TAGGTAGCACCACGGGGCGACACTTTTGGATTAACTCGCT |
+| 1 | 5 | TTTTATTCGGTGAGCTATAGTGGGAGAAGGGATCCCTGGC |
+| 1 | 6 | TTACGATCTAAGCAATCCGTAGCTATCGTCTTTGTTTCTA |
+| 1 | 7 | AATAACATGTGAGGTTCGCATTTCATTAGCCTTTAAATTA |
+| 1 | 8 | AATAACATGTGACCAGGGTCAGGTGCATGAAGTGGTCACA |
+| 1 | 9 | AATAACATGGAACCATATAACGGGCTTTATCGCCGACTAG |
+| 1 | 10 | AATAACATGAGGGTTCAAGTATTTTGGTTTATAACAAGGG |
+| 2 | 1 | AGCTCAGTCTGCCAATTAGCCCGCACGGTTGGCAGCATTC |
+| 2 | 2 | TGTCGCACTATGACTCTGACCCACGTATGCCGATTCATCA |
+| 2 | 3 | TTTAGGAATTTTCCGCCTGGTAAACGGATTCGACATTTCA |
+| 2 | 4 | TAGGAGAAGATATAATTTCTCATAGTGGTGTGAATTTGGA |
+| 2 | 5 | TTTTACTTATAGATGAGGCAGAACGTTCAATTGGGCCGTA |
+| 2 | 6 | TTAAGGTAGTAGTGGCATTTGACTGTTTAGGCACTACGAT |
+| 2 | 7 | ACATACCAAGAGTCGTGATGACGCCTCATCGTGTGGTGAA |
+| 2 | 8 | ACATACATTGAGTACAATGAAGCCGTTATCTGCCAATCAC |
+| 2 | 9 | ACATACATTGAGCTGGGCATCGGTCTAGTGACATGACTAC |
+| 2 | 10 | ACATACATTCTCGGAGGTTGAATATTCCGGGTGAGTATTG |
+| 3 | 1 | AGCTCAGTCTGCCAATTAGCCCGCACGGTTGGCAGCATTC |
+| 3 | 2 | CCGTTTCCGTAAGGTCTGTCCAGTTGGCGCTCTACACCAA |
+| 3 | 3 | TTTACGTTCGTCGTGCGCTATTACATAGGTTGGTACGATT |
+| 3 | 4 | TAGTGGCAAAAGTAATCAGACCCTTTTGGGCGTACAAGAT |
+| 3 | 5 | TTTGTTCTCGCCGCCGATATTAATAAGACACGCTGTTCTA |
+| 3 | 6 | TGTTGTCGAGAGTCATGTGTTGCAGCACTAGTCATGCATC |
+| 3 | 7 | AAGGCAGATAACATAGGAGTCTGAGATAGTAGTAGCGGAA |
+| 3 | 8 | AAGGCAGAGTCGTTGTTGTGCGCCCATAGGAGTGATATGA |
+| 3 | 9 | AAGGCAGAGTCAACACGAATAGCTGTGGGGGTCCCGTCGC |
+| 3 | 10 | AAGGCAGAGGGGCGCGTACTGTGATCGAATGTCGAAGCTC |
+| 4 | 1 | AGCTCAGTCTGCCAATTAGCCCGCACGGTTGGCAGCATTC |
+| 4 | 2 | CACATTTTATCCGCAAAACAGAGCGCATGTGGCTCTCTAA |
+| 4 | 3 | TTTATATAAACAGGTAGCGAGACCAGAATTCGGTTACGGA |
+| 4 | 4 | GTTGTGGAGTCAACTGCGTGAGTCGGGTGTATGTTGTGGT |
+| 4 | 5 | TTTGTAGCGCCTGAGGGTTGAGTGGACATACGCCGGATCC |
+| 4 | 6 | TGGTCACGGACTGTCGTTGACGGGCGGAGGGGCTTGTTAG |
+| 4 | 7 | TGGTCACGCTTTGGTAGAGAAAGCAGTGGACTCGCGAGAC |
+| 4 | 8 | TGGTCACGCGTGTCGGAGTAAGTTACTACAGCCTACTCAC |
+| 4 | 9 | TGGTCACGCGGTACCACTCAGATGTCCTAGGCAGTGCGGC |
+| 4 | 10 | TGGTCACGCGCCTAGGGGTAGGTCTATGGTACGAGGCATG |
+| 5 | 1 | GATTTATCCCAATTCTCTGCTTGGGCACCAATTTCACTAA |
+| 5 | 2 | CCTGCCGCACATTGTGAACTTATACCACGGTTGCCGATCA |
+| 5 | 3 | GTTCATTCTCTCACTTGCCACGAGTGCCGATTCCTTAGGA |
+| 5 | 4 | CAGTTCCGATCTTGTCTGTCCTCGTTCCCGTGCTACAGTC |
+| 5 | 5 | TTTTCACTAGTTTATTACACAGACCCGAACCCAAACTGTC |
+| 5 | 6 | TGGTTGGGGATCCTAACATCTACGTAGCGAGTTGTTGGCT |
+| 5 | 7 | TGGTTGGGGAGGTGCTGAGTATTGATACGGGCAGCGTTAG |
+| 5 | 8 | TGGTTGGGGACAAATGTAAAGAACAGTTGGTCGCATTGTC |
+| 5 | 9 | TGGTTGGGGAAGGCTTGGTTCGCATGGATGCACACAAATC |
+| 5 | 10 | TGGTTGGGCTTTGGCTACTGGAGGGCGAGGAGTAAGGATC |
+| 6 | 1 | AGCTCAGTCTGCCAATTAGCCCGCACGGTTGGCAGCATTC |
+| 6 | 2 | TGCTCAGTCGTCGAGTTTGTGCCCGCAAGTGGACGCATTC |
+| 6 | 3 | GGTTTAAGTCACTTAGCCTCCACACTTGTATTCTCACTGA |
+| 6 | 4 | TAGCATCTATTCCGCATCAGTCTTTGTGTTAGGGAATCAC |
+| 6 | 5 | CAGTTTCCGAAATGTCTGTCCCTTAGGCTCTGCAGTTGAC |
+| 6 | 6 | TATGGAGTGGATTAGTTAGATTGCGAGATGAGATCTGGAG |
+| 6 | 7 | TATGGAGTCTTGCTATTAGATTATGTCCGGTCCCATGAGA |
+| 6 | 8 | TATGGAGTCATTCCGCACACGTCAGAATCGGAGACTTCGG |
+| 6 | 9 | TATGGAGTAGTGGACTGGGGGAGTTAGTGGGCGAGTCTGT |
+| 6 | 10 | TATGGAGTAACTCAGGGAATTAGACTTCTGGATAGCAGTC |
+| 7 | 1 | AGCTCAGTCTGCCAATTAGCCCGCACGGTTGGCAGCATTC |
+| 7 | 2 | CAGTTCCCACGTCTTGTCTGTCCAGTATATCTCAACGACA |
+| 7 | 3 | TACTCCGCGGACTTATTGCCGCACCACGGTGAGCGCTGTG |
+| 7 | 4 | GACATTTTAACACCTCTCAAGGTATTCCGCGATCTGTGGT |
+| 7 | 5 | CGAGGGGCATTCACACACCGTAGTCGCCCTGTATACGGGC |
+| 7 | 6 | CGAGATTGATTCCGTGTAGGTTGTGATTAGTCTTAGTACA |
+| 7 | 7 | CGACTTGCCATTCCGCACTTTGGGTAGCGAGCCTCTTGGC |
+| 7 | 8 | CGACTTCCGATGCCGTCTGTCCTTCGGCTTATTGTTGCCT |
+| 7 | 9 | CGACTGCCGCGGCTGTCTGTCATTTCCAGCGGAAGGGTTC |
+| 7 | 10 | CGACTACCATTCTCACGGTGACGCTGTCGGTTGTCGATCC |
+| 8 | 1 | AGCTCAGTCTGCCAATTAGCCCGCACGGTTGGCAGCATTC |
+| 8 | 2 | CGGCTTCCGGGGACGTCTATCGCTCTGGTACTCCGACTGA |
+| 8 | 3 | AGATTACCATTCCGCAAATTGCTCTAGTTGGTCTCTGTAC |
+| 8 | 4 | GGAGAACATTCCGCTCCTGAGCACACGTTCACGGGTGATT |
+| 8 | 5 | AGCTCAGTCTGCAAATTAGCCCGCACGATTGGCAGCATTC |
+| 8 | 6 | AGCCCAGTCTGCCAATTAGCCCGCACGGTTAACGGCATTC |
+| 8 | 7 | AGCCCAGTCTGCCAATTAGCCCGCACGGTGGGGAGCATTC |
+| 8 | 8 | AGCCCAGTCTGCCAATTAGCCCGCACGGTGGGCAGCATTC |
+| 8 | 9 | AGCCCAGTCTGCCAATTAGCCCGCACGCTTGTCAGCATTC |
+| 8 | 10 | AGCCCAGTCTGCCAATTAGCCCGCACGAATGGCAGCAATC |
+
+##### Abundance of ribozyme sequence familys
+
+| Family | Sequence Counts | Read Counts | Read Abundance |
+| --- | --- | --- | --- | --- |
+| 1 | 484 | 423900 | 47.6 |
+| 2 | 220 | 121855 | 13.7 |
+| 3 | 292 | 118139 | 13.3 |
+| 4 | 153 | 52484 | 5.90 |
+| 5 | 172 | 49501 | 5.57 |
+| 6 | 115 | 39892 | 4.49 |
+| 7 | 80 | 25719 | 2.89 |
+| 8 | 93 | 22669 | 2.55 |
+| 9 | 60 | 17619 | 1.98 |
+| 10 | 40 | 15199 | 1.71 |
+| 11 | 20 | 10370 | 1.17 |
+| 12 | 19 | 6102 | 0.686 |
+| 13 | 13 | 5053 | 0.568 |
+
+##### Different classes of ribozymes after clustering
+
+| Family | Cluter | Sequence Counts | Read Counts | Read Abundance | Peak Sequence | Walton et. al, 2020 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 1114 | 256601 | 28.9 | GAATGCTGCCAACCGTGCGGGCTAATTGGCAGACTGAGCT | RS1 |
+| 2 | 3 | 116 | 82079 | 9.23 | CCTAGCTAGCGCTGACTAGGACAGATGAGCGGCGGAACCA | RS2 |
+| 3 | 0 | 108 | 40999 | 4.61 | TTAGTGAAATTGGTGCCCAAGCAGAGAATTGGGATAAATC | RS3 | 
+| 4 | 2 | 98 | 34117 | 3.84 | GAACCCTTATCACAGTCGTGCGGATTTGTAAGCCTAAGCG | RS5 |
+| 5 | 7 | 49 | 12539 | 1.41 | CTGGCAAACACAGCGCGCTGTGTGTTATGTGGGGCGGTCT | RS6 |
+| 6 | 5 | 85 | 26345 | 2.96 | AGAGACCGTGAGCTTGCGGAATGTTAGCAGAACAGAACTG | RS10 |
+| 7 | 8 | 75 | 15921 | 1.79 | AGCCACTGCGGAAGACCTTAAGAGGTGTAATTGCTCACCC | RS8 |
+| 8 | 4 | 269 | 14439 | 1.62 | AAAAGTTTCGCTGAATTGGACAGACCACCGCGTGAAGTGG | RS7 |
+| 9 | 6 | 33 | 6555 | 0.737 | GACGGACGGTCGCGGTAACCTATGACCATGAGACGGAACA | NA |
+| 10 | 11 | 286 | 8543 | 0.961 | CCGGTCTTAAGCCCCTGCGTTGCGGAAATGCACGTTGCCC | NA |
+| 11 | 10 | 275 | 4227 | 0.475 | TTAGAGAGCCACATGCGCTCTGTTTTGCGGATAAAATGTG | NA |
+| 12 | 12 | 271 | 4043 | 0.455 | TGATGAATCGGCATACGTGGGTCAGAGTCATAGTGCGACA | NA |
+| 13 | 9 | 153 | 2572 | 0.289 | GAAACTGTTCACCTGGTGCTGGAAGGAACAGCCTAAGCGT | NA |
+
+##### Substrate overhang complement identities
+
+| Family | Complement Sequence | Identity | Gap | Wobble |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | TGCGGGCT | 87.5 | yes | yes |
+| 2 | GGCGGAAC | 75 | no | no |
+| 3 | ATTGGGAT | 75 | no | yes |
+| 4 | TGCGGATT | 87.5 | yes | no |
+| 5 | TGTGGGGC | 87.5 | no | yes |
+| 6 | TGCGGAAT | 100 | no | no |
+| 7 | TGCGGAAG | 87.5 | no | no |
+| 8 | CGCTGAAT | 75 | yes | no |
+| 9 | GACGGAAC | 62.5 | no | no |
+| 10 | TGCGGAAA | 87.5 | no | no |
+| 11 | TGCGGATA | 75 | no | no |
+| 12 | TGATGAAT | 75 | yes | no |
+| 13 | TGCTGGAA | 75 | yes | yes |
+
 
 ### Data Analysis Workflow Steps
 
@@ -30,19 +184,20 @@ The steps 1 through 8 comprise the analysis workflow and correspond to scripts i
 
 #### Analysis Scripts
 
-1. merge paired reads for each run using FLASh (see supplement of [this PNAS paper][2])<br>
+1. merge paired reads for each round using FLASh (see supplement of [this PNAS paper][2])<br>
 <b>Note:</b> reads were not merged in the original analysis and only the forward reads were used in the original analysis workflow (see 0010\_qc\_slx.py from the original analysis code)
-2. filter reads by quality (AVGQUAL:30) and remove detected adapter content using Trimmomatic<br>
-<b>Note:</b> the quality filtering is similar in approach as the original analysis (see 0010\_qc\_slx.py from the original analysis code).
-3. filter reads by structure to keep only those that contain the expected constant up- and down-stream regions (with 40 bp in-between in this workflow, but not the original) using BASH<br>
-<b>Note:</b> the defined start sequence was "ACGGACAGCG" and the end sequence was "CGCTGTCCTTTTTTGGCTAAGGGACCTACCG". Additionally, it is recommended to simply reverse complement the constant regions instead of all reads, at this stage in the analysis (see 0010\_qc\_slx.py from the original analysis code).
-4. clean reads to retain only the 40 bp in-between region using BASH<br>
-<b>Note:</b> there does not appear to be a filter in the original analysis to keep reads that are only 40-bp in the original analysis workflow.
-5. combine merged read files with the unmerged forward read files using BASH<br>
+2. combine merged read files with the unmerged forward read files using BASH<br>
 <b>Note:</b> reverse reads are lower quality and typically do not pass filtering by quality or structure.
+<b>To-do:</b> update scripts to reflect the workflow step order change.
+3. filter reads by quality (AVGQUAL:30) and remove detected adapter content using Trimmomatic<br>
+<b>Note:</b> the quality filtering is similar in approach as the original analysis (see 0010\_qc\_slx.py from the original analysis code).
+4. filter reads by structure to keep only those that contain the expected constant up- and down-stream regions (with 40 bp in-between in this workflow, but not the original) using BASH ({N}CGGTAGGTCCCTTAGCCAAAAAAGGACAGCG{40}CGCTGTCCGT{M})<br>
+<b>Note:</b> the defined start sequence was "ACGGACAGCG" and the end sequence was "CGCTGTCCTTTTTTGGCTAAGGGACCTACCG". Additionally, it is recommended to simply reverse complement the constant regions instead of all reads, at this stage in the analysis (see 0010\_qc\_slx.py from the original analysis code).
+5. clean reads to retain only the 40 bp in-between region using BASH<br>
+<b>Note:</b> there does not appear to be a filter in the original analysis to keep reads that are only 40-bp in the original analysis workflow.
 6. remove sequences that appear less than 10 times (see 0015\_g10\_seqs.py from the original analysis code) and re-format reads and headers using BASH<br>
 <b>Note:</b> only unique reeds were kept in this analysis and the sequence headers were updated to contain the run name, arbitrary sequence ID, and read counts for the unique sequence.
-7. cluster read sequences for each run using Clustal Omega<br>
+7. cluster read sequences for each round (run) using Clustal Omega<br>
 	<b>07a.</b>  cluster with a soft maximum of 500 sequences in sub-clusters (cluster-size=500), which is what the original analysis used (see 0020\_cluster\_slxn.py from the original analysis code)<br>
 	<b>07b.</b>  cluster with the default soft maximum of 100 sequences in sub-clusters (see [Clustal Omega README][3])
 8. create tables with the reverse compliment of cluster sequences and peak sequences, in addition to the cluster and sequence information (run name, sequence ID, read counts, cluster ID, sequence counts, reverse complimented sequence)

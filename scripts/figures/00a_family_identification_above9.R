@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-# To-do: replace inputs with the fixed quantification results
+# To-do: note if there are any seqs with >= 90% similarity to multiple peaks
 
 # R script to create analysis plots for the RNA evolution project
 
@@ -19,8 +19,7 @@ r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summ
 # read in sequence count data
 seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_above9/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
   
-# retrieve data from run 8 and remove duplicate sequence data
-#seqs_input <- seqs_input[seqs_input$counts_run_name == "1",]
+# remove duplicate sequence data
 seqs_input <- seqs_input[!duplicated(seqs_input$sequence_ID),]
 
 # setup data frame length

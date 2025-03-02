@@ -96,15 +96,15 @@ while read data; do
 done < $fmtSeqs
 
 # add run tags to sequence IDs
-#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done
+#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_above9/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done
 
 # after processing the last round of data, combine all plotting data files
-#head -1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r8_S8_L001_counts_plot_table.csv > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/counts_plot_table_noDoped.csv
-#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/counts_plot_table_noDoped.csv; done
+#head -1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_above9/r8_S8_L001_counts_plot_table.csv > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_above9/counts_plot_table_noDoped.csv
+#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_above9/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_above9/counts_plot_table_noDoped.csv; done
 
 # clean up
 #rm $fmtSeqs
-#rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified/r*_counts_plot_table.csv.fmt
+#rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_above9/r*_counts_plot_table.csv.fmt
 
 # status message
 echo "Analysis complete!"

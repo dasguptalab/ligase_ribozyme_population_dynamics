@@ -11,6 +11,7 @@ library(scales)
 library(rcartocolor)
 library(dplyr)
 library(ComplexHeatmap)
+# https://jokergoo.github.io/ComplexHeatmap-reference/book/upset-plot.html
 
 # supress cowplot package messages
 suppressMessages( require(cowplot) )
@@ -164,6 +165,32 @@ ht = UpSet(m, comb_col=safe_colors[5], bg_col="#F0F0FF", bg_pt_col="#CCCCFF", to
 ht = draw(ht)
 # save the plot
 exportFile <- paste(out_dir, "/top10_sequences_upset.png", sep = "")
+png(exportFile, units="in", width=10, height=5, res=300)
+print(ht)
+dev.off()
+
+# read in peak sequences
+peaks_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized/07a_clustered/r8_S8_L001_formatted_above9_cluster_peaks_seqs_rev.csv")
+peak_seqs <- peaks_input$egneuqes
+
+# setup and create upset plot
+lt = list(
+  run_1 = seqs_counts[seqs_counts$run_name == 1 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_2 = seqs_counts[seqs_counts$run_name == 2 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_3 = seqs_counts[seqs_counts$run_name == 3 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_4 = seqs_counts[seqs_counts$run_name == 4 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_5 = seqs_counts[seqs_counts$run_name == 5 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_6 = seqs_counts[seqs_counts$run_name == 6 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_7 = seqs_counts[seqs_counts$run_name == 7 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_8 = seqs_counts[seqs_counts$run_name == 8 & seqs_counts$counts_run_name == 8, "sequence"],
+  run_8_peaks = peak_seqs
+)
+m = make_comb_mat(lt)
+cs = comb_size(m)
+ht = UpSet(m, comb_col=safe_colors[5], bg_col="#F0F0FF", bg_pt_col="#CCCCFF", top_annotation = upset_top_annotation(m, ylim = c(0, 1.1*max(cs))))
+ht = draw(ht)
+# save the plot
+exportFile <- paste(out_dir, "/top10_sequences_peaks_upset.png", sep = "")
 png(exportFile, units="in", width=10, height=5, res=300)
 print(ht)
 dev.off()
