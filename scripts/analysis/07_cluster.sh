@@ -8,7 +8,7 @@
 # script to cluster sequences using clustalo
 # usage: qsub 07_cluster.sh sampleTag
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted\.fa; do sampleTag=$(basename $i | sed 's/_formatted\.fa//'); echo $sampleTag; qsub 07_cluster.sh $sampleTag; done
-## jobs 
+## jobs 1267159 to 1267169
 
 # load the software module
 module load bio/0724
