@@ -9,6 +9,7 @@
 # usage: qsub 07_cluster.sh sampleTag
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted\.fa; do sampleTag=$(basename $i | sed 's/_formatted\.fa//'); echo $sampleTag; qsub 07_cluster.sh $sampleTag; done
 ## jobs 1267159 to 1267169
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted_above4/*_above4\.fa; do sampleTag=$(basename $i | sed 's/_formatted_above4\.fa//'); sampleTag=$sampleTag"_above4"; echo $sampleTag; qsub 07_cluster.sh $sampleTag $i; done
 
 # load the software module
 module load bio/0724
@@ -17,16 +18,10 @@ module load bio/0724
 sampleTag=$1
 
 # set the sample file
-sampleFile=$1"_formatted.fa"
-
-# retrieve the analysis type
-analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+sampleFile=$2
 
 # retrieve analysis outputs absolute path
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-
-# retrieve the inputs path
-inputsPath=$outputsPath"/06_formatted"
 
 # make a new directory for analysis
 outputsPath=$outputsPath"/07_clustered"
