@@ -8,10 +8,10 @@
 # script to cluster sequences using clustalo
 # usage: qsub 07_cluster.sh sampleTag
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted\.fa; do sampleTag=$(basename $i | sed 's/_formatted\.fa//'); echo $sampleTag; qsub 07_cluster.sh $sampleTag; done
-## jobs 1267135 to 1267145
+## jobs 
 
 # load the software module
-#module load bio/0724
+module load bio/0724
 
 # retrieve the same tag
 sampleTag=$1
@@ -31,11 +31,6 @@ inputsPath=$outputsPath"/06_formatted"
 # make a new directory for analysis
 outputsPath=$outputsPath"/07_clustered"
 mkdir $outputsPath
-# check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $outputsPath directory already exsists... please remove before proceeding."
-	exit 1
-fi
 
 # move to the new directory
 cd $outputsPath
