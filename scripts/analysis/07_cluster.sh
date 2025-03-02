@@ -8,6 +8,7 @@
 # script to cluster sequences using clustalo
 # usage: qsub 07_cluster.sh sampleTag
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted\.fa; do sampleTag=$(basename $i | sed 's/_formatted\.fa//'); echo $sampleTag; qsub 07_cluster.sh $sampleTag; done
+## jobs 1267135 to 1267145
 
 # load the software module
 #module load bio/0724
@@ -19,10 +20,10 @@ sampleTag=$1
 sampleFile=$1"_formatted.fa"
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/06_formatted"
