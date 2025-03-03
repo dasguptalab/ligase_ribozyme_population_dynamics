@@ -10,6 +10,7 @@
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted\.fa; do sampleTag=$(basename $i | sed 's/_formatted\.fa//'); echo $sampleTag; qsub 07_cluster.sh $sampleTag; done
 ## jobs 1267159 to 1267169
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted_above4/*_above4\.fa; do sampleTag=$(basename $i | sed 's/_formatted_above4\.fa//'); sampleTag=$sampleTag"_above4"; echo $sampleTag; qsub 07_cluster.sh $sampleTag $i; done
+## jobs 1267177 to 1267187
 
 # load the software module
 module load bio/0724

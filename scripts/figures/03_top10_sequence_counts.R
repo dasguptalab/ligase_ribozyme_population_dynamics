@@ -37,7 +37,7 @@ rounds <- c(1, 2, 3, 4, 5, 6, 7, 8)
 #quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 
 # read in sequence count data
-seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11_quantified_top10/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantify/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
 
 # reverse complement the sequences
 #seqs_counts$sequence <- rev(chartr("ATGC","TACG",seqs_counts$sequence))

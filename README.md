@@ -11,18 +11,17 @@ The code repository for the analysis pipeline can be found [HERE][1].
 #### Assignment of sequence families
 Sequencing reads from each round were pre-processed using custom BASH and R scripts that are available on GitHub (https://github.com/ElizabethBrooks/RNA_selection_amplification.git). Paired reads were merged using FLASh (v1.2.11) (Magoč & Salzberg, 2011). The merged sequence files were combined with the unmerged forward read files, since reverse reads were low in quality. Read sequences were filtered by quality (AVGQUAL:30) and adapter content was removed using Trimmomatic (v0.39) (Bolger et al., 2014). Sequences were filtered to keep only those that contain the predefined constant up- and down-stream stem regions (Figure 1) and with 40 bp in-between. The filtered sequences were trimmed to the 40-nt randomized region by removing constant regions on both 5′ and 3′ ends. The resulting trimmed sequences were filtered to remove sequences that appeared less than 10 times, then de-replicated to keep only the unique sequences. After pre-processing, between 92,366 and 1,063,996 unique sequences remained per round. Unique sequences from rounds 6 to 8 were clustered into sequence families using Clustal Omega (v1.2.4) (Sievers & Higgins, 2018), which uses mBed-like clustering for a given maximum number of sequences per cluster (N = 500). Since we were interested in tracking conservation or sustained variability of all nucleotide positions across all rounds of selection, sequences from all eight rounds of selection with greater than or equal to  90% similarity to the most abundant peak sequences in the final selection round (round 8) were quantified.
 
-#### Progress of selection across eight rounds (12 January 2025)
+#### Progress of selection across eight rounds (2 March 2025)
 
-| <div style="width:175px">Statistic</div> | <b>Round 1</b> | <b>Round 2</b> | <b>Round 3</b> | <b>Round 4</b> | <b>Round 5</b> | <b>Round 6</b> | <b>Round 7</b> | <b>Round 8</b> |
+| Round 1 | Round 2 | Round 3 | Round 4 | Round 5 | Round 6 | Round 7 | Round 8 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Reaction Time (min)| 120 | 60 |30 | 20 | 30 | 10 | 10 |10 |
 | \[Mg<sup>2+</sup>] (mM) | 20 | 20 | 20 | 20 | 20 | 20 | 10 | 5 |
 | Total Raw Reads | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 |
 | High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
-| Unique Reads | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
-| Diversity (%) | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
-| Sequences with > 9 Reads | 5 | 3 | 5 | 4 | 283 | 4,001 | 2,703 | 2,100 |
-| Sequence Families | NA | NA | NA | NA | NA | 16 | 14 | 13 |
+| Unique Sequences | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
+| Percent Diversity | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
+| Sequence Families | NA | NA | NA | NA | NA | 1638 | 373 | 402 |
 
 #### Supplemental
 
@@ -35,7 +34,7 @@ Sequencing reads from each round were pre-processed using custom BASH and R scri
 |  3 | Filter reads by quality and remove any detected adapter content | Trimmomatic |
 |  4 | Filter reads by structure to keep only those that contain the expected constant up- and down-stream regions with 40 bp in-between | BASH |
 |  5 | Clean reads to retain only the 40 bp in-between region | BASH |
-|  6 | Filter to keep unique sequences that have at least 10 sequencing reads | BASH |
+|  6 | Filter to keep unique sequences | BASH |
 |  7 | Cluster the unique sequences for each round | Clustal Omega |
 
 ##### Top 10 seqeunces four each round
@@ -143,21 +142,21 @@ Sequencing reads from each round were pre-processed using custom BASH and R scri
 
 ##### Different classes of ribozymes after clustering
 
-| Family | Cluter | Sequence Counts | Read Counts | Read Abundance | Peak Sequence | Walton et. al, 2020 |
+| Family | Cluter | Sequence Counts | Read Counts | Read Abundance | Peak Sequence |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 1 | 1114 | 256601 | 28.9 | GAATGCTGCCAACCGTGCGGGCTAATTGGCAGACTGAGCT | RS1 |
-| 2 | 3 | 116 | 82079 | 9.23 | CCTAGCTAGCGCTGACTAGGACAGATGAGCGGCGGAACCA | RS2 |
-| 3 | 0 | 108 | 40999 | 4.61 | TTAGTGAAATTGGTGCCCAAGCAGAGAATTGGGATAAATC | RS3 | 
-| 4 | 2 | 98 | 34117 | 3.84 | GAACCCTTATCACAGTCGTGCGGATTTGTAAGCCTAAGCG | RS5 |
-| 5 | 7 | 49 | 12539 | 1.41 | CTGGCAAACACAGCGCGCTGTGTGTTATGTGGGGCGGTCT | RS6 |
-| 6 | 5 | 85 | 26345 | 2.96 | AGAGACCGTGAGCTTGCGGAATGTTAGCAGAACAGAACTG | RS10 |
-| 7 | 8 | 75 | 15921 | 1.79 | AGCCACTGCGGAAGACCTTAAGAGGTGTAATTGCTCACCC | RS8 |
-| 8 | 4 | 269 | 14439 | 1.62 | AAAAGTTTCGCTGAATTGGACAGACCACCGCGTGAAGTGG | RS7 |
-| 9 | 6 | 33 | 6555 | 0.737 | GACGGACGGTCGCGGTAACCTATGACCATGAGACGGAACA | NA |
-| 10 | 11 | 286 | 8543 | 0.961 | CCGGTCTTAAGCCCCTGCGTTGCGGAAATGCACGTTGCCC | NA |
-| 11 | 10 | 275 | 4227 | 0.475 | TTAGAGAGCCACATGCGCTCTGTTTTGCGGATAAAATGTG | NA |
-| 12 | 12 | 271 | 4043 | 0.455 | TGATGAATCGGCATACGTGGGTCAGAGTCATAGTGCGACA | NA |
-| 13 | 9 | 153 | 2572 | 0.289 | GAAACTGTTCACCTGGTGCTGGAAGGAACAGCCTAAGCGT | NA |
+| 1 | 1 | 1114 | 256601 | 28.9 | GAATGCTGCCAACCGTGCGGGCTAATTGGCAGACTGAGCT |
+| 2 | 3 | 116 | 82079 | 9.23 | CCTAGCTAGCGCTGACTAGGACAGATGAGCGGCGGAACCA |
+| 3 | 0 | 108 | 40999 | 4.61 | TTAGTGAAATTGGTGCCCAAGCAGAGAATTGGGATAAATC | 
+| 4 | 2 | 98 | 34117 | 3.84 | GAACCCTTATCACAGTCGTGCGGATTTGTAAGCCTAAGCG |
+| 5 | 7 | 49 | 12539 | 1.41 | CTGGCAAACACAGCGCGCTGTGTGTTATGTGGGGCGGTCT |
+| 6 | 5 | 85 | 26345 | 2.96 | AGAGACCGTGAGCTTGCGGAATGTTAGCAGAACAGAACTG |
+| 7 | 8 | 75 | 15921 | 1.79 | AGCCACTGCGGAAGACCTTAAGAGGTGTAATTGCTCACCC |
+| 8 | 4 | 269 | 14439 | 1.62 | AAAAGTTTCGCTGAATTGGACAGACCACCGCGTGAAGTGG |
+| 9 | 6 | 33 | 6555 | 0.737 | GACGGACGGTCGCGGTAACCTATGACCATGAGACGGAACA |
+| 10 | 11 | 286 | 8543 | 0.961 | CCGGTCTTAAGCCCCTGCGTTGCGGAAATGCACGTTGCCC |
+| 11 | 10 | 275 | 4227 | 0.475 | TTAGAGAGCCACATGCGCTCTGTTTTGCGGATAAAATGTG |
+| 12 | 12 | 271 | 4043 | 0.455 | TGATGAATCGGCATACGTGGGTCAGAGTCATAGTGCGACA |
+| 13 | 9 | 153 | 2572 | 0.289 | GAAACTGTTCACCTGGTGCTGGAAGGAACAGCCTAAGCGT |
 
 ##### Substrate overhang complement identities
 
@@ -235,6 +234,19 @@ The following steps were taken to reproduce tables and plots from the slides (se
 For analysis steps 01 to 07 use BASH to:<br>
 <b>00a.</b>  create QC reports for each set of raw and processed data using FastQC and MultiQC<br>
 <b>00b.</b>  analyze read numbers, read lengths, counts of unique reads, and counts of read names
+
+#### Progress of selection across eight rounds (12 January 2025)
+
+| <div style="width:175px">Statistic</div> | <b>Round 1</b> | <b>Round 2</b> | <b>Round 3</b> | <b>Round 4</b> | <b>Round 5</b> | <b>Round 6</b> | <b>Round 7</b> | <b>Round 8</b> |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Reaction Time (min)| 120 | 60 |30 | 20 | 30 | 10 | 10 |10 |
+| \[Mg<sup>2+</sup>] (mM) | 20 | 20 | 20 | 20 | 20 | 20 | 10 | 5 |
+| Total Raw Reads | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 |
+| High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
+| Unique Reads | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
+| Diversity (%) | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
+| Sequences with > 9 Reads | 5 | 3 | 5 | 4 | 283 | 4,001 | 2,703 | 2,100 |
+| Sequence Families | NA | NA | NA | NA | NA | 16 | 14 | 13 |
 
 #### Analysis Workflow Progress - Sequence Statistics (28 October 2024)
 
