@@ -16,12 +16,12 @@
 inputRun=$1
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
-#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/06_formatted"
@@ -78,6 +78,7 @@ while read data; do
 	seqRev=$(echo $seq | tr ACGTacgt TGCAtgca | rev)
 	# update the count data
 	countData=$dataNoSeq","$seqRev
+	countDataOut=$countData
 	# status message
 	echo "Processing $seq ..."
 	# loop over each round sequences file
@@ -86,12 +87,13 @@ while read data; do
 		runName=$(basename $f2 | sed "s/_S.*_L001_combined\.fa//g" | sed "s/r//g" | sed "s/21-/_/g")
 		# count the number of seq occurances in each round
 		numReads=$(cat $f2 | grep -wc $seq)
-		# add the number of seqs for the round to the counts data 
-		# and output to a csv file
+		# add the number of seqs for the round
+		countDataOut=$(echo $countDataOut","$numReads)
+		# add the counts data to the outputs file
 		echo $countData","$numReads","$runName >> $countsPlotOut
 	done
 	# add the counts data to the outputs file
-	echo $countData >> $countsOut
+	echo $countDataOut >> $countsOut
 done < $fmtSeqs
 
 # clean up

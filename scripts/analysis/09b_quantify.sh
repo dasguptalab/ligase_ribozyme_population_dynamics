@@ -8,7 +8,7 @@
 # script to count the number of sequences shared across the top 10 sequences for the runs
 # usage: qsub 09b_quantify.sh inputRun
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 09b_quantify.sh $runInput; done
-## jobs 1271666 to 1271685
+## jobs 
 # usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 09b_quantify.sh $runInput; done
 # usage ex: bash 09b_quantify.sh r8_S8_L001
 
@@ -50,7 +50,7 @@ cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space
 
 # name output file
 countsOut=$tablesOut"/"$inputRun"_counts_table.csv"
-#countsPlotOut=$tablesOut"/"$inputRun"_counts_plot_table.csv"
+countsPlotOut=$tablesOut"/"$inputRun"_counts_plot_table.csv"
 
 # retrieve header
 inputHeader="run_name,sequence_ID,read_counts,sequence"
@@ -61,7 +61,7 @@ headerPlot=$(echo $inputHeader",counts,counts_run_name")
 
 # add a header to the counts data outputs files
 echo $header > $countsOut
-#echo $headerPlot > $countsPlotOut
+echo $headerPlot > $countsPlotOut
 
 # status message
 echo "Beginning analysis of $inputRun ..."
@@ -78,6 +78,7 @@ while read data; do
 	seqRev=$(echo $seq | tr ACGTacgt TGCAtgca | rev)
 	# update the count data
 	countData=$dataNoSeq","$seqRev
+	countDataOut=$countData
 	# status message
 	echo "Processing $seq ..."
 	# loop over each round sequences file
@@ -87,12 +88,12 @@ while read data; do
 		# count the number of seq occurances in each round
 		numReads=$(cat $f2 | grep -wc $seq)
 		# add the number of seqs for the round
-		countData=$(echo $countData","$numReads)
+		countDataOut=$(echo $countDataOut","$numReads)
 		# add the counts data to the outputs file
-		#echo $countData","$runName >> $countsPlotOut
+		echo $countData","$numReads","$runName >> $countsPlotOut
 	done
 	# add the counts data to the outputs file
-	echo $countData >> $countsOut
+	echo $countDataOut >> $countsOut
 done < $fmtSeqs
 
 # clean up
