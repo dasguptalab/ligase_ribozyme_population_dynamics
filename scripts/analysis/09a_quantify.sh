@@ -8,7 +8,7 @@
 # script to count the number of sequences shared across runs
 # usage: qsub 09a_quantify.sh inputRun
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 09a_quantify.sh $runInput; done
-## jobs
+## jobs 
 # usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 09a_quantify.sh $runInput; done
 # usage ex: bash 09a_quantify.sh r1_S1_L001
 
@@ -86,24 +86,23 @@ while read data; do
 		runName=$(basename $f2 | sed "s/_S.*_L001_combined\.fa//g" | sed "s/r//g" | sed "s/21-/_/g")
 		# count the number of seq occurances in each round
 		numReads=$(cat $f2 | grep -wc $seq)
-		# add the number of seqs for the round
-		countData=$(echo $countData","$numReads)
-		# add the counts data to the outputs file
-		echo $countData","$runName >> $countsPlotOut
+		# add the number of seqs for the round to the counts data 
+		# and output to a csv file
+		echo $countData","$numReads","$runName >> $countsPlotOut
 	done
 	# add the counts data to the outputs file
 	echo $countData >> $countsOut
 done < $fmtSeqs
 
+# clean up
+rm $fmtSeqs
+
 # add run tags to sequence IDs
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done
-
 # after processing the last round of data, combine all plotting data files
 #head -1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r8_S8_L001_counts_plot_table.csv > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/counts_plot_table_noDoped.csv
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/counts_plot_table_noDoped.csv; done
-
 # clean up
-#rm $fmtSeqs
 #rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r*_counts_plot_table.csv.fmt
 
 # status message

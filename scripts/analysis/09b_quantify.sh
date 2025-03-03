@@ -8,7 +8,7 @@
 # script to count the number of sequences shared across the top 10 sequences for the runs
 # usage: qsub 09b_quantify.sh inputRun
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 09b_quantify.sh $runInput; done
-## jobs
+## jobs 1271666 to 1271685
 # usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 09b_quantify.sh $runInput; done
 # usage ex: bash 09b_quantify.sh r8_S8_L001
 
@@ -50,7 +50,7 @@ cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space
 
 # name output file
 countsOut=$tablesOut"/"$inputRun"_counts_table.csv"
-countsPlotOut=$tablesOut"/"$inputRun"_counts_plot_table.csv"
+#countsPlotOut=$tablesOut"/"$inputRun"_counts_plot_table.csv"
 
 # retrieve header
 inputHeader="run_name,sequence_ID,read_counts,sequence"
@@ -61,7 +61,7 @@ headerPlot=$(echo $inputHeader",counts,counts_run_name")
 
 # add a header to the counts data outputs files
 echo $header > $countsOut
-echo $headerPlot > $countsPlotOut
+#echo $headerPlot > $countsPlotOut
 
 # status message
 echo "Beginning analysis of $inputRun ..."
@@ -89,21 +89,21 @@ while read data; do
 		# add the number of seqs for the round
 		countData=$(echo $countData","$numReads)
 		# add the counts data to the outputs file
-		echo $countData","$runName >> $countsPlotOut
+		#echo $countData","$runName >> $countsPlotOut
 	done
 	# add the counts data to the outputs file
 	echo $countData >> $countsOut
 done < $fmtSeqs
 
+# clean up
+rm $fmtSeqs
+
 # add run tags to sequence IDs
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done
-
 # after processing the last round of data, combine all plotting data files
 #head -1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/r8_S8_L001_counts_plot_table.csv > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv; done
-
 # clean up
-#rm $fmtSeqs
 #rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/r*_counts_plot_table.csv.fmt
 
 # status message
