@@ -8,7 +8,7 @@
 # script to count the number of sequences shared across the top 10 sequences for the runs
 # usage: qsub 09b_quantify.sh inputRun
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 09b_quantify.sh $runInput; done
-## jobs 
+## jobs 1273307 to 1273324
 # usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 09b_quantify.sh $runInput; done
 # usage ex: bash 09b_quantify.sh r8_S8_L001
 
