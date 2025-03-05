@@ -9,8 +9,11 @@
 # usage: qsub 08_summarize.sh sampleTag
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/07_clustered/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 08_summarize.sh $runInput; done
 # usage: qsub 08_summarize.sh r8_S8_L001
+## job 1273766
 # usage: qsub 08_summarize.sh r7_S7_L001
+## job 1273778
 # usage: qsub 08_summarize.sh r6_S6_L001
+## job 1273785
 
 # retrieve input sample tag
 sampleTag=$1
