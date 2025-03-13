@@ -8,23 +8,18 @@
 # script to summarize clustering information
 # usage: qsub 08_summarize.sh sampleTag
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/07_clustered/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 08_summarize.sh $runInput; done
-# usage: qsub 08_summarize.sh r8_S8_L001
-## job 1273766
-# usage: qsub 08_summarize.sh r7_S7_L001
-## job 1273778
-# usage: qsub 08_summarize.sh r6_S6_L001
-## job 1273785
+# usage: bash 08_summarize.sh r8_S8_L001
 
 # retrieve input sample tag
 sampleTag=$1
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
-#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/07_clustered"
@@ -69,7 +64,7 @@ cat $tablesOut"/"$sampleTag"_cluster_peaks_table.tmp.csv" | tail -n+2 > $tablesO
 # add header to the output sequences file
 echo "run_name,sequence_ID,read_counts,cluster_ID,sequence_counts,sequence" > $tablesOut"/"$sampleTag"_cluster_peaks_table.tmp.csv"
 
-# loop over each peak line and add the number of sequences in the cluster
+# loop over each peak line and add the number of sequences and reads in the cluster
 while read line; do
 	# retrieve cluster number
 	clusterName=$(echo $line | cut -d"," -f4)
@@ -78,11 +73,14 @@ while read line; do
 	# count the number of sequences in the current cluster
 	clusterCount=$(cat $tablesOut"/"$sampleTag"_cluster_sequences_table.clust.tmp.csv" | grep -c $clusterName)
 	#clusterCount=$(cat $tablesOut"/"$sampleTag"_cluster_sequences_table.clust.tmp.csv" | awk -F',' -v clusterIn="$clusterName" '$4==clusterIn')
+	# count the number of reads in the cluster
+	clusterReads=$(cat $tablesOut"/"$sampleTag"_cluster_sequences_table.clust.tmp.csv" | grep $clusterName | cut -d"," -f3 | awk '{s+=$1} END {print s}')
 	# separate sequence from the other data
-	seqHeader=$(echo $line | cut -d"," -f1-4)
+	seqHeader=$(echo $line | cut -d"," -f1,2)
+	clusterNum=$(echo $line | cut -d"," -f4)
 	seqData=$(echo $line | cut -d"," -f5)
 	# add cluster count to outputs
-	echo $seqHeader","$clusterCount","$seqData >> $tablesOut"/"$sampleTag"_cluster_peaks_table.tmp.csv"
+	echo $seqHeader","$clusterReads","$clusterNum","$clusterCount","$seqData >> $tablesOut"/"$sampleTag"_cluster_peaks_table.tmp.csv"
 done < $tablesOut"/"$sampleTag"_cluster_peaks_table.noHeader.tmp.csv"
 
 # re-format cluster names

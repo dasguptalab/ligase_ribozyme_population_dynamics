@@ -63,5 +63,12 @@ for f1 in $inputsPath"/"*_combined\.fa; do
 	rm $outputsPath"/"$newName*".tmp."*
 done
 
+# create combined data file for plotting
+#cat /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_L001_formatted.fa | sed "s/$/,/g" | tr -d '\n' | sed "s/>/\n>/g" | sed "s/,$//g"  > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.fa  
+#tail -n+2 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.fa > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.fa.tmp                                       
+#echo "" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.fa.tmp
+#echo "run_name,sequence_ID,counts,sequence" > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.fa    
+#cat /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.fa.tmp | sed "s/>r//g" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.fa 
+
 # status message
 echo "Analysis complete!"

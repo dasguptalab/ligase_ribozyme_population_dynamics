@@ -9,19 +9,26 @@
 # usage: qsub 09a_quantify.sh inputRun
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 09a_quantify.sh $runInput; done
 ## jobs 1273266 to 1273292
+## job 1273266 -> doped21-r1_S10_L001 -> 10:02:45:26
+## job 1273269 -> doped21-r2_S11_L001 -> 9:00:13:10
+## job 1273284 -> r4_S4_L001 -> 10:04:20:18
+## job 1273289 -> r6_S6_L001 -> 6:01:08:18
+## job 1273290 -> r7_S7_L001 -> 1:02:34:23
+## job 1273292 -> r8_S8_L001 -> 1:07:36:44
 # usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 09a_quantify.sh $runInput; done
 # usage ex: bash 09a_quantify.sh r1_S1_L001
+# usage ex: bash 09a_quantify.sh r8_S8_L001
 
 # retrieve input run name
 inputRun=$1
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
-#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/06_formatted"

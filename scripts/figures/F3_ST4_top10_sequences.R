@@ -39,6 +39,9 @@ rounds <- c(1, 2, 3, 4, 5, 6, 7, 8)
 # read in sequence count data
 seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
 
+# subset data to sequences with more than 1 read
+seqs_counts <- seqs_counts[seqs_counts$counts >= 3,]
+
 # reverse complement the sequences
 #seqs_counts$sequence <- rev(chartr("ATGC","TACG",seqs_counts$sequence))
 
@@ -97,13 +100,18 @@ for (run_num in 1:8) {
   #counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, reorder(as.character(ID), log_counts), fill= log_counts)) + 
   counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, ID, fill= log_counts)) + 
   #counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, reorder(as.character(Sequence), log_counts), fill= log_counts)) + 
-    theme_classic() +
+    theme_classic(base_size = 14) +
     geom_tile(colour = "black") +
     ggtitle(run_title) +
-    theme(plot.title = element_text(hjust = 0.5)) +
+    theme(#axis.title.x = element_text(size = 14), 
+          #axis.title.y = element_text(size = 14), 
+          #axis.text.x = element_text(size = 14), 
+          #axis.text.y = element_text(size = 14), 
+          #text = element_text(size = 14), 
+          plot.title = element_text(hjust = 0.5)) +
     #ylab("Sequence ID") +
     ylab("Sequence") +
-    xlab("Round Number") +
+    xlab("Round") +
     scale_fill_gradient2(name = "Log Counts",
                          low = safe_colors[3],
                          mid = safe_colors[4],
@@ -127,7 +135,7 @@ grid_log_counts_plot <- plot_grid(plotlist=counts_heatmap_list,  ncol = 4, align
 # save the plot
 exportFile <- paste(out_dir, "/top10_sequence_log_counts.png", sep = "")
 png(exportFile, units="in", width=20, height=10, res=300)
-print(grid_log_counts_plot)
+print(grid_log_counts_plot + theme_classic(base_size = 14))
 dev.off()
 
 # export plotting data
@@ -135,16 +143,72 @@ write.csv(seqs_counts, file = paste(out_dir, "/top10_sequence_counts.csv", sep =
 
 # create table of top 10 sequences per run
 sequence_data <- data.frame(
-  r1 = seqs_counts[seqs_counts$run_name == 1 & seqs_counts$counts_run_name == 1, "sequence"],
-  r2 = seqs_counts[seqs_counts$run_name == 2 & seqs_counts$counts_run_name == 2, "sequence"],
-  r3 = seqs_counts[seqs_counts$run_name == 3 & seqs_counts$counts_run_name == 3, "sequence"],
-  r4 = seqs_counts[seqs_counts$run_name == 4 & seqs_counts$counts_run_name == 4, "sequence"],
-  r5 = seqs_counts[seqs_counts$run_name == 5 & seqs_counts$counts_run_name == 5, "sequence"],
-  r6 = seqs_counts[seqs_counts$run_name == 6 & seqs_counts$counts_run_name == 6, "sequence"],
-  r7 = seqs_counts[seqs_counts$run_name == 7 & seqs_counts$counts_run_name == 7, "sequence"],
-  r8 = seqs_counts[seqs_counts$run_name == 8 & seqs_counts$counts_run_name == 8, "sequence"]
+  round = c(rep("1", 10), 
+            rep("2", 10), 
+            rep("3", 10), 
+            rep("4", 10), 
+            rep("5", 10), 
+            rep("6", 10),
+            rep("7", 10), 
+            rep("8", 10)),
+  ranking = c(rep(seq(from=1, to=10, by=1), 8)),
+  shared = c(rep("1", 10), 
+             rep("2", 10), 
+             rep("3", 10), 
+             rep("4", 10), 
+             rep("5", 10), 
+             rep("6", 10),
+             rep("7", 10), 
+             rep("8", 10)),
+  sequence = c(seqs_counts[seqs_counts$run_name == 1 & seqs_counts$counts_run_name == 1, "sequence"],
+               seqs_counts[seqs_counts$run_name == 2 & seqs_counts$counts_run_name == 2, "sequence"],
+               seqs_counts[seqs_counts$run_name == 3 & seqs_counts$counts_run_name == 3, "sequence"],
+               seqs_counts[seqs_counts$run_name == 4 & seqs_counts$counts_run_name == 4, "sequence"],
+               seqs_counts[seqs_counts$run_name == 5 & seqs_counts$counts_run_name == 5, "sequence"],
+               seqs_counts[seqs_counts$run_name == 6 & seqs_counts$counts_run_name == 6, "sequence"],
+               seqs_counts[seqs_counts$run_name == 7 & seqs_counts$counts_run_name == 7, "sequence"],
+               seqs_counts[seqs_counts$run_name == 8 & seqs_counts$counts_run_name == 8, "sequence"])
 )
+
+# determine overlap of top 10 sequences
+# loop over each sequence
+for (seq_num in 1:nrow(sequence_data)) {
+  # initialize outputs variable
+  match_list <- ""
+  # loop over each round
+  for (round_num in 1:8) {
+    # loop over each top sequence
+    for (top_num in 1:10) {
+      # check if current sequence is in the current round top sequences
+      if (sequence_data$sequence[seq_num] == seqs_counts[seqs_counts$run_name == round_num & seqs_counts$counts_run_name == round_num, "sequence"][top_num]) {
+        match_list <- paste(match_list, round_num, sep="_")
+      }
+    }
+  }
+  # add matching rounds to outputs
+  sequence_data$shared[seq_num] <- substr(match_list, 2, nchar(match_list))
+}
 
 # export sequence data
 write.csv(sequence_data, file = paste(out_dir, "/top10_sequences.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
+# setup and create upset plot
+lt = list(
+  Round1 = seqs_counts[seqs_counts$run_name == 1 & seqs_counts$counts_run_name == 8, "sequence"],
+  Round2 = seqs_counts[seqs_counts$run_name == 2 & seqs_counts$counts_run_name == 8, "sequence"],
+  Round3 = seqs_counts[seqs_counts$run_name == 3 & seqs_counts$counts_run_name == 8, "sequence"],
+  Round4 = seqs_counts[seqs_counts$run_name == 4 & seqs_counts$counts_run_name == 8, "sequence"],
+  Round5 = seqs_counts[seqs_counts$run_name == 5 & seqs_counts$counts_run_name == 8, "sequence"],
+  Round6 = seqs_counts[seqs_counts$run_name == 6 & seqs_counts$counts_run_name == 8, "sequence"],
+  Round7 = seqs_counts[seqs_counts$run_name == 7 & seqs_counts$counts_run_name == 8, "sequence"],
+  Round8 = seqs_counts[seqs_counts$run_name == 8 & seqs_counts$counts_run_name == 8, "sequence"]
+)
+m = make_comb_mat(lt)
+cs = comb_size(m)
+ht = UpSet(m, comb_col=safe_colors[5], bg_col="#F0F0FF", bg_pt_col="#CCCCFF", top_annotation = upset_top_annotation(m, ylim = c(0, 1.1*max(cs))))
+ht = draw(ht)
+# save the plot
+exportFile <- paste(out_dir, "/top10_sequences_upset.png", sep = "")
+png(exportFile, units="in", width=10, height=5, res=300)
+print(ht)
+dev.off()

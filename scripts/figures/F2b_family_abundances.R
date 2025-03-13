@@ -22,18 +22,19 @@ safe_colors <- c(carto_pal(name="Safe"), "#000000")
 
 # numbers of high quality reads
 #quality_doped <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374, 865509, 807849, 1143871)
-quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
+#quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 
 # read in cluster family sequence data
 #seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_families/r8_S8_L001_counts_plot_table.csv")
 #seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table_atLeast90.csv")
-seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+#seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.csv", colClasses=c("run_name"="character"))
+
+# reverse complement the sequences
+seqs_input$sequence <- rev(chartr("ATGC","TACG",seqs_input$sequence))
 
 # read in sequences that have at least 90% identity to any peak
 seqs_identities <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/10a_family_identification/family_identities_atLeast90.csv")
-
-# subset to keep round 8 data
-#seqs_identities <- seqs_identities[seqs_identities$run_name == 8,]
 
 # initialize data frame
 seqs_family <- data.frame()
@@ -58,8 +59,9 @@ seqs_family <- cbind(seqs_family, counts_run_ID, peak_cluster_IDs)
 # list of cluster IDs
 #cluster_list <- unique(seqs_family$peak_cluster_IDs)
 
+# To-do: retrieve programatically
 # list of cluster IDs and abundances
-cluster_list <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+cluster_list <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 cluster_read_counts <- c(40999, 256601, 34117, 82079, 14439, 26345, 6555, 12539, 15921, 2572, 4227, 8543, 4043)
 cluster_seq_counts <- c(108, 1114, 98, 116, 269, 85, 33, 49, 75, 153, 275, 286, 271)
 cluster_read_abun <- 100*cluster_read_counts/889374
@@ -77,7 +79,7 @@ cluster_data <- data.frame(
 #cluster_data <- cluster_data[order(cluster_data$read_abun, decreasing = TRUE),]  
 
 # add family numbers
-#cluster_data$fam_num <- seq(from = 1, to = 13, by = 1)
+#cluster_data$fam_num <- seq(from = 1, to = 10, by = 1)
 
 # setup data frame length
 data_length <- (max(cluster_list)+1)*8
@@ -115,7 +117,8 @@ for (cluster_num in 0:max(cluster_list)) {
     # add counts
     cluster_abundances$counts[index] <- sum(seqs_family[seqs_family$peak_cluster_ID == cluster_num & seqs_family$counts_run_ID == run_num, "counts"])
     # add fraction abundance
-    cluster_abundances$frac_abundance[index] <- cluster_abundances$counts[index]/quality[run_num]
+    #cluster_abundances$frac_abundance[index] <- cluster_abundances$counts[index]/quality[run_num]
+    cluster_abundances$frac_abundance[index] <- cluster_abundances$counts[index]/sum(seqs_family[seqs_family$counts_run_ID == run_num, "counts"])
   }
 }
 
@@ -123,17 +126,17 @@ for (cluster_num in 0:max(cluster_list)) {
 cluster_abundances$perc_abundance <- 100*cluster_abundances$frac_abundance
 
 # setup length of counts
-counts_length <- 13*8
+counts_length <- 10*8
 
 # subset cluster data
 cluster_abundances_subset <- cluster_abundances[cluster_abundances$run_name == 8,]
 # sort cluster data
 cluster_abundances_subset <- cluster_abundances_subset[order(cluster_abundances_subset$perc_abundance, decreasing = TRUE),]  
 # add family numbers
-cluster_abundances_subset$fam_num <- seq(from = 1, to = 13, by = 1)
+cluster_abundances_subset$fam_num <- seq(from = 1, to = 10, by = 1)
 
 # loop over each run
-for (cluster_num in 0:12) {
+for (cluster_num in 0:9) {
   # update family numbers for each run
   cluster_abundances[cluster_abundances$cluster_ID == cluster_num, "fam_ID"] <- cluster_abundances_subset[cluster_abundances_subset$cluster_ID == cluster_num, "fam_num"]
 }
