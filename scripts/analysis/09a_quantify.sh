@@ -32,12 +32,12 @@ runName=$2
 analysisType=$3
 
 # retrieve the analysis type
-#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
-analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # setup inputs run data
 inputRunData=$outputsPath"/05_combined/"$runName"_combined.fa"
@@ -50,7 +50,7 @@ inputsPath=$outputsPath"/06_formatted"
 inputSeqs=$inputsPath"/"$inputRun"_formatted_above2.fa"
 
 # name of a new directory for analysis
-tablesOut=$outputsPath"/09a_quantified"
+tablesOut=$outputsPath"/09a_quantified_above2"
 
 # make a new directory for analysis
 mkdir $tablesOut
