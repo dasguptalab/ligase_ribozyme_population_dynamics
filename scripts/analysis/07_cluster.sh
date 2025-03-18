@@ -27,7 +27,7 @@ sampleFile=$2
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/07_clustered"
+outputsPath=$outputsPath"/07_clustered_above2"
 mkdir $outputsPath
 
 # move to the new directory
