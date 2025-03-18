@@ -28,9 +28,6 @@ inputRun=$1
 # retrieve input run name
 runName=$2
 
-# retrieve input run name
-analysisType=$3
-
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
 #analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
@@ -83,9 +80,8 @@ echo $header > $countsOut
 echo $headerPlot > $countsPlotOut
 
 # status message
-echo "Beginning analysis of $inputRun ..."
+echo "Beginning analysis of $inputSeqs over $inputRunData ..."
 
-# To-do: use another script to submit separate jobs for each loop
 # loop over round sequences
 while read data; do
 	# clean up the run name
@@ -112,7 +108,7 @@ while read data; do
 done < $fmtSeqs
 
 # clean up
-rm $fmtSeqs
+#rm $fmtSeqs
 
 # add run tags to sequence IDs
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done
