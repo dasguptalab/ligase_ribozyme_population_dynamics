@@ -6,21 +6,30 @@
 #$ -q largemem
 
 # script to count the number of sequences shared across runs
-# usage: qsub 09a_quantify.sh inputRun
+# usage: qsub 09a_quantify.sh inputRun runName
+## quantification of all sequencess
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 09a_quantify.sh $runInput; done
 ## jobs 1273266 to 1273292
 ## job 1273266 -> doped21-r1_S10_L001 -> 10:02:45:26
 ## job 1273269 -> doped21-r2_S11_L001 -> 9:00:13:10
+## job 1273272 -> (?) -> 11:19:46:49
+## job 1273275 -> (?) -> 12:01:53:05
+## job 1273278 -> (?) -> 12:09:43:07
+## job 1273281 -> (?) -> 12:01:09:05
 ## job 1273284 -> r4_S4_L001 -> 10:04:20:18
+## job 1273287 -> (?) -> 11:07:11:50
 ## job 1273289 -> r6_S6_L001 -> 6:01:08:18
 ## job 1273290 -> r7_S7_L001 -> 1:02:34:23
 ## job 1273292 -> r8_S8_L001 -> 1:07:36:44
-# usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 09a_quantify.sh $runInput; done
-# usage ex: bash 09a_quantify.sh r1_S1_L001
-# usage ex: bash 09a_quantify.sh r8_S8_L001
 
 # retrieve input run name
 inputRun=$1
+
+# retrieve input run name
+runName=$2
+
+# retrieve input run name
+analysisType=$3
 
 # retrieve the analysis type
 #analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -30,12 +39,15 @@ analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " |
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
+# setup inputs run data
+inputRunData=$outputsPath"/05_combined/"$runName"_combined.fa"
+
 # retrieve the inputs path
 inputsPath=$outputsPath"/06_formatted"
 
 # retrieve input sequences
-#inputSeqs=$inputsPath"/"$inputRun"_formatted.fa"
-inputSeqs=$inputsPath"/"$inputRun"_formatted.fa"
+#inputSeqs=$inputsPath"/"$inputRun"_formatted.fa" ## quantification of all sequencess
+inputSeqs=$inputsPath"/"$inputRun"_formatted_above2.fa"
 
 # name of a new directory for analysis
 tablesOut=$outputsPath"/09a_quantified"
@@ -56,8 +68,8 @@ cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space
 echo "" >> $fmtSeqs
 
 # name output file
-countsOut=$tablesOut"/"$inputRun"_counts_table.csv"
-countsPlotOut=$tablesOut"/"$inputRun"_counts_plot_table.csv"
+countsOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_table.csv"
+countsPlotOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_plot_table.csv"
 
 # retrieve header
 inputHeader="run_name,sequence_ID,read_counts,sequence"
@@ -73,6 +85,7 @@ echo $headerPlot > $countsPlotOut
 # status message
 echo "Beginning analysis of $inputRun ..."
 
+# To-do: use another script to submit separate jobs for each loop
 # loop over round sequences
 while read data; do
 	# clean up the run name
@@ -88,17 +101,12 @@ while read data; do
 	countDataOut=$countData
 	# status message
 	echo "Processing $seq ..."
-	# loop over each round sequences file
-	for f2 in $outputsPath"/05_combined/"*_combined\.fa; do
-		# retrieve run name
-		runName=$(basename $f2 | sed "s/_S.*_L001_combined\.fa//g" | sed "s/r//g" | sed "s/21-/_/g")
-		# count the number of seq occurances in each round
-		numReads=$(cat $f2 | grep -wc $seq)
-		# add the number of seqs for the round
-		countDataOut=$(echo $countDataOut","$numReads)
-		# add the counts data to the outputs file
-		echo $countData","$numReads","$runName >> $countsPlotOut
-	done
+	# count the number of seq occurances in each round
+	numReads=$(cat $inputRunData | grep -wc $seq)
+	# add the number of seqs for the round
+	countDataOut=$(echo $countDataOut","$numReads)
+	# add the counts data to the outputs file
+	echo $countData","$numReads","$runName >> $countsPlotOut
 	# add the counts data to the outputs file
 	echo $countDataOut >> $countsOut
 done < $fmtSeqs

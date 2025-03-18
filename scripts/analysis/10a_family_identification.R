@@ -24,6 +24,7 @@ r8_peaks <- head(r8_peaks, n=20)
 #seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
 seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.csv", colClasses=c("run_name"="character"))
 
+# To-do: double check
 # reverse complement the sequences
 seqs_input$sequence <- rev(chartr("ATGC","TACG",seqs_input$sequence))
 

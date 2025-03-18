@@ -13,7 +13,7 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 inputsPath=$outputsPath"/05_combined"
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/06_formatted_above4"
+outputsPath=$outputsPath"/06_formatted_above2"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -48,17 +48,17 @@ for f1 in $inputsPath"/"*_combined\.fa; do
 	seq -f %1.0f 1 $outLength > $outputsPath"/"$newName"_ID.tmp.txt"
 	# combine output counts and sequence file with run tags and convert to csv
 	paste -d" " $outputsPath"/"$newName"_run.tmp.txt" $outputsPath"/"$newName"_ID.tmp.txt" $outputsPath"/"$newName"_counts.tmp.txt" | tr -s ' ' | sed "s/ /,/g" > $outputsPath"/"$newName".tmp.txt"
-	# filter to remove sequences with less than 5 reads
-	awk -F ',' '($3 > 4)' $outputsPath"/"$newName".tmp.txt" > $outputsPath"/"$newName"_above4.tmp.txt"
+	# filter to remove sequences with less than 3 reads
+	awk -F ',' '($3 > 2)' $outputsPath"/"$newName".tmp.txt" > $outputsPath"/"$newName"_above2.tmp.txt"
 	# cut out the header data
 	cut -d"," -f1-3 $outputsPath"/"$newName".tmp.txt" > $outputsPath"/"$newName"_header.tmp.txt"
-	cut -d"," -f1-3 $outputsPath"/"$newName"_above4.tmp.txt" > $outputsPath"/"$newName"_above4_header.tmp.txt"
+	cut -d"," -f1-3 $outputsPath"/"$newName"_above2.tmp.txt" > $outputsPath"/"$newName"_above2_header.tmp.txt"
 	# cut out the seqeunce data
 	cut -d"," -f4 $outputsPath"/"$newName".tmp.txt" > $outputsPath"/"$newName"_seq.tmp.txt"
-	cut -d"," -f4 $outputsPath"/"$newName"_above4.tmp.txt" > $outputsPath"/"$newName"_above4_seq.tmp.txt"
+	cut -d"," -f4 $outputsPath"/"$newName"_above2.tmp.txt" > $outputsPath"/"$newName"_above2_seq.tmp.txt"
 	# interleave the seqeunce data with the headers
 	paste -d'\n' $outputsPath"/"$newName"_header.tmp.txt" $outputsPath"/"$newName"_seq.tmp.txt" > $outputsPath"/"$newName".fa"
-	paste -d'\n' $outputsPath"/"$newName"_above4_header.tmp.txt" $outputsPath"/"$newName"_above4_seq.tmp.txt" > $outputsPath"/"$newName"_above4.fa"
+	paste -d'\n' $outputsPath"/"$newName"_above2_header.tmp.txt" $outputsPath"/"$newName"_above2_seq.tmp.txt" > $outputsPath"/"$newName"_above2.fa"
 	# clean up
 	rm $outputsPath"/"$newName*".tmp."*
 done
