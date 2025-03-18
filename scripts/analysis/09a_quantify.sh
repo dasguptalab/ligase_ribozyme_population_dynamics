@@ -39,12 +39,9 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 # setup inputs run data
 inputRunData=$outputsPath"/05_combined/"$runName"_combined.fa"
 
-# retrieve the inputs path
-inputsPath=$outputsPath"/06_formatted"
-
 # retrieve input sequences
-#inputSeqs=$inputsPath"/"$inputRun"_formatted.fa" ## quantification of all sequencess
-inputSeqs=$inputsPath"/"$inputRun"_formatted_above2.fa"
+#inputSeqs=$inputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
+inputSeqs=$inputsPath"/06_formatted_above2/"$inputRun"_formatted_above2.fa"
 
 # name of a new directory for analysis
 tablesOut=$outputsPath"/09a_quantified_above2"
