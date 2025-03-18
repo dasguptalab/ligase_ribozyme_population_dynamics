@@ -1,5 +1,4 @@
 #!/bin/bash
-#$ -m abe
 #$ -r n
 #$ -N RNA_quantify_jobOutput
 #$ -q largemem
