@@ -1,5 +1,4 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
 #$ -N RNA_quantify_jobOutput
@@ -40,8 +39,8 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 inputRunData=$outputsPath"/05_combined/"$runName"_combined.fa"
 
 # retrieve input sequences
-#inputSeqs=$inputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
-inputSeqs=$inputsPath"/06_formatted_above2/"$inputRun"_formatted_above2.fa"
+#inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
+inputSeqs=$outputsPath"/06_formatted_above2/"$inputRun"_formatted_above2.fa"
 
 # name of a new directory for analysis
 tablesOut=$outputsPath"/09a_quantified_above2"
