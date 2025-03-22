@@ -24,7 +24,7 @@
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted_above2/*_above2\.fa; do sampleTag=$(basename $i | sed 's/_formatted_above2\.fa//'); sampleTag=$sampleTag"_above2"; echo $sampleTag; qsub 07_cluster.sh $sampleTag $i; done
 ## jobs 1541141 to 1541162
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted_above2/*_above2\.fa; do sampleTag=$(basename $i | sed 's/_formatted_above2\.fa//'); sampleTag=$sampleTag"_above2"; echo $sampleTag; qsub 07_cluster.sh $sampleTag $i; done
-## jobs
+## jobs 1541309 to 1541325
 
 # load the software module
 module load bio/0724

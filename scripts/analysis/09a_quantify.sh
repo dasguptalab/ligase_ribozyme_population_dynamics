@@ -35,7 +35,7 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # setup inputs run data
-inputRunData=$outputsPath"/05_combined/"$runName"_combined.fa"
+inputRunData=$outputsPath"/05_combined/"$runName"_combined.RC.fa"
 
 # retrieve input sequences
 #inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
@@ -86,9 +86,10 @@ while read data; do
 	# retrieve the seq
 	seq=$(echo $seqData | cut -d"," -f4)
 	# reverse compliment the sequence
-	seqRev=$(echo $seq | tr ACGTacgt TGCAtgca | rev)
+	#seqRev=$(echo $seq | tr ACGTacgt TGCAtgca | rev)
 	# update the count data
-	countData=$dataNoSeq","$seqRev
+	#countData=$dataNoSeq","$seqRev
+	countData=$dataNoSeq","$seq
 	countDataOut=$countData
 	# status message
 	echo "Processing $seq ..."

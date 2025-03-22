@@ -22,10 +22,10 @@ analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " |
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/07_clustered_1400_above2"
+inputsPath=$outputsPath"/07_clustered_1500_above2"
 
 # make a new directory for analysis
-tablesOut=$outputsPath"/08_summarized_1400_above2"
+tablesOut=$outputsPath"/08_summarized_1500_above2"
 mkdir $tablesOut
 
 # move to outputs directory

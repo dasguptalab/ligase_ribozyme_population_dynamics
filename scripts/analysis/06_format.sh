@@ -28,7 +28,7 @@ cd $outputsPath
 echo "Beginning analysis..."
 
 # loop through all samples
-for f1 in $inputsPath"/"*_combined\.fa; do
+for f1 in $inputsPath"/"*_combined\.RC\.fa; do
 	# status message
 	echo "Processing file: $f1"
 	# trim to sample tag

@@ -17,12 +17,12 @@
 inputRun=$1
 
 # retrieve the analysis type
-#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
-analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/06_formatted_above2"
@@ -78,16 +78,17 @@ while read data; do
 	# retrieve the seq
 	seq=$(echo $seqData | cut -d"," -f4)
 	# reverse compliment the sequence
-	seqRev=$(echo $seq | tr ACGTacgt TGCAtgca | rev)
+	#seqRev=$(echo $seq | tr ACGTacgt TGCAtgca | rev)
 	# update the count data
-	countData=$dataNoSeq","$seqRev
+	#countData=$dataNoSeq","$seqRev
+	countData=$dataNoSeq","$seq
 	countDataOut=$countData
 	# status message
 	echo "Processing $seq ..."
 	# loop over each round sequences file
-	for f2 in $outputsPath"/05_combined/"*_combined\.fa; do
+	for f2 in $outputsPath"/05_combined/"*_combined\.RC\.fa; do
 		# retrieve run name
-		runName=$(basename $f2 | sed "s/_S.*_L001_combined\.fa//g" | sed "s/r//g" | sed "s/21-/_/g")
+		runName=$(basename $f2 | sed "s/_S.*_L001_combined\.RC\.fa//g" | sed "s/r//g" | sed "s/21-/_/g")
 		# count the number of seq occurances in each round
 		numReads=$(cat $f2 | grep -wc $seq)
 		# add the number of seqs for the round
