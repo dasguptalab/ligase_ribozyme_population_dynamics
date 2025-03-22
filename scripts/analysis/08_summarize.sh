@@ -7,7 +7,7 @@
 
 # script to summarize clustering information
 # usage: qsub 08_summarize.sh sampleTag
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted_above2/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 08_summarize.sh $runInput; done
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
 # usage: bash 08_summarize.sh r8_S8_L001
 
 # retrieve input sample tag
@@ -36,7 +36,7 @@ echo "Processing $sampleTag ..."
 
 # set input file
 #f1=$inputsPath"/"$sampleTag"_clustered.aux"
-f1=$inputsPath"/"$sampleTag"_above2_clustered.aux"
+f1=$inputsPath"/"$sampleTag"_clustered.aux"
 
 # retrieve cluster names
 cat $f1 | cut -d":" -f1 | sed "s/ /_/g" > $tablesOut"/"$sampleTag"_cluster_numbers.tmp.txt"
@@ -54,7 +54,7 @@ while read line; do
 	# status message
 	echo "Processing $seqHeader ..."
 	# retrieve sequence data
-	seqData=$(cat $outputsPath"/06_formatted_above2/"$sampleTag"_formatted_above2.fa" | grep -A1 $seqHeader | tail -1)
+	seqData=$(cat $outputsPath"/06_formatted/"$sampleTag"_formatted_above2.fa" | grep -A1 $seqHeader | tail -1)
 	# add sequence data to the output file
 	echo $line","$seqData >> $tablesOut"/"$sampleTag"_cluster_sequences_table.clust.tmp.csv"
 done < $tablesOut"/"$sampleTag"_cluster_sequences_table.tmp.csv"

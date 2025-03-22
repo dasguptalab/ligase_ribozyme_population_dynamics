@@ -7,8 +7,8 @@
 
 # script to cluster sequences using clustalo
 # usage: qsub 07_cluster.sh sampleTag
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted_above2/*_above2\.fa; do echo $i; qsub 07_cluster.sh $i; done
-## jobs 
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_above2\.fa; do echo $i; qsub 07_cluster.sh $i; done
+## jobs 1541791 to 1541805
 
 # load the software module
 module load bio/0724
