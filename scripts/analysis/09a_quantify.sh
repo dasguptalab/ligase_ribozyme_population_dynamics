@@ -10,12 +10,12 @@
 ## jobs 1273266 to 1273292
 ## job 1273266 -> doped21-r1_S10_L001 -> 10:02:45:26
 ## job 1273269 -> doped21-r2_S11_L001 -> 9:00:13:10
-## job 1273272 -> (?) -> 11:19:46:49
-## job 1273275 -> (?) -> 12:01:53:05
-## job 1273278 -> (?) -> 12:09:43:07
-## job 1273281 -> (?) -> 12:01:09:05
+## job 1273272 -> doped21-r3_S12_L001 -> 11:19:46:49
+## job 1273275 -> r1_S1_L001 -> 12:01:53:05
+## job 1273278 -> r2_S2_L001 -> 12:09:43:07
+## job 1273281 -> r3_S3_L001 -> 12:01:09:05
 ## job 1273284 -> r4_S4_L001 -> 10:04:20:18
-## job 1273287 -> (?) -> 11:07:11:50
+## job 1273287 -> r5_S5_L001 -> 11:07:11:50
 ## job 1273289 -> r6_S6_L001 -> 6:01:08:18
 ## job 1273290 -> r7_S7_L001 -> 1:02:34:23
 ## job 1273292 -> r8_S8_L001 -> 1:07:36:44
@@ -60,18 +60,18 @@ cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space
 echo "" >> $fmtSeqs
 
 # name output file
-countsOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_table.csv"
+#countsOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_table.csv"
 countsPlotOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_plot_table.csv"
 
 # retrieve header
 inputHeader="run_name,sequence_ID,read_counts,sequence"
 
 # add the run names to the header 
-header=$(echo $inputHeader",doped21-r1_counts,doped21-r2_counts,doped21-r3_counts,r1_counts,r2_counts,r3_counts,r4_counts,r5_counts,r6_counts,r7_counts,r8_counts")
+#header=$(echo $inputHeader",doped21-r1_counts,doped21-r2_counts,doped21-r3_counts,r1_counts,r2_counts,r3_counts,r4_counts,r5_counts,r6_counts,r7_counts,r8_counts")
 headerPlot=$(echo $inputHeader",counts,counts_run_name")
 
 # add a header to the counts data outputs files
-echo $header > $countsOut
+#echo $header > $countsOut
 echo $headerPlot > $countsPlotOut
 
 # status message
@@ -99,11 +99,11 @@ while read data; do
 	# add the counts data to the outputs file
 	echo $countData","$numReads","$runName >> $countsPlotOut
 	# add the counts data to the outputs file
-	echo $countDataOut >> $countsOut
+	#echo $countDataOut >> $countsOut
 done < $fmtSeqs
 
 # clean up
-#rm $fmtSeqs
+rm $fmtSeqs
 
 # add run tags to sequence IDs
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done

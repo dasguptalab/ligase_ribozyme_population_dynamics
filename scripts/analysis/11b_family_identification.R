@@ -6,17 +6,18 @@
 options(scipen=10000)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10b_family_identification"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11b_family_identification"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in cluster family sequence data
-r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized/r8_S8_L001_cluster_peaks_table.csv")
+r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_above2/r8_S8_L001_cluster_peaks_table.RC.csv")
 
 # read in sequence count data
-seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table_noDoped.RC.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
   
+# To-do: double check
 # remove duplicate sequence data
 seqs_input <- seqs_input[!duplicated(seqs_input$sequence_ID),]
 

@@ -22,10 +22,10 @@ analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " |
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/07_clustered"
+inputsPath=$outputsPath"/07_clustered_above2"
 
 # make a new directory for analysis
-tablesOut=$outputsPath"/08_summarized"
+tablesOut=$outputsPath"/08_summarized_above2"
 mkdir $tablesOut
 
 # move to outputs directory
@@ -35,7 +35,8 @@ cd $tablesOut
 echo "Processing $sampleTag ..."
 
 # set input file
-f1=$inputsPath"/"$sampleTag"_clustered.aux"
+#f1=$inputsPath"/"$sampleTag"_clustered.aux"
+f1=$inputsPath"/"$sampleTag"_above2_clustered.aux"
 
 # retrieve cluster names
 cat $f1 | cut -d":" -f1 | sed "s/ /_/g" > $tablesOut"/"$sampleTag"_cluster_numbers.tmp.txt"
@@ -50,9 +51,10 @@ echo "run_name,sequence_ID,read_counts,cluster_ID,sequence" > $tablesOut"/"$samp
 while read line; do
 	# retrieve sequence header
 	seqHeader=$(echo $line | cut -d"," -f1-3)
+	# status message
+	echo "Processing $seqHeader ..."
 	# retrieve sequence data
-	# reverse complement seqeuence -> tr ACGTacgt TGCAtgca | rev
-	seqData=$(cat $outputsPath"/06_formatted/"$sampleTag"_formatted.fa" | grep -A1 $seqHeader | tail -1 | tr ACGTacgt TGCAtgca | rev)
+	seqData=$(cat $outputsPath"/06_formatted/"$sampleTag"_formatted.fa" | grep -A1 $seqHeader | tail -1)
 	# add sequence data to the output file
 	echo $line","$seqData >> $tablesOut"/"$sampleTag"_cluster_sequences_table.clust.tmp.csv"
 done < $tablesOut"/"$sampleTag"_cluster_sequences_table.tmp.csv"
