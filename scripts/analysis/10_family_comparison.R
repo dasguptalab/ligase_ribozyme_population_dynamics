@@ -12,7 +12,7 @@ out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_family_compari
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in cluster family sequence data
-r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_above2/r8_S8_L001_cluster_peaks_table.RC.csv")
+r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1000_above2/r8_S8_L001_cluster_peaks_table.RC.csv")
 
 # set the sequence length
 seqLength <- 40
@@ -31,7 +31,7 @@ seqs_data <- data.frame(
 
 # loop over each sequence and compare with the peak to note if it has >= 90% similarity
 for (seq_num in 1:data_length) {
-  # loop over rach peak sequence
+  # loop over each peak sequence
   for (peak_num in 1:nrow(r8_peaks)) {
     # compare the current sequence with the current peak
     numMatch <- mapply(
@@ -56,7 +56,7 @@ for (seq_num in 1:data_length) {
 }
 
 # export data
-write.csv(seqs_data, file = paste(out_dir, "/family_identities.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_data, file = paste(out_dir, "/family_identities_1000_above2.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # check how many sequences have >= 90% identity to each peak
 for (cluster_num in 0:(nrow(r8_peaks)-1)) {
@@ -68,4 +68,4 @@ for (cluster_num in 0:(nrow(r8_peaks)-1)) {
 seqs_out <- seqs_data[seqs_data$peak_identity >= 90,]
 
 # export data
-write.csv(seqs_out, file = paste(out_dir, "/family_identities_atLeast90.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_out, file = paste(out_dir, "/family_identities_atLeast90_1000_above2.csv", sep = ""), row.names = FALSE, quote = FALSE)
