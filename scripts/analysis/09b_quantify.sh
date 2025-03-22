@@ -8,9 +8,9 @@
 # script to count the number of sequences shared across the top 10 sequences for the runs
 # usage: qsub 09b_quantify.sh inputRun
 # usage ex: bash 09b_quantify.sh r8_S8_L001
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 09b_quantify.sh $runInput; done
-## jobs 
 # usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; bash 09b_quantify.sh $runInput; done
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 09b_quantify.sh $runInput; done
+## jobs 1541842 to 1541853
 
 # retrieve input run name
 inputRun=$1
@@ -102,13 +102,10 @@ done < $fmtSeqs
 # clean up
 rm $fmtSeqs
 
-# add run tags to sequence IDs
-#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done
-# after processing the last round of data, combine all plotting data files
-#head -1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/r8_S8_L001_counts_plot_table.csv > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv
-#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv; done
-# clean up
-#rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/r*_counts_plot_table.csv.fmt
+# combine run data
+#head -1 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/r8_S8_L001_counts_plot_table.csv > /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table.csv
+#for i in /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/*_counts_plot_table.csv; do echo $i; tail -n+2 $i >> /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table.csv; done
+#cat /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table.csv | grep -v "doped" > /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv
 
 # status message
 echo "Analysis complete!"
