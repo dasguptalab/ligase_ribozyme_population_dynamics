@@ -1,12 +1,13 @@
 #!/bin/bash
 #$ -r n
-#$ -N RNA_quantify_jobOutput
+#$ -N RNA_quantify_a_jobOutput
 #$ -q largemem
 
 # script to count the number of sequences shared across runs
 # usage: qsub 09a_quantify.sh inputRun runName
+# usage ex: bash 09a_quantify.sh r8_S8_L001 r8_S8_L001
 ## quantification of all sequencess
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 09a_quantify.sh $runInput; done
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 09a_quantify.sh $runInput; done
 ## jobs 1273266 to 1273292
 ## job 1273266 -> doped21-r1_S10_L001 -> 10:02:45:26
 ## job 1273269 -> doped21-r2_S11_L001 -> 9:00:13:10
@@ -39,10 +40,10 @@ inputRunData=$outputsPath"/05_combined/"$runName"_combined.RC.fa"
 
 # retrieve input sequences
 #inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
-inputSeqs=$outputsPath"/06_formatted_above2/"$inputRun"_formatted_above2.fa"
+inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted_above2.fa"
 
 # name of a new directory for analysis
-tablesOut=$outputsPath"/09a_quantified_above2"
+tablesOut=$outputsPath"/09a_quantified"
 
 # make a new directory for analysis
 mkdir $tablesOut

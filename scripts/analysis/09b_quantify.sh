@@ -2,16 +2,15 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N RNA_quantify_jobOutput
+#$ -N RNA_quantify_b_jobOutput
 #$ -q largemem
 
 # script to count the number of sequences shared across the top 10 sequences for the runs
 # usage: qsub 09b_quantify.sh inputRun
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 09b_quantify.sh $runInput; done
-## jobs 1273307 to 1273324
-# usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted_above2/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); bash 09b_quantify.sh $runInput; done
-# usage ex: bash 09b_quantify.sh r1_S1_L001
 # usage ex: bash 09b_quantify.sh r8_S8_L001
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 09b_quantify.sh $runInput; done
+## jobs 
+# usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; bash 09b_quantify.sh $runInput; done
 
 # retrieve input run name
 inputRun=$1
@@ -25,14 +24,14 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/06_formatted_above2"
+inputsPath=$outputsPath"/06_formatted"
 
 # retrieve input sequences
 #inputSeqs=$inputsPath"/"$inputRun"_formatted.fa" ## quantification of all sequences
 inputSeqs=$inputsPath"/"$inputRun"_formatted_above2.fa"
 
 # process just the top 10 most abundant sequences
-tablesOut=$outputsPath"/09b_quantified_above2"
+tablesOut=$outputsPath"/09b_quantified"
 
 # make a new directory for analysis
 mkdir $tablesOut

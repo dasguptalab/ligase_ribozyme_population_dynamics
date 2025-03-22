@@ -2,12 +2,13 @@
 #$ -M ebrooks5@nd.edu
 #$ -m abe
 #$ -r n
-#$ -N RNA_quantify_jobOutput
+#$ -N RNA_summarize_jobOutput
 #$ -q largemem
 
 # script to summarize clustering information
 # usage: qsub 08_summarize.sh sampleTag
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
+## jobs 1541820 to 1541830
 # usage: bash 08_summarize.sh r8_S8_L001
 
 # retrieve input sample tag
