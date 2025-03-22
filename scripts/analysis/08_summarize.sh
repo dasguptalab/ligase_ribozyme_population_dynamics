@@ -7,7 +7,9 @@
 
 # script to summarize clustering information
 # usage: qsub 08_summarize.sh sampleTag
-# usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted_above2/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 08_summarize.sh $runInput; done
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted_above2/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted.fa//g"); qsub 08_summarize.sh $runInput; done
+## jobs 1538351 to 1538371
+## jobs 
 # usage: bash 08_summarize.sh r8_S8_L001
 
 # retrieve input sample tag
@@ -22,10 +24,10 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/07_clustered_1000_above2"
+inputsPath=$outputsPath"/07_clustered_above2"
 
 # make a new directory for analysis
-tablesOut=$outputsPath"/08_summarized_1000_above2"
+tablesOut=$outputsPath"/08_summarized_above2"
 mkdir $tablesOut
 
 # move to outputs directory
