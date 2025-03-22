@@ -13,7 +13,7 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 inputsPath=$outputsPath"/05_combined"
 
 # make a new directory for analysis
-outputsPath=$outputsPath"/06_formatted_above2"
+outputsPath=$outputsPath"/06_formatted"
 mkdir $outputsPath
 # check if the folder already exists
 if [ $? -ne 0 ]; then
@@ -32,7 +32,7 @@ for f1 in $inputsPath"/"*_combined\.RC\.fa; do
 	# status message
 	echo "Processing file: $f1"
 	# trim to sample tag
-	newName=$(basename $f1 | sed 's/_combined\.fa/_formatted/')
+	newName=$(basename $f1 | sed 's/_combined\.RC\.fa/_formatted/')
 	# print read counts
 	# for fasta files
 	cat $f1 | awk 'NR%2==0' | sort | uniq -c | sort -nrk1 > $outputsPath"/"$newName"_counts.tmp.txt"
