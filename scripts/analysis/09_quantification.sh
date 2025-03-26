@@ -4,6 +4,7 @@
 # usage: bash 09a_quantification.sh
 ## quantification of sequences with at least 3 reads
 ## jobs 1541857 to 1541922
+## jobs
 
 # loop over each input run num
 for runNum in {1..8}; do 
@@ -16,7 +17,11 @@ for runNum in {1..8}; do
 		echo "Beginning analysis of $runInput over $runData ..."
 		# submit job script
 		qsub 09a_quantify.sh $runInput $runData
+		qsub 09b_quantify.sh $runInput $runData
 	done
+	# submit job scripts for the top 10 sequences per round
+	qsub 09c_quantify.sh $runInput $runData
+	qsub 09d_quantify.sh $runInput $runData
 done
 
 # combine run data

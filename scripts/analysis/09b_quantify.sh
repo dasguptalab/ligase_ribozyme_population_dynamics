@@ -1,19 +1,31 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
 #$ -r n
-#$ -N RNA_quantify_b_jobOutput
+#$ -N RNA_quantify_a_jobOutput
 #$ -q largemem
 
-# script to count the number of sequences shared across the top 10 sequences for the runs
-# usage: qsub 09b_quantify.sh inputRun
-# usage ex: bash 09b_quantify.sh r8_S8_L001
-# usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; bash 09b_quantify.sh $runInput; done
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 09b_quantify.sh $runInput; done
-## jobs 1541842 to 1541853
+# script to count the number of sequences shared across runs
+# usage: qsub 09a_quantify.sh inputRun runName
+# usage ex: bash 09a_quantify.sh r8_S8_L001 r8_S8_L001
+## quantification of all sequencess
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 09a_quantify.sh $runInput; done
+## jobs 1273266 to 1273292
+## job 1273266 -> doped21-r1_S10_L001 -> 10:02:45:26
+## job 1273269 -> doped21-r2_S11_L001 -> 9:00:13:10
+## job 1273272 -> doped21-r3_S12_L001 -> 11:19:46:49
+## job 1273275 -> r1_S1_L001 -> 12:01:53:05
+## job 1273278 -> r2_S2_L001 -> 12:09:43:07
+## job 1273281 -> r3_S3_L001 -> 12:01:09:05
+## job 1273284 -> r4_S4_L001 -> 10:04:20:18
+## job 1273287 -> r5_S5_L001 -> 11:07:11:50
+## job 1273289 -> r6_S6_L001 -> 6:01:08:18
+## job 1273290 -> r7_S7_L001 -> 1:02:34:23
+## job 1273292 -> r8_S8_L001 -> 1:07:36:44
 
 # retrieve input run name
 inputRun=$1
+
+# retrieve input run name
+runName=$2
 
 # retrieve the analysis type
 analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
@@ -23,15 +35,15 @@ analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | s
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
-# retrieve the inputs path
-inputsPath=$outputsPath"/06_formatted"
+# setup inputs run data
+inputRunData=$outputsPath"/05_combined/"$runName"_combined.RC.fa"
 
 # retrieve input sequences
-#inputSeqs=$inputsPath"/"$inputRun"_formatted.fa" ## quantification of all sequences
-inputSeqs=$inputsPath"/"$inputRun"_formatted_above2.fa"
+#inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
+inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted_above2.fa"
 
-# process just the top 10 most abundant sequences
-tablesOut=$outputsPath"/09b_quantified"
+# name of a new directory for analysis
+tablesOut=$outputsPath"/09a_quantified_above2"
 
 # make a new directory for analysis
 mkdir $tablesOut
@@ -43,16 +55,14 @@ cd $tablesOut
 fmtSeqs=$tablesOut"/"$inputRun"_formatted.tmp.fa"
 
 # re-format input sequences for processing
-# process just the top 10 most abundant sequences
-#cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space:]]*$/d' | sort -k3 -n | head -10 > $fmtSeqs
-cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space:]]*$/d' | head -10 > $fmtSeqs
+cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space:]]*$/d' > $fmtSeqs
 
 # add final new line
-#echo "" >> $fmtSeqs
+echo "" >> $fmtSeqs
 
 # name output file
-#countsOut=$tablesOut"/"$inputRun"_counts_table.csv"
-countsPlotOut=$tablesOut"/"$inputRun"_counts_plot_table.csv"
+#countsOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_table.csv"
+countsPlotOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_plot_table.csv"
 
 # retrieve header
 inputHeader="run_name,sequence_ID,read_counts,sequence"
@@ -66,7 +76,7 @@ headerPlot=$(echo $inputHeader",counts,counts_run_name")
 echo $headerPlot > $countsPlotOut
 
 # status message
-echo "Beginning analysis of $inputRun ..."
+echo "Beginning analysis of $inputSeqs over $inputRunData ..."
 
 # loop over round sequences
 while read data; do
@@ -84,17 +94,12 @@ while read data; do
 	countDataOut=$countData
 	# status message
 	echo "Processing $seq ..."
-	# loop over each round sequences file
-	for f2 in $outputsPath"/05_combined/"*_combined\.RC\.fa; do
-		# retrieve run name
-		runName=$(basename $f2 | sed "s/_S.*_L001_combined\.RC\.fa//g" | sed "s/r//g" | sed "s/21-/_/g")
-		# count the number of seq occurances in each round
-		numReads=$(cat $f2 | grep -wc $seq)
-		# add the number of seqs for the round
-		countDataOut=$(echo $countDataOut","$numReads)
-		# add the counts data to the outputs file
-		echo $countData","$numReads","$runName >> $countsPlotOut
-	done
+	# count the number of seq occurances in each round
+	numReads=$(cat $inputRunData | grep -wc $seq)
+	# add the number of seqs for the round
+	countDataOut=$(echo $countDataOut","$numReads)
+	# add the counts data to the outputs file
+	echo $countData","$numReads","$runName >> $countsPlotOut
 	# add the counts data to the outputs file
 	#echo $countDataOut >> $countsOut
 done < $fmtSeqs
@@ -102,10 +107,13 @@ done < $fmtSeqs
 # clean up
 rm $fmtSeqs
 
-# combine run data
-#head -1 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/r8_S8_L001_counts_plot_table.csv > /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table.csv
-#for i in /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/*_counts_plot_table.csv; do echo $i; tail -n+2 $i >> /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table.csv; done
-#cat /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table.csv | grep -v "doped" > /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv
+# add run tags to sequence IDs
+#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done
+# after processing the last round of data, combine all plotting data files
+#head -1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r8_S8_L001_counts_plot_table.csv > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/counts_plot_table_noDoped.csv
+#for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r*_counts_plot_table.csv.fmt; do tail -n+2 $i | grep -v "doped" >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/counts_plot_table_noDoped.csv; done
+# clean up
+#rm /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r*_counts_plot_table.csv.fmt
 
 # status message
 echo "Analysis complete!"

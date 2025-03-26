@@ -95,6 +95,19 @@ For analysis steps 01 to 07 use BASH to:<br>
 <b>00a.</b>  create QC reports for each set of raw and processed data using FastQC and MultiQC<br>
 <b>00b.</b>  analyze read numbers, read lengths, counts of unique reads, and counts of read names
 
+#### Progress of selection across eight rounds (23 March 2025)
+
+| <div style="width:175px">Statistic</div> | <b>Round 1</b> | <b>Round 2</b> | <b>Round 3</b> | <b>Round 4</b> | <b>Round 5</b> | <b>Round 6</b> | <b>Round 7</b> | <b>Round 8</b> |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Reaction Time (min)| 120 | 60 |30 | 20 | 30 | 10 | 10 |10 |
+| \[Mg<sup>2+</sup>] (mM) | 20 | 20 | 20 | 20 | 20 | 20 | 10 | 5 |
+| Total Raw Reads | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 |
+| High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
+| Unique Reads | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
+| Diversity (%) | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
+| Sequences with > 2 Reads | NA | NA | NA | NA | NA | NA | NA | NA |
+| Sequence Families | NA | NA | NA | NA | NA | NA | NA | NA |
+
 #### Progress of selection across eight rounds (12 January 2025)
 
 | <div style="width:175px">Statistic</div> | <b>Round 1</b> | <b>Round 2</b> | <b>Round 3</b> | <b>Round 4</b> | <b>Round 5</b> | <b>Round 6</b> | <b>Round 7</b> | <b>Round 8</b> |

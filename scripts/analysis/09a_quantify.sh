@@ -39,11 +39,11 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 inputRunData=$outputsPath"/05_combined/"$runName"_combined.RC.fa"
 
 # retrieve input sequences
-#inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
-inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted_above2.fa"
+inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
+#inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted_above2.fa"
 
 # name of a new directory for analysis
-tablesOut=$outputsPath"/09a_quantified"
+tablesOut=$outputsPath"/09a_quantified_all"
 
 # make a new directory for analysis
 mkdir $tablesOut

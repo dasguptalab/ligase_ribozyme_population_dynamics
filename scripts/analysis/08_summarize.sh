@@ -8,29 +8,29 @@
 # script to summarize clustering information
 # usage: qsub 08_summarize.sh sampleTag
 # usage: bash 08_summarize.sh r8_S8_L001
-## 1500
+## 1500 -> default
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
 ## jobs 1541820 to 1541830
 ## 1400
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
-## jobs 
+## jobs 1545343 to 1545358
 
 # retrieve input sample tag
 sampleTag=$1
 
 # retrieve the analysis type
-analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
-#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/07_clustered_1400"
+inputsPath=$outputsPath"/07_clustered"
 
 # make a new directory for analysis
-tablesOut=$outputsPath"/08_summarized_1400"
+tablesOut=$outputsPath"/08_summarized"
 mkdir $tablesOut
 
 # move to outputs directory

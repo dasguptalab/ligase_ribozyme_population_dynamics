@@ -25,10 +25,11 @@ r8_seqs_identity <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs
 # list of cluster IDs
 cluster_list <- unique(r8_seqs_identity$cluster_ID)
 
-# list of cluster IDs and abundances
+# calculate cluster IDs and abundances
+r8_high_quality <- 889374
 cluster_read_counts <- c(40999, 256601, 34117, 82079, 14439, 26345, 6555, 12539, 15921, 2572, 4227, 8543, 4043)
 cluster_seq_counts <- c(108, 1114, 98, 116, 269, 85, 33, 49, 75, 153, 275, 286, 271)
-cluster_read_abun <- 100*cluster_read_counts/889374
+cluster_read_abun <- 100*cluster_read_counts/r8_high_quality
 
 # create cluster data frame
 cluster_data <- data.frame(
