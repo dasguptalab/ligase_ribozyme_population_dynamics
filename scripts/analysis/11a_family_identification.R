@@ -42,11 +42,10 @@ seqs_data <- data.frame(
 )
 seqs_data_out <- data.frame()
 
-
-seqs_subset <- seqs_input[seqs_input$run_name == 2  & seqs_input$counts_run_name == 2,]
-nrow(seqs_subset)
-nrow(seqs_subset[unique(seqs_subset$sequence_ID),])
-
+# testing
+#seqs_subset <- seqs_input[seqs_input$run_name == 2  & seqs_input$counts_run_name == 2,]
+#nrow(seqs_subset)
+#nrow(seqs_subset[unique(seqs_subset$sequence_ID),])
 
 # loop over each round
 for (round_num in 1:8) {

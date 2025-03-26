@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # script to run job scripts that count the number of sequences shared across runs
-# usage: bash 09a_quantification.sh
+# usage: bash 09_quantification.sh
 ## quantification of sequences with at least 3 reads
 ## jobs 1541857 to 1541922
-## jobs
+## jobs 1580433 to 1580579
+## jobs 
 
 # loop over each input run num
 for runNum in {1..8}; do 
@@ -19,6 +20,8 @@ for runNum in {1..8}; do
 		qsub 09a_quantify.sh $runInput $runData
 		qsub 09b_quantify.sh $runInput $runData
 	done
+	# status message
+	echo "Beginning analysis of $runInput top 10 sequences..."
 	# submit job scripts for the top 10 sequences per round
 	qsub 09c_quantify.sh $runInput $runData
 	qsub 09d_quantify.sh $runInput $runData
