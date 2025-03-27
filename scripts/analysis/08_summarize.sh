@@ -14,6 +14,8 @@
 ## 1400
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
 ## jobs 1545343 to 1545358
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
+## jobs
 
 # retrieve input sample tag
 sampleTag=$1

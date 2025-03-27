@@ -95,7 +95,7 @@ For analysis steps 01 to 07 use BASH to:<br>
 <b>00a.</b>  create QC reports for each set of raw and processed data using FastQC and MultiQC<br>
 <b>00b.</b>  analyze read numbers, read lengths, counts of unique reads, and counts of read names
 
-#### Progress of selection across eight rounds (23 March 2025)
+#### Progress of selection across eight rounds (27 March 2025)
 
 | <div style="width:175px">Statistic</div> | <b>Round 1</b> | <b>Round 2</b> | <b>Round 3</b> | <b>Round 4</b> | <b>Round 5</b> | <b>Round 6</b> | <b>Round 7</b> | <b>Round 8</b> |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -105,8 +105,9 @@ For analysis steps 01 to 07 use BASH to:<br>
 | High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
 | Unique Reads | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
 | Diversity (%) | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
-| Sequences with > 2 Reads | NA | NA | NA | NA | NA | NA | NA | NA |
-| Sequence Families | NA | NA | NA | NA | NA | NA | NA | NA |
+| Sequences with > 2 Reads | 18 | 19 | 26 | 27 | 1,585 | 10,626 | 7,230 | 6,315 |
+| Sequence Families (Unique Reads) | TBD | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| Sequence Families (Sequences with > 2 Reads) | NA | NA | NA | NA | 2 | 17 | 14 | 10 |
 
 #### Progress of selection across eight rounds (12 January 2025)
 

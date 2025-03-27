@@ -4,17 +4,21 @@
 #$ -r n
 #$ -N RNA_cluster_jobOutput
 #$ -pe smp 8
+#$ -q largemem
 
 # script to cluster sequences using clustalo
 # usage: qsub 07_cluster.sh sampleTag
-## 1500 -> default
+# above 2
+# 1500 -> default
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_above2\.fa; do echo $i; qsub 07_cluster.sh $i; done
 ## jobs 1541791 to 1541805
-## 1400
+# 1400
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_above2\.fa; do echo $i; qsub 07_cluster.sh $i; done
 ## jobs 1545201 to 1545256
+# all
+# 1500
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted\.fa; do echo $i; qsub 07_cluster.sh $i; done
-## jobs
+## jobs 1582635 to 1582645
 
 # load the software module
 module load bio/0724

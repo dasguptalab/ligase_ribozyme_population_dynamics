@@ -43,7 +43,7 @@ inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification
 #inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted_above2.fa"
 
 # name of a new directory for analysis
-tablesOut=$outputsPath"/test_26March2025/09a_quantified_all"
+tablesOut=$outputsPath"/09a_quantified_all"
 
 # make a new directory for analysis
 mkdir $tablesOut

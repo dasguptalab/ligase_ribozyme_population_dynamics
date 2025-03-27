@@ -29,7 +29,7 @@ inputsPath=$outputsPath"/06_formatted"
 inputSeqs=$inputsPath"/"$inputRun"_formatted_above2.fa"
 
 # process just the top 10 most abundant sequences
-tablesOut=$outputsPath"/test_26March2025/09d_quantified_top10_above2"
+tablesOut=$outputsPath"/09d_quantified_top10_above2"
 
 # make a new directory for analysis
 mkdir $tablesOut
