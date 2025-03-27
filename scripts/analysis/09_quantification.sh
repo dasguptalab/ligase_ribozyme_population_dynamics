@@ -3,9 +3,12 @@
 # script to run job scripts that count the number of sequences shared across runs
 # usage: bash 09_quantification.sh
 ## quantification of sequences with at least 3 reads
+## run 4
 ## jobs 1541857 to 1541922
+## outputs
 ## jobs 1580433 to 1580579
-## jobs 
+## test_26March2025
+## jobs 1581231 to 1581377
 
 # loop over each input run num
 for runNum in {1..8}; do 

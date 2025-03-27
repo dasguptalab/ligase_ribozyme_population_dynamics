@@ -13,6 +13,8 @@
 ## 1400
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_above2\.fa; do echo $i; qsub 07_cluster.sh $i; done
 ## jobs 1545201 to 1545256
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted\.fa; do echo $i; qsub 07_cluster.sh $i; done
+## jobs
 
 # load the software module
 module load bio/0724
@@ -20,8 +22,9 @@ module load bio/0724
 # set the sample file
 sampleFile=$1
 
-# retrieve the same tag
-sampleTag=$(basename $sampleFile | sed 's/_formatted_above2\.fa//')
+# retrieve the sample tag
+#sampleTag=$(basename $sampleFile | sed 's/_formatted_above2\.fa//')
+sampleTag=$(basename $sampleFile | sed 's/_formatted\.fa//')
 sampleTag=$sampleTag
 
 # retrieve analysis outputs absolute path
@@ -40,7 +43,7 @@ echo "Processing $sampleFile ..."
 # cluster sequences
 #clustalo --threads=$NSLOTS -i $inputsPath"/"$sampleFile --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=500 
 #clustalo -i $inputsPath"/"$sampleFile --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=500 --full --percent-id --distmat-out=$outputsPath"/"$sampleTag"_distances.txt"
-clustalo -i $inputsPath"/"$sampleFile --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=1500
+clustalo --threads=$NSLOTS -i $inputsPath"/"$sampleFile --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=1500
 
 # status message
 echo "Analysis complete!"
