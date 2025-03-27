@@ -15,18 +15,18 @@
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
 ## jobs 1545343 to 1545358
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
-## jobs
+## jobs 
 
 # retrieve input sample tag
 sampleTag=$1
 
 # retrieve the analysis type
-#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
-analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
+analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/analysis://g")
+#analysisTag=$(grep "analysis:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/analysis://g")
 
 # retrieve analysis outputs absolute path
-#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
 inputsPath=$outputsPath"/07_clustered"
@@ -42,7 +42,6 @@ cd $tablesOut
 echo "Processing $sampleTag ..."
 
 # set input file
-#f1=$inputsPath"/"$sampleTag"_clustered.aux"
 f1=$inputsPath"/"$sampleTag"_clustered.aux"
 
 # retrieve cluster names
