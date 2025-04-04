@@ -12,7 +12,7 @@ out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_family_compari
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in cluster family sequence data
-r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized/r8_S8_L001_cluster_peaks_table.csv")
+r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv")
 
 # set the sequence length
 seqLength <- 40
