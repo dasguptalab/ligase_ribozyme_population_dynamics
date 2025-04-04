@@ -5,7 +5,7 @@
 # turn of scientific notation
 options(scipen=10000)
 
-# inport libraries
+# import libraries
 library(ggplot2)
 library(scales)
 library(rcartocolor)

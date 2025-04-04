@@ -54,7 +54,7 @@ cluster_data_out$read_abun <- 100*cluster_data_out$read_counts/quality[roundNum]
 cluster_data_out <- cluster_data_out[order(cluster_data_out$read_abun, decreasing = TRUE),]  
 
 # add family numbers
-cluster_data_out$fam_num <- seq(from = 1, to = length(cluster_list), by = 1)
+#cluster_data_out$fam_num <- seq(from = 1, to = length(cluster_list), by = 1)
   
 # export data
 write.csv(cluster_data_out, file = paste(out_dir, "/r8_cluster_count_data.csv", sep = ""), row.names = FALSE, quote = FALSE)

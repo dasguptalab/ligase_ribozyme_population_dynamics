@@ -24,7 +24,8 @@ unique <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
 
 # read in cluster family sequence data
 r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized/r8_S8_L001_cluster_peaks_table.csv")
-seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification/family_identities_atLeast90.csv")
+#seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification/family_identities_atLeast90.csv")
+seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification/family_identities.csv")
 
 # read in sequence count data
 counts_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
@@ -33,8 +34,16 @@ counts_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a
 r8_seqs_family <- seqs_family[seqs_family$run_name == "8",]
 r8_counts_input <- counts_input[counts_input$run_name == "8" & counts_input$counts_run_name == "r8_S8_L001",]
 
+# list of unique seqeunces
+unique_seqs <- r8_counts_input[unique(r8_counts_input$sequence),"sequence"]
+
+# loop over each unique sequence
+for (seq in 1:length(unique_seqs)) {
+  
+}
+# To-do: keep all counts and add sequence identities
 # merge the counts with the identities
-r8_family_data <- merge(r8_seqs_family, r8_counts_input, by = "sequence_ID")
+r8_family_data <- merge(r8_counts_input, r8_seqs_family, by = "sequence_ID", all.x = TRUE)
 
 # set the round num
 roundNum <- 8

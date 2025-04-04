@@ -6,22 +6,33 @@
 options(scipen=10000)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11b_family_identification"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10a_family_identification"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
 
+# set the sequence length
+seqLength <- 40
+
 # read in cluster family sequence data
 r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized/r8_S8_L001_cluster_peaks_table.csv")
 
-# read in sequence count data
-seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
-  
-# remove duplicate sequence data
-seqs_input <- seqs_input[!duplicated(seqs_input$sequence),]
+# subset to the top 40 most sequence abundant clusters
+r8_peaks <- head(r8_peaks, n=20)
 
-# set the sequence length
-seqLength <- 40
+# read in sequence count data
+#seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/combined_formatted_no_doped.csv", colClasses=c("run_name"="character"))
+
+# To-do: double check
+# reverse complement the sequences
+seqs_input$sequence <- rev(chartr("ATGC","TACG",seqs_input$sequence))
+
+# remove duplicate sequence data
+#seqs_input <- seqs_input[!duplicated(seqs_input$sequence_ID),]
+
+# subset data to sequences with more than 1 read
+seqs_input <- seqs_input[seqs_input$counts >= 3,]
 
 # setup data frame length
 data_length <- nrow(seqs_input) * nrow(r8_peaks)
@@ -37,7 +48,7 @@ seqs_data <- data.frame(
 
 # loop over each sequence and compare with the peak to note if it has >= 90% similarity
 for (seq_num in 0:(data_length-1)) {
-  # loop over rach peak sequence
+  # loop over each peak sequence
   for (peak_num in 1:nrow(r8_peaks)) {
     # compare the current sequence with the current peak
     numMatch <- mapply(
@@ -64,11 +75,21 @@ for (seq_num in 0:(data_length-1)) {
 # export data
 write.csv(seqs_data, file = paste(out_dir, "/family_identities.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
+# data frame to track how many sequences have >= 90% identity to each peak
+identity_check <- data.frame(
+  cluster = rep(NA, nrow(r8_peaks)),
+  identity_count = rep(NA, nrow(r8_peaks))
+)
+
 # check how many sequences have >= 90% identity to each peak
 for (cluster_num in 0:(nrow(r8_peaks)-1)) {
-  print(cluster_num)
-  print(nrow(seqs_data[seqs_data[seqs_data$peak_cluster_ID == cluster_num,]$peak_identity >= 90,]))
+  clusterIndex <- cluster_num+1
+  identity_check$cluster[clusterIndex] <- cluster_num
+  clusterSize <- 0
+  clusterSize <- clusterSize + nrow(seqs_data[seqs_data[seqs_data$peak_cluster_ID == cluster_num,]$peak_identity >= 90,])
+  identity_check$identity_count[clusterIndex] <- clusterSize
 }
+identity_check
 
 # keep sequences that have >= 90% identity to any peak
 seqs_out <- seqs_data[seqs_data$peak_identity >= 90,]

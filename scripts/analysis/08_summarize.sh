@@ -15,7 +15,10 @@
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
 ## jobs 1545343 to 1545358
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
-## jobs 
+## jobs 1583393 to 1583403
+# above 2, 1000
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
+## jobs
 
 # retrieve input sample tag
 sampleTag=$1
@@ -29,10 +32,10 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/07_clustered"
+inputsPath=$outputsPath"/07_clustered_1000"
 
 # make a new directory for analysis
-tablesOut=$outputsPath"/08_summarized"
+tablesOut=$outputsPath"/08_summarized_1000"
 mkdir $tablesOut
 
 # move to outputs directory

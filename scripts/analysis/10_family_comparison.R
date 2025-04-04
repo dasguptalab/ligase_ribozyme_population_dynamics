@@ -29,7 +29,7 @@ seqs_data <- data.frame(
   peak_identity = rep(NA, data_length)
 )
 
-# loop over each sequence and compare with the peak to note if it has >= 90% similarity
+# loop over each sequence and compare with the peak to note if it has >= 95% similarity
 for (seq_num in 1:data_length) {
   # loop over each peak sequence
   for (peak_num in 1:nrow(r8_peaks)) {
@@ -58,14 +58,14 @@ for (seq_num in 1:data_length) {
 # export data
 write.csv(seqs_data, file = paste(out_dir, "/family_identities.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
-# check how many sequences have >= 90% identity to each peak
+# check how many sequences have >= 95% identity to each peak
 for (cluster_num in 0:(nrow(r8_peaks)-1)) {
   print(cluster_num)
-  print(nrow(seqs_data[seqs_data[seqs_data$peak_cluster_ID == cluster_num,]$peak_identity >= 90,]))
+  print(nrow(seqs_data[seqs_data[seqs_data$peak_cluster_ID == cluster_num,]$peak_identity >= 95,]))
 }
 
 # keep sequences that have >= 90% identity to any peak
-seqs_out <- seqs_data[seqs_data$peak_identity >= 90,]
+seqs_out <- seqs_data[seqs_data$peak_identity >= 95,]
 
 # export data
-write.csv(seqs_out, file = paste(out_dir, "/family_identities_atLeast90.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_out, file = paste(out_dir, "/family_identities_atLeast95.csv", sep = ""), row.names = FALSE, quote = FALSE)
