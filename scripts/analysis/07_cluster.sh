@@ -32,7 +32,10 @@
 ## jobs 1602529 to 1602539
 # above 2, 1500, pileup
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_above2\.fa; do echo $i; qsub 07_cluster.sh $i; done
-## jobs 1602565 to 1602575
+## jobs 
+# above 2, 1400, pileup
+# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_above2\.fa; do echo $i; qsub 07_cluster.sh $i; done
+## jobs 
 
 # load the software module
 module load bio/0724
@@ -61,7 +64,7 @@ echo "Processing $sampleFile ..."
 # cluster sequences
 #clustalo --threads=$NSLOTS -i $inputsPath"/"$sampleFile --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=500 
 #clustalo -i $inputsPath"/"$sampleFile --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=500 --full --percent-id --distmat-out=$outputsPath"/"$sampleTag"_distances.txt"
-clustalo --threads=$NSLOTS -i $inputsPath"/"$sampleFile --full --pileup --guidetree-out=$outputsPath"/"$sampleTag"_guide_tree.txt" --distmat-out=$outputsPath"/"$sampleTag"_distance_matrix.txt" --percent-id --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=1500
+clustalo --full --percent-id --threads=$NSLOTS -i $inputsPath"/"$sampleFile --guidetree-out=$outputsPath"/"$sampleTag"_guide_tree.txt" --distmat-out=$outputsPath"/"$sampleTag"_distance_matrix.txt" --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=1500
 
 # status message
 echo "Analysis complete!"
