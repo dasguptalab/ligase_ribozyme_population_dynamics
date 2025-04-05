@@ -1,6 +1,4 @@
 #!/bin/bash
-#$ -M ebrooks5@nd.edu
-#$ -m abe
 #$ -r n
 #$ -N RNA_summarize_jobOutput
 #$ -q largemem
@@ -28,12 +26,9 @@
 # above 2, 1400
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
 ## jobs 1602540 to 1602550
-# above 2, 1500, pileup
+# above 2, 1500, full
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
-## jobs 
-# above 2, 1400, pileup
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
-## jobs 
+## jobs
 
 # retrieve input sample tag
 sampleTag=$1
@@ -47,10 +42,10 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # retrieve the inputs path
-inputsPath=$outputsPath"/07_clustered_1500_pileup"
+inputsPath=$outputsPath"/07_clustered_1500_full"
 
 # make a new directory for analysis
-tablesOut=$outputsPath"/08_summarized_1500_pileup"
+tablesOut=$outputsPath"/08_summarized_1500_full"
 mkdir $tablesOut
 
 # move to outputs directory
