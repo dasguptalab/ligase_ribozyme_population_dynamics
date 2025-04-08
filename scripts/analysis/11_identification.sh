@@ -11,6 +11,9 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outDir="/11a_family_identification"
 outDir=$outputsPath"/11a_family_identification_above2"
 
+# create outputs directory
+mkdir $outDir
+
 # read in cluster family sequence data
 #peaksFile="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv"
 peaksFile=$outputsPath"/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv"
