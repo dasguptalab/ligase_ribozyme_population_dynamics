@@ -23,33 +23,16 @@ quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 unique <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
 
 # read in cluster family sequence data
-r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized/r8_S8_L001_cluster_peaks_table.csv")
+r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv")
+
+# read in sequence family count data
 #seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification/family_identities_atLeast90.csv")
-seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification/family_identities.csv")
-
-# read in sequence count data
-counts_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
-
-# subset to the round 8 data
-r8_seqs_family <- seqs_family[seqs_family$run_name == "8",]
-r8_counts_input <- counts_input[counts_input$run_name == "8" & counts_input$counts_run_name == "r8_S8_L001",]
-
-# list of unique seqeunces
-unique_seqs <- r8_counts_input[unique(r8_counts_input$sequence),"sequence"]
-
-# loop over each unique sequence
-for (seq in 1:length(unique_seqs)) {
-  
-}
-# To-do: keep all counts and add sequence identities
-# merge the counts with the identities
-r8_family_data <- merge(r8_counts_input, r8_seqs_family, by = "sequence_ID", all.x = TRUE)
+r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification/family_identities_max_above2_round8.csv")
 
 # set the round num
 roundNum <- 8
 
 # list of cluster IDs
-#cluster_list <- c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 cluster_list <- r8_peaks$cluster_ID
 
 # color blind safe plotting palette
@@ -68,22 +51,21 @@ cluster_data <- data.frame(
 )
 
 # add read and sequence counts
-for (cluster_num in 0:max(cluster_data$cluster_ID)) {
-  # To-do: make sure r8 sequence family data is sorted by increasing cluster ID
+for (cluster_num in min(cluster_data$cluster_ID):max(cluster_data$cluster_ID)) {
   # add read counts
-  cluster_data$read_counts[cluster_num] <-  sum(r8_seqs_family[r8_seqs_family$peak_cluster_ID == cluster_num,])
+  cluster_data$read_counts[cluster_num+1] <-  sum(r8_seqs_family[r8_seqs_family$peak_cluster_ID == cluster_num,"read_counts"])
   # add sequence counts
-  cluster_data$seq_counts[cluster_num] <-  nrow(r8_seqs_family[r8_seqs_family$peak_cluster_ID == cluster_num,])
+  cluster_data$seq_counts[cluster_num+1] <-  nrow(r8_seqs_family[r8_seqs_family$peak_cluster_ID == cluster_num,])
 }
 
 # add abundances
-cluster_data_out$read_abun <- 100*cluster_data_out$read_counts/quality[roundNum]
+cluster_data$read_abun <- 100*cluster_data$read_counts/quality[roundNum]
 
 # sort cluster data
-cluster_data_out <- cluster_data_out[order(cluster_data_out$read_abun, decreasing = TRUE),]  
+cluster_data <- cluster_data[order(cluster_data$read_abun, decreasing = TRUE),]  
 
 # add family numbers
-cluster_data_out$fam_num <- seq(from = 1, to = length(cluster_list), by = 1)
+cluster_data$family_ID <- seq(from = 1, to = length(cluster_list), by = 1)
   
 # export data
-write.csv(cluster_data_out, file = paste(out_dir, "/r8_family_count_data.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(cluster_data, file = paste(out_dir, "/r8_family_count_data.csv", sep = ""), row.names = FALSE, quote = FALSE)

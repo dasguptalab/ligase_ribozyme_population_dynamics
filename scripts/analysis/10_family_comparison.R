@@ -12,7 +12,7 @@ out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_family_compari
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in cluster family sequence data
-r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500_pileup/r8_S8_L001_cluster_peaks_table.csv")
+r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv")
 
 # set the sequence length
 seqLength <- 40
@@ -58,14 +58,14 @@ for (seq_num in 1:data_length) {
 # export data
 write.csv(seqs_data, file = paste(out_dir, "/family_identities.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
-# check how many sequences have >= 95% identity to each peak
+# check how many sequences have >= 90% identity to each peak
 for (cluster_num in 0:(nrow(r8_peaks)-1)) {
   print(cluster_num)
-  print(nrow(seqs_data[seqs_data[seqs_data$peak_cluster_ID == cluster_num,]$peak_identity >= 95,]))
+  print(nrow(seqs_data[seqs_data[seqs_data$peak_cluster_ID == cluster_num,]$peak_identity >= 90,]))
 }
 
 # keep sequences that have >= 90% identity to any peak
-seqs_out <- seqs_data[seqs_data$peak_identity >= 95,]
+seqs_out <- seqs_data[seqs_data$peak_identity >= 90,]
 
 # export data
-write.csv(seqs_out, file = paste(out_dir, "/family_identities_atLeast95.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_out, file = paste(out_dir, "/family_identities_atLeast90.csv", sep = ""), row.names = FALSE, quote = FALSE)

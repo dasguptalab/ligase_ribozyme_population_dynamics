@@ -25,7 +25,7 @@ unique <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
 # read in cluster family sequence data
 #seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized/07a_clustered/cluster_peaks_table.csv")
 #r8_seqs_family <- seqs_family[seqs_family$run_name == "r8",]
-r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized/r8_S8_L001_cluster_peaks_table.csv")
+r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv")
 
 # set the round num
 roundNum <- 8
@@ -58,3 +58,4 @@ cluster_data_out <- cluster_data_out[order(cluster_data_out$read_abun, decreasin
   
 # export data
 write.csv(cluster_data_out, file = paste(out_dir, "/r8_cluster_count_data.csv", sep = ""), row.names = FALSE, quote = FALSE)
+
