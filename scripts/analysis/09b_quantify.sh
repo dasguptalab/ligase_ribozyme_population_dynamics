@@ -56,7 +56,7 @@ cat $inputData > $inputRunData
 cd $tablesOut
 
 # name formatted sequences file
-fmtSeqs=$tablesOut"/"$inputRun"_formatted.tmp.fa"
+fmtSeqs=$tablesOut"/"$inputRun"_"$runName"_formatted.tmp.fa"
 
 # re-format input sequences for processing
 cat $inputSeqs | tr "\n" "," | sed "s/>/\n>/g" | sed "s/,$//g" | sed '/^[[:space:]]*$/d' > $fmtSeqs
