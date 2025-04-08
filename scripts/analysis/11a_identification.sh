@@ -8,14 +8,14 @@
 # usage ex: qsub 11a_identification.sh 1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv
 
 # load the software
-module load bio/2.0
+module load bio/0724
 
 # retrieve the input round number
 #roundNum="1"
 roundNum=$1
 
 # set outputs directory
-#outDir="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification"
+#outDir="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification_above2"
 outDir=$2
 
 # read in cluster family sequence data
