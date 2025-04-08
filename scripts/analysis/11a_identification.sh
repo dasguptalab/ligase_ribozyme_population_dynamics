@@ -6,6 +6,10 @@
 # script to run R scripts that count the number of sequences in sequence families
 # usage: qsub 11a_identification.sh roundNum outDir peaksFile seqsFile
 # usage ex: qsub 11a_identification.sh 1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv
+# above 2
+# jobs 1608856 to 1608863
+# all
+# jobs 
 
 # load the software
 module load bio/0724
@@ -16,6 +20,7 @@ roundNum=$1
 
 # set outputs directory
 #outDir="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification_above2"
+#outDir="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification_all"
 outDir=$2
 
 # read in cluster family sequence data
@@ -24,6 +29,7 @@ peaksFile=$3
 
 # read in sequence count data for the specified round
 #seqsFile="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv"
+#seqsFile="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified_all/counts_plot_table.csv"
 seqsFile=$4
 
 # status message

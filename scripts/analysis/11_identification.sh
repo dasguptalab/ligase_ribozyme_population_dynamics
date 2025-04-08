@@ -8,8 +8,8 @@
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-#outDir="/11a_family_identification"
-outDir=$outputsPath"/11a_family_identification_above2"
+#outDir=$outputsPath"/11a_family_identification_above2"
+outDir=$outputsPath"/11a_family_identification_all"
 
 # create outputs directory
 mkdir $outDir
@@ -19,8 +19,8 @@ mkdir $outDir
 peaksFile=$outputsPath"/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv"
 
 # read in sequence count data for the specified round
-#seqsFile="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv"
-seqsFile=$outputsPath"/09b_quantified_above2/counts_plot_table.csv"
+#seqsFile=$outputsPath"/09b_quantified_above2/counts_plot_table.csv"
+seqsFile=$outputsPath"/09a_quantified_all/counts_plot_table.csv"
 
 # loop over each input run num
 for runNum in {1..8}; do 
