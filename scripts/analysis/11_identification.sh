@@ -4,10 +4,11 @@
 # usage: bash 11_identification.sh
 
 # retrieve analysis outputs absolute path
+#outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-#outDir="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification"
+#outDir="/11a_family_identification"
 outDir=$outputsPath"/11a_family_identification_above2"
 
 # read in cluster family sequence data
@@ -21,7 +22,7 @@ seqsFile=$outputsPath"/09b_quantified_above2/counts_plot_table.csv"
 # loop over each input run num
 for runNum in {1..8}; do 
 	# retrieve the input round number
-	roundNum=$1
+	roundNum=$runNum
 	# status message
 	echo "Beginning analysis of round $roundNum ..."
 	# submit job script
