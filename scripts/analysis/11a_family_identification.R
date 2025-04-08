@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
 
 # R script to create analysis plots for the RNA evolution project
 
@@ -12,8 +13,8 @@ options(scipen=10000)
 seqLength <- 40
 
 # set the input round number
-round_num <- "1"
-#round_num <- args[1]
+#round_num <- "1"
+round_num <- args[1]
 round_name <- paste("r", round_num, "_S", round_num, "_L001", sep = "")
 
 # create outputs directory
