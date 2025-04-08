@@ -49,7 +49,7 @@ tablesOut=$outputsPath"/09b_quantified_above2"
 mkdir $tablesOut
 
 # setup tmp inputs data
-inputRunData=$tablesOut"/"$runName"_combined.RC.tmp.fa"
+inputRunData=$tablesOut"/"$inputRun"_"$runName"_combined.RC.tmp.fa"
 cat $inputData > $inputRunData
 
 # move to outputs directory

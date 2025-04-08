@@ -23,6 +23,7 @@ round_name <- paste("r", round_num, "_S", round_num, "_L001", sep = "")
 # create outputs directory
 #out_dir <- "/scratch365/ebrooks5/RNA_evolution/outputs/11a_family_identification_above2"
 #out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification_all"
 out_dir <- args[2]
 dir.create(out_dir, showWarnings = FALSE)
 
@@ -35,6 +36,7 @@ r8_peaks <- read.csv(peaksFile)
 # read in sequence count data for the specified round
 #seqsFile <- "/scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv"
 #seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv"
+#seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified_all/counts_plot_table.csv"
 seqsFile <- args[4]
 seqs_input <- read.csv(seqsFile, colClasses=c("run_name"="character", "counts_run_name"="character"))
 
