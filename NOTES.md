@@ -1,5 +1,21 @@
 # Notes
 
+## Step 09 - Quantified
+### Sequences with Above 2 Reads
+Re-run the following:
+    64 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r5_S5_L001_in_r1_S1_L001_counts_plot_table.csv
+     2 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r5_S5_L001_in_r4_S4_L001_counts_plot_table.csv
+     48 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r6_S6_L001_in_r2_S2_L001_counts_plot_table.csv
+     17 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r6_S6_L001_in_r4_S4_L001_counts_plot_table.csv
+      2 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r6_S6_L001_in_r5_S5_L001_counts_plot_table.csv
+     34 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r6_S6_L001_in_r7_S7_L001_counts_plot_table.csv
+      2 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r6_S6_L001_in_r8_S8_L001_counts_plot_table.csv
+     76 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r7_S7_L001_in_r1_S1_L001_counts_plot_table.csv
+      2 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r7_S7_L001_in_r6_S6_L001_counts_plot_table.csv
+     32 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r8_S8_L001_in_r4_S4_L001_counts_plot_table.csv
+      2 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/r8_S8_L001_in_r6_S6_L001_counts_plot_table.csv
+
+
 ## Progress of in vitro selection - Update (14 October 2024)
 
 | Stat | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | D1 | D2 | D3 |

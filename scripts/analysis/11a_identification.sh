@@ -9,7 +9,7 @@
 # above 2
 # jobs 1608856 to 1608863
 # all
-# jobs 
+# jobs 1608867 to 1608874
 
 # load the software
 module load bio/0724

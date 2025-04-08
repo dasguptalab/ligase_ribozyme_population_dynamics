@@ -36,7 +36,7 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # setup inputs run data
-inputRunData=$outputsPath"/05_combined/"$runName"_combined.RC.fa"
+inputData=$outputsPath"/05_combined/"$runName"_combined.RC.fa"
 
 # retrieve input sequences
 #inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
@@ -47,6 +47,10 @@ tablesOut=$outputsPath"/09b_quantified_above2"
 
 # make a new directory for analysis
 mkdir $tablesOut
+
+# setup tmp inputs data
+inputRunData=$tablesOut"/"$runName"_combined.RC.tmp.fa"
+cat $inputData > $inputRunData
 
 # move to outputs directory
 cd $tablesOut
@@ -106,6 +110,7 @@ done < $fmtSeqs
 
 # clean up
 rm $fmtSeqs
+rm $inputRunData
 
 # add run tags to sequence IDs
 #for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified/r*_counts_plot_table.csv; do runTag=$(basename $i | cut -d"_" -f1 | sed "s/r//g"); tail -n+2 $i | awk -v runIn=$runTag 'BEGIN{FS=OFS=","}{$2 = runIn"_"$2; print}' > $i.fmt; done

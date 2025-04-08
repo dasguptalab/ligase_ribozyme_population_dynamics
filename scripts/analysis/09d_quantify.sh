@@ -34,6 +34,9 @@ tablesOut=$outputsPath"/09d_quantified_top10_above2"
 # make a new directory for analysis
 mkdir $tablesOut
 
+# setup tmp inputs data
+cp $outputsPath"/05_combined/"*_combined\.RC\.fa > $tablesOut
+
 # move to outputs directory
 cd $tablesOut
 
@@ -83,7 +86,7 @@ while read data; do
 	# status message
 	echo "Processing $seq ..."
 	# loop over each round sequences file
-	for f2 in $outputsPath"/05_combined/"*_combined\.RC\.fa; do
+	for f2 in $tablesOut"/"*_combined\.RC\.fa; do
 		# retrieve run name
 		runName=$(basename $f2 | sed "s/_S.*_L001_combined\.RC\.fa//g" | sed "s/r//g" | sed "s/21-/_/g")
 		# count the number of seq occurances in each round
@@ -99,6 +102,7 @@ done < $fmtSeqs
 
 # clean up
 rm $fmtSeqs
+rm $tablesOut"/"*_combined\.RC\.fa
 
 # combine run data
 #head -1 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/r8_S8_L001_counts_plot_table.csv > /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table.csv
