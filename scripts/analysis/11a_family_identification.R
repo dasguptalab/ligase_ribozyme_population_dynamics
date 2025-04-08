@@ -3,6 +3,13 @@ args = commandArgs(trailingOnly=TRUE)
 
 # R script to create analysis plots for the RNA evolution project
 
+# install any missing packages
+packageList <- c("dplyr")
+newPackages <- packageList[!(packageList %in% installed.packages()[,"Package"])]
+if(length(newPackages)){
+  install.packages(newPackages)
+}
+
 # libraries
 library(dplyr)
 
