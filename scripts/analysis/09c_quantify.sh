@@ -35,17 +35,17 @@ tablesOut=$outputsPath"/09c_quantified_top10_all"
 mkdir $tablesOut
 
 # directory for tmp inputs
-seqsInput=$tablesOut"/tmp"
+#seqsInput=$tablesOut"/tmp"
 
 # make a new directory for tmp inputs
-mkdir $seqsInput
+#mkdir $seqsInput
 # check if the folder already exists
-if [ $? -ne 0 ]; then
-	echo "The $seqsInput directory already exsists... skipping creation of tmp inputs."
-else
+#if [ $? -ne 0 ]; then
+#	echo "The $seqsInput directory already exsists... skipping creation of tmp inputs."
+#else
 	# setup tmp inputs data
-	cp $outputsPath"/05_combined/"*_combined\.RC\.fa > $seqsInput
-fi
+#	cp $outputsPath"/05_combined/"*_combined\.RC\.fa > $seqsInput
+#fi
 
 # move to outputs directory
 cd $tablesOut
@@ -96,7 +96,7 @@ while read data; do
 	# status message
 	echo "Processing $seq ..."
 	# loop over each round sequences file
-	for f2 in $seqsInput"/"*_combined\.RC\.fa; do
+	for f2 in $outputsPath"/05_combined/"*_combined\.RC\.fa; do
 		# retrieve run name
 		runName=$(basename $f2 | sed "s/_S.*_L001_combined\.RC\.fa//g" | sed "s/r//g" | sed "s/21-/_/g")
 		# count the number of seq occurances in each round
