@@ -9,8 +9,10 @@
 ## jobs 1580433 to 1580579
 ## test_26March2025
 ## jobs 1581231 to 1581377
-## run5
+## run6
+## jobs 1609679 to 1609838
 ## jobs 
+
 
 # loop over each input run num
 for runNum in {1..8}; do 
@@ -22,14 +24,14 @@ for runNum in {1..8}; do
 		# status message
 		echo "Beginning analysis of $runInput over $runData ..."
 		# submit job script
-		qsub 09a_quantify.sh $runInput $runData
-		qsub 09b_quantify.sh $runInput $runData
+		#qsub 09a_quantify.sh $runInput $runData
+		#qsub 09b_quantify.sh $runInput $runData
 	done
 	# status message
 	echo "Beginning analysis of $runInput top 10 sequences..."
 	# submit job scripts for the top 10 sequences per round
-	qsub 09c_quantify.sh $runInput $runData
-	qsub 09d_quantify.sh $runInput $runData
+	qsub 09c_quantify.sh $runInput
+	qsub 09d_quantify.sh $runInput
 done
 
 # combine run data

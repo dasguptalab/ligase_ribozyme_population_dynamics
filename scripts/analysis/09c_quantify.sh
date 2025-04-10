@@ -34,8 +34,18 @@ tablesOut=$outputsPath"/09c_quantified_top10_all"
 # make a new directory for analysis
 mkdir $tablesOut
 
-# setup tmp inputs data
-cp $outputsPath"/05_combined/"*_combined\.RC\.fa > $tablesOut
+# directory for tmp inputs
+seqsInput=$tablesOut"/tmp"
+
+# make a new directory for tmp inputs
+mkdir $seqsInput
+# check if the folder already exists
+if [ $? -ne 0 ]; then
+	echo "The $seqsInput directory already exsists... skipping creation of tmp inputs."
+else
+	# setup tmp inputs data
+	cp $outputsPath"/05_combined/"*_combined\.RC\.fa > $seqsInput
+fi
 
 # move to outputs directory
 cd $tablesOut
@@ -102,7 +112,7 @@ done < $fmtSeqs
 
 # clean up
 rm $fmtSeqs
-rm $tablesOut"/"*_combined\.RC\.fa
+#rm $tablesOut"/"*_combined\.RC\.fa
 
 # combine run data
 #head -1 /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/r8_S8_L001_counts_plot_table.csv > /scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified/counts_plot_table.csv
