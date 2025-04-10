@@ -15,11 +15,15 @@ outDir=$outputsPath"/11a_family_identification_above2"
 # create outputs directory
 mkdir $outDir
 
-# read in cluster family sequence data
+# set the cluster family sequence data
 peaksFile=$outputsPath"/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv"
 
-# read in sequence count data for the specified round
+# set the sequence count data for the specified round
 seqsFile=$outputsPath"/09b_quantified_above2/counts_plot_table.csv"
+
+# create the combined counts plotting data
+head -1 $outputsPath"/09b_quantified_above2/r1_S1_L001_in_r1_S1_L001_counts_plot_table.csv" > $seqsFile
+for i in $outputsPath"/09b_quantified_above2/"*_counts_plot_table.csv; do echo $i; cat $i | tail -n+2 >> $seqsFile; done
 
 # loop over each input run num
 for runNum in {1..8}; do 
