@@ -96,7 +96,7 @@ while read data; do
 	# status message
 	echo "Processing $seq ..."
 	# loop over each round sequences file
-	for f2 in $tablesOut"/"*_combined\.RC\.fa; do
+	for f2 in $seqsInput"/"*_combined\.RC\.fa; do
 		# retrieve run name
 		runName=$(basename $f2 | sed "s/_S.*_L001_combined\.RC\.fa//g" | sed "s/r//g" | sed "s/21-/_/g")
 		# count the number of seq occurances in each round
