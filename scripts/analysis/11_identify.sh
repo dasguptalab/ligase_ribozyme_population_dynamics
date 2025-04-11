@@ -36,7 +36,7 @@ seqsFile=$4
 echo "Beginning analysis of round $roundNum ..."
 
 # run the R script
-Rscript 11a_family_identification.R	$roundNum $outDir $peaksFile $seqsFile
+Rscript 11_family_identification.R	$roundNum $outDir $peaksFile $seqsFile
 
 # status message
 echo "Analysis complete!"

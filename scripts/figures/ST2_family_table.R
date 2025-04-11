@@ -27,7 +27,7 @@ r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summ
 
 # read in sequence family count data
 #seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification/family_identities_atLeast90.csv")
-r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification/family_identities_max_above2_round8.csv")
+r8_seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11b_family_identification_above2/r8_S8_L001_family_identities_max_atLeast90.csv")
 
 # set the round num
 roundNum <- 8
