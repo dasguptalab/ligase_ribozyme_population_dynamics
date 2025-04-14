@@ -17,7 +17,8 @@ library(ComplexHeatmap)
 suppressMessages( require(cowplot) )
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F3_ST4_top10_sequences"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F3_ST4_top10_sequences_above2"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F3_ST4_top10_sequences_all"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -37,10 +38,12 @@ rounds <- c(1, 2, 3, 4, 5, 6, 7, 8)
 #quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 
 # read in sequence count data
-seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+#seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
+#seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09d_quantified_top10_above2/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character", "sequence_ID"="character"))
+seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09c_quantified_top10_all/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character", "sequence_ID"="character"))
 
 # subset data to sequences with more than 1 read
-seqs_counts <- seqs_counts[seqs_counts$counts >= 3,]
+#seqs_counts <- seqs_counts[seqs_counts$counts >= 3,]
 
 # reverse complement the sequences
 #seqs_counts$sequence <- rev(chartr("ATGC","TACG",seqs_counts$sequence))
@@ -190,25 +193,38 @@ for (seq_num in 1:nrow(sequence_data)) {
 }
 
 # export sequence data
-write.csv(sequence_data, file = paste(out_dir, "/top10_sequences.csv", sep = ""), row.names = FALSE, quote = FALSE)
+#write.csv(sequence_data, file = paste(out_dir, "/top10_sequences.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
-# setup and create upset plot
-lt = list(
-  Round1 = seqs_counts[seqs_counts$run_name == 1 & seqs_counts$counts_run_name == 8, "sequence"],
-  Round2 = seqs_counts[seqs_counts$run_name == 2 & seqs_counts$counts_run_name == 8, "sequence"],
-  Round3 = seqs_counts[seqs_counts$run_name == 3 & seqs_counts$counts_run_name == 8, "sequence"],
-  Round4 = seqs_counts[seqs_counts$run_name == 4 & seqs_counts$counts_run_name == 8, "sequence"],
-  Round5 = seqs_counts[seqs_counts$run_name == 5 & seqs_counts$counts_run_name == 8, "sequence"],
-  Round6 = seqs_counts[seqs_counts$run_name == 6 & seqs_counts$counts_run_name == 8, "sequence"],
-  Round7 = seqs_counts[seqs_counts$run_name == 7 & seqs_counts$counts_run_name == 8, "sequence"],
-  Round8 = seqs_counts[seqs_counts$run_name == 8 & seqs_counts$counts_run_name == 8, "sequence"]
+# re-organize sequence ranking data 
+# sequence, Round1_rank, Round2_rank, Round3_rank, etc.
+unique_seqs <- unique(sequence_data$sequence)
+data_length <- length(unique_seqs)
+sequence_ranks <- data.frame(
+  sequence = unique_seqs,
+  Round1 = rep(NA, data_length),
+  Round2 = rep(NA, data_length),
+  Round3 = rep(NA, data_length),
+  Round4 = rep(NA, data_length),
+  Round5 = rep(NA, data_length),
+  Round6 = rep(NA, data_length),
+  Round7 = rep(NA, data_length),
+  Round8 = rep(NA, data_length)
 )
-m = make_comb_mat(lt)
-cs = comb_size(m)
-ht = UpSet(m, comb_col=safe_colors[5], bg_col="#F0F0FF", bg_pt_col="#CCCCFF", top_annotation = upset_top_annotation(m, ylim = c(0, 1.1*max(cs))))
-ht = draw(ht)
-# save the plot
-exportFile <- paste(out_dir, "/top10_sequences_upset.png", sep = "")
-png(exportFile, units="in", width=10, height=5, res=300)
-print(ht)
-dev.off()
+
+# loop over each run
+for (seq_num in 1:data_length) {
+  # retrieve the current sequence
+  curr_seq <- sequence_ranks$sequence[seq_num]
+  # add the round rankings
+  sequence_ranks$Round1[seq_num] <- ifelse(nrow(sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 1,]) == 0, NA, sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 1, "ranking"])
+  sequence_ranks$Round2[seq_num] <- ifelse(nrow(sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 2,]) == 0, NA, sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 2, "ranking"])
+  sequence_ranks$Round3[seq_num] <- ifelse(nrow(sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 3,]) == 0, NA, sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 3, "ranking"])
+  sequence_ranks$Round4[seq_num] <- ifelse(nrow(sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 4,]) == 0, NA, sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 4, "ranking"])
+  sequence_ranks$Round5[seq_num] <- ifelse(nrow(sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 5,]) == 0, NA, sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 5, "ranking"])
+  sequence_ranks$Round6[seq_num] <- ifelse(nrow(sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 6,]) == 0, NA, sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 6, "ranking"])
+  sequence_ranks$Round7[seq_num] <- ifelse(nrow(sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 7,]) == 0, NA, sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 7, "ranking"])
+  sequence_ranks$Round8[seq_num] <- ifelse(nrow(sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 8,]) == 0, NA, sequence_data[sequence_data$sequence ==  curr_seq & sequence_data$round == 8, "ranking"])
+}
+
+# export sequence data
+write.csv(sequence_ranks, file = paste(out_dir, "/top10_sequences_rankings.csv", sep = ""), row.names = FALSE, quote = FALSE)

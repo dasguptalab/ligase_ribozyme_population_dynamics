@@ -20,23 +20,57 @@ dir.create(out_dir, showWarnings = FALSE)
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
 
-# read in family data
-fam_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/ST2_family_table/r8_family_count_data.csv")
+# To-do: retrieve seqs data from cluster summaries?
+# read in cluster sequence family data
+#seqs_input <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09_identified/07a_clustered/r8_S8_L001_formatted_above9_cluster_sequences_identity_table_atLeast90.csv")
 
-# read in cluster family data
-cluster_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11b_family_identification_above2/family_identities_max_atLeast90.csv")
+# read in sequences that have at least 90% identity to any peak
+seqs_identities <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/10_family_identification/family_identities_atLeast90.csv")
 
-# loop over each cluster
-for (cluster_num in 0:9) {
-  # set the family IDs
-  cluster_data[cluster_data$peak_cluster_ID == cluster_num, "family_ID"] <- fam_data[fam_data$cluster_ID == cluster_num, "family_ID"]
+# subset to keep round 8 data
+seqs_identities <- seqs_identities[seqs_identities$run_name == 8,]
+
+# initialize data frame
+seqs_family <- data.frame()
+peak_cluster_IDs <- NULL
+
+# loop over each sequences that has at least 90% identity to any peak
+for (seq_num in 1:nrow(seqs_identities)) {
+  # keep count data for sequences that have at least 90% identity to any peak
+  seqs_90_data <- seqs_input[seqs_input$sequence_ID == strsplit(seqs_identities$sequence_ID[seq_num], "_")[[1]][2],]
+  # add counts
+  seqs_family <- rbind(seqs_family, seqs_90_data)
+  # add peak cluster ID to vector
+  peak_cluster_IDs <- c(peak_cluster_IDs, rep(seqs_identities$peak_cluster_ID[seq_num], nrow(seqs_90_data)))
 }
 
-# re-name cluster ID column
-names(cluster_data)[names(cluster_data) == 'peak_cluster_ID'] <- 'cluster_ID'
+# add peak cluster IDs
+seqs_family <- cbind(seqs_family, peak_cluster_IDs)
 
 # list of cluster IDs
-cluster_list <- unique(cluster_data$cluster_ID)
+cluster_list <- unique(seqs_family$peak_cluster_IDs)
+
+# list of cluster IDs and abundances
+cluster_read_counts <- c(40999, 256601, 34117, 82079, 14439, 26345, 6555, 12539, 15921, 2572, 4227, 8543, 4043)
+cluster_seq_counts <- c(108, 1114, 98, 116, 269, 85, 33, 49, 75, 153, 275, 286, 271)
+cluster_read_abun <- 100*cluster_read_counts/889374
+
+# create cluster data frame
+cluster_data <- data.frame(
+  cluster_ID = cluster_list,
+  read_counts = cluster_read_counts,
+  seq_counts = cluster_seq_counts,
+  read_abun = cluster_read_abun
+)
+
+# sort cluster data
+cluster_data <- cluster_data[order(cluster_data$read_abun, decreasing = TRUE),]  
+
+# add family numbers
+cluster_data$fam_num <- seq(from = 1, to = 13, by = 1)
+
+# list of cluster IDs
+cluster_list <- unique(seqs_family$cluster_ID)
 
 # initialize data frame for base counts
 base_counts <- data.frame(
@@ -56,9 +90,9 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
 #for (cluster_num in 1:1) {
   #cluster_num <- 1
   # convert list of sequences into a matrix
-  seqs_matrix <- do.call(rbind, type.convert(strsplit(cluster_data[cluster_data$cluster_ID == cluster_num, "sequence"], ""), as.is = TRUE))
+  seqs_matrix <- do.call(rbind, type.convert(strsplit(seqs_family[seqs_family$cluster_ID == cluster_num, "sequence"], ""), as.is = TRUE))
   # set family number
-  fam_num <- head(cluster_data[cluster_data$cluster_ID == cluster_num, "family_ID"], 1)
+  fam_num <- cluster_data[cluster_data$cluster_ID == cluster_num, "fam_ID"]
   # loop over each base
   for (base_num in 1:40) {
     # update indicies
