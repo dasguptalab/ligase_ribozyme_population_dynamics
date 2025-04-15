@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
 
-# R script to create analysis plots for the RNA evolution project
+# R script to identify concerved overhang sequences
 
 # turn of scientific notation
 options(scipen=10000)

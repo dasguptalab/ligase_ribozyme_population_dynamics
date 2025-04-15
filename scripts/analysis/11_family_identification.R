@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 args = commandArgs(trailingOnly=TRUE)
 
-# R script to create analysis plots for the RNA evolution project
+# R script to identify sequence families
 
 # install missing packages
 #install.packages("dplyr")
