@@ -6,9 +6,9 @@
 options(scipen=10000)
 
 # import libraries
-library(ggplot2)
+#library(ggplot2)
 library(scales)
-library(rcartocolor)
+#library(rcartocolor)
 library(stringr)
 
 # set the input round number
@@ -17,7 +17,7 @@ round_num <- args[1]
 round_name <- paste("r", round_num, "_S", round_num, "_L001", sep = "")
 
 # set outputs directory
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_overhang_conservation"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_overhang_conservation_all"
 out_dir <- args[2]
 dir.create(out_dir, showWarnings = FALSE)
 
@@ -31,7 +31,7 @@ seqs_input <- read.csv(seqsFile, colClasses=c("run_name"="character", "counts_ru
 seqs_input <- seqs_input[seqs_input$run_name == round_num & seqs_input$counts_run_name == round_name,]
 
 # color blind safe plotting palette
-safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
+#safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
 
 # A pairs with U and G pairs with C, but G also pairs with U
 # G (C, U)
@@ -369,7 +369,7 @@ for (run_num in min(round_list):max(round_list)) {
     complement_counts$frac_abundance_unique[bin_index] <- complement_counts$counts_unique[bin_index]/above_9_reads[run_num]
     complement_counts$frac_abundance[bin_index] <- complement_counts$counts[bin_index]/quality[run_num]
     # add identity plotting color
-    complement_counts$identity_type_color[bin_index] <- safe_colors[bin_index]
+    #complement_counts$identity_type_color[bin_index] <- safe_colors[bin_index]
   }
   # add current run data
   complement_counts_out <- rbind(complement_counts_out, complement_counts)
@@ -394,7 +394,7 @@ identity_mappings <- data.frame(
 identity_labels <- identity_mappings[identity_mappings$identity %in% identity_list, "bases"]
 
 # set identity colors for plotting
-complement_counts_out[complement_counts_out$identity %in% identity_list, "identity_color"] <- safe_colors[1:length(identity_list)]
+#complement_counts_out[complement_counts_out$identity %in% identity_list, "identity_color"] <- safe_colors[1:length(identity_list)]
 
 # set identity labels for plotting
 complement_counts_out[complement_counts_out$identity %in% identity_list, "identity_label"] <- identity_labels
