@@ -1,6 +1,6 @@
 #!/bin/bash
 #$ -r n
-#$ -N RNA_summarize_jobOutput
+#$ -N RNA_conserved_jobOutput
 #$ -q largemem
 
 # script to run R scripts that count the number of sequences in sequence families
