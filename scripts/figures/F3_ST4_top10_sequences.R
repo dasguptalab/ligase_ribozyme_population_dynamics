@@ -38,7 +38,6 @@ rounds <- c(1, 2, 3, 4, 5, 6, 7, 8)
 #quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 
 # read in sequence count data
-#seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character"))
 #seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09d_quantified_top10_above2/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character", "sequence_ID"="character"))
 seqs_counts <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09c_quantified_top10_all/counts_plot_table_noDoped.csv", colClasses=c("run_name"="character", "counts_run_name"="character", "sequence_ID"="character"))
 
@@ -98,12 +97,15 @@ for (run_num in 1:8) {
   seqs_counts_subset$ID <- ID_data
   # set round plot title
   run_title <- paste("Round", run_num)
+  # set run indexes for plotting
+  run_start <- 0.5 + (run_num - 1)
+  run_end <- 1.5 + (run_num - 1)
   # To-do: consider using factors
   # create heatmap of log counts
   #counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, reorder(as.character(ID), log_counts), fill= log_counts)) + 
   counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, ID, fill= log_counts)) + 
   #counts_heatmap_subset <- ggplot(data = seqs_counts_subset, aes(counts_run_name, reorder(as.character(Sequence), log_counts), fill= log_counts)) + 
-    theme_classic(base_size = 14) +
+    theme_classic(base_size = 16) +
     geom_tile(colour = "black") +
     ggtitle(run_title) +
     theme(#axis.title.x = element_text(size = 14), 
@@ -121,7 +123,9 @@ for (run_num in 1:8) {
                          high = safe_colors[5],
                          midpoint = mid_log_counts,
                          na.value = "white") +
-    coord_fixed() #+
+    coord_fixed() +
+    annotate("rect", xmin = run_start, xmax = run_end, ymin = 0.5, ymax = 10.5, 
+             colour = safe_colors[2], fill = "transparent", linewidth = 1)
     #scale_y_discrete(labels=seqs_counts_subset$ID)
   # save the plot
   exportFile <- paste(out_dir, "/r", run_num, "_top10_sequence_log_counts.png", sep = "")

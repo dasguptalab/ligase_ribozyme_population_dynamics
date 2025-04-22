@@ -82,7 +82,7 @@ complement_seq <- unlist(strsplit(complement_seq, ""))
 #quality_doped <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374, 865509, 807849, 1143871)
 quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 #unique_reads <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
-above_9_reads <- c(5, 3, 5, 4, 283, 4001, 2703, 2100)
+filtered_reads <- c(18, 19, 26, 27, 1585, 10626, 7230, 6315)
 
 # list of round IDs
 round_list <- unique(seqs_input$run_name)
@@ -326,8 +326,8 @@ complement_counts <- data.frame(
   counts_unique = rep(NA, data_length),
   frac_abundance = rep(NA, data_length),
   frac_abundance_unique = rep(NA, data_length),
-  identity_type_color = rep(NA, data_length),
-  identity_color = rep(NA, data_length),
+  #identity_type_color = rep(NA, data_length),
+  #identity_color = rep(NA, data_length),
   identity_label = rep(NA, data_length)
 )
 complement_counts_out <- data.frame()
@@ -367,7 +367,7 @@ for (run_num in min(round_list):max(round_list)) {
       complement_counts$counts_unique[bin_index] <- nrow(complement_data_subset[complement_data_subset$identity == cur_identity & complement_data_subset$gap == "yes" & complement_data_subset$run_name == run_num & complement_data_subset$counts_run_name == counts_run_num,])
     }
     # add fraction abundance
-    complement_counts$frac_abundance_unique[bin_index] <- complement_counts$counts_unique[bin_index]/above_9_reads[run_num]
+    complement_counts$frac_abundance_unique[bin_index] <- complement_counts$counts_unique[bin_index]/filtered_reads[run_num]
     complement_counts$frac_abundance[bin_index] <- complement_counts$counts[bin_index]/quality[run_num]
     # add identity plotting color
     #complement_counts$identity_type_color[bin_index] <- safe_colors[bin_index]
@@ -403,75 +403,6 @@ complement_counts_out[complement_counts_out$identity %in% identity_list, "identi
 # sort the data for plotting
 complement_counts_sorted <- complement_counts_out[order(complement_counts_out$identity_label, decreasing = TRUE),]
 
-# subset counts by type
-complement_counts_total <- complement_counts_sorted[complement_counts_sorted$type == "T",]
-complement_counts_consecutive <- complement_counts_sorted[complement_counts_sorted$type == "C",]
-complement_counts_gap <- complement_counts_sorted[complement_counts_sorted$type == "G",]
-
-# create line plot of total overhang identity percent
-#base_counts_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=identity_color))+
-#  geom_line(size = 1) +
-#  geom_point() +
-#  theme_classic() +
-#  scale_color_identity(name = "Matched Bases", labels = complement_counts_total$identity_label, breaks = complement_counts_total$identity_color, guide = "legend") +
-#  ylab("Percent Abundance") +
-#  xlab("Round Number")
-# save the plot
-#exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_total.png", sep = "")
-#png(exportFile, units="in", width=5, height=4, res=300)
-#print(base_counts_plot)
-#dev.off()
-
-# create line plot of consecutive overhang identity percent
-#base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=identity_color))+
-#  geom_line(size = 1) +
-#  geom_point() +
-#  theme_classic() +
-#  scale_color_identity(name = "Matched Bases", labels = complement_counts_consecutive$identity_label, breaks = complement_counts_consecutive$identity_color, guide = "legend") +
-#  ylab("Percent Abundance") +
-#  xlab("Round Number")
-# save the plot
-#exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_consecutive.png", sep = "")
-#png(exportFile, units="in", width=5, height=4, res=300)
-#print(base_counts_plot)
-#dev.off()
-
-# create line plot of gaped overhang identity percent
-#base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=identity_color))+
-#  geom_line(size = 1) +
-#  geom_point() +
-#  theme_classic() +
-#  scale_color_identity(name = "Matched Bases", labels = complement_counts_gap$identity_label, breaks = complement_counts_gap$identity_color, guide = "legend") +
-#  ylab("Percent Abundance") +
-#  xlab("Round Number")
-# save the plot
-#exportFile <- paste(out_dir, "/above9_overhang_percent_abundance_gaped.png", sep = "")
-#png(exportFile, units="in", width=5, height=4, res=300)
-#print(base_counts_plot)
-#dev.off()
-
-# subset complement data by similarity
-complement_data_similar <- complement_data_subset
-complement_data_disimilar <- complement_data[complement_data$identity < 37.5 | complement_data$identity_subset < 37.5,]
-
-# subset the round 8 data
-complement_data_disimilar_r8 <- complement_data_disimilar[complement_data_disimilar$run_name == "8" & complement_data_disimilar$counts_run_name == "8",]
-
-# keep sequence info
-#complement_data_similar_seqs <- complement_data_similar[!duplicated(complement_data_similar$sequence_ID),"sequence"]
-#complement_data_disimilar_seqs <- complement_data_disimilar[!duplicated(complement_data_disimilar$sequence_ID),"sequence"]
-
-# keep unique sequences
-#complement_data_similar_seqs_unique <- unique(complement_data_similar_seqs)
-#complement_data_disimilar_seqs_unique <- unique(complement_data_disimilar_seqs)
-
 # export data
 write.csv(complement_data, file = paste(out_dir, "/", round_name, "_overhang_data_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
 write.csv(complement_counts_sorted, file = paste(out_dir, "/", round_name, "_overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-write.csv(complement_data_similar, file = paste(out_dir, "/", round_name, "_overhang_data_similar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-write.csv(complement_data_disimilar, file = paste(out_dir, "/", round_name, "_overhang_data_disimilar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-write.csv(complement_data_disimilar_r8, file = paste(out_dir, "/", round_name, "_overhang_data_round8_disimilar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_similar_seqs, file = paste(out_dir, "/", round_name, "_overhang_data_similar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_disimilar_seqs, file = paste(out_dir, "/", round_name, "_overhang_data_disimilar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_similar_seqs_unique, file = paste(out_dir, "/", round_name, "_overhang_data_similar_unique_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_disimilar_seqs_unique, file = paste(out_dir, "/", round_name, "_overhang_data_disimilar_unique_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)

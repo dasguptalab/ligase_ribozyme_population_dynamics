@@ -12,7 +12,7 @@ library(rcartocolor)
 library(stringr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -89,7 +89,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   run_title <- paste("Family", fam_num, "Base Conservation")
   # create heatmap of base conservation
   base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
-    theme_classic() +
+    theme_classic(base_size = 16) +
     geom_tile(colour = "black") +
     # left P2
     annotate("rect", xmin = c(5.5), xmax = c(12.5), ymin = c(0.5), ymax = c(4.5), 
@@ -118,7 +118,7 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
                          midpoint = max(base_counts$conservation)/2,
                          na.value = "white") +
     coord_fixed() +
-    geom_text(aes(label = round(conservation_na, digits = 2)), color = "white", size = 4)
+    geom_text(aes(label = round(conservation_na, digits = 2)), size = 4, colour =ifelse(base_counts$conservation_na < 50, "black", "white"))
   # save the plot
   exportFile <- paste(out_dir, "/family", fam_num, "_base_conservation.png", sep = "")
   png(exportFile, units="in", width=20, height=3, res=300)

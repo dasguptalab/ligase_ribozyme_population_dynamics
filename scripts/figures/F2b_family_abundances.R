@@ -12,7 +12,7 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F2b_family_abundances"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F2b_family_abundances_above2"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -74,13 +74,13 @@ for (run_num in min(run_list):max(run_list)) {
 }
 
 # sort cluster data
-cluster_data <- cluster_data[order(cluster_data$read_abun, decreasing = TRUE),]  
+cluster_data <- cluster_data[order(cluster_data$family_ID, decreasing = FALSE),]  
 
 # line plot with percent abundance per round for each of the families
 cluster_abundances_plot <- ggplot(data=cluster_data, aes(x=as.character(run_name), y=read_abun, group=family_ID, color=cluster_color))+
-  geom_line(size = 1) +
+  geom_line(size = 1.25) +
   geom_point() +
-  theme_classic() +
+  theme_classic(base_size = 16) +
   scale_color_identity(name = "Family", labels = cluster_data$family_ID, breaks = cluster_data$cluster_color, guide = "legend") +
   ylab("Percent Abundance") +
   xlab("Round Number")

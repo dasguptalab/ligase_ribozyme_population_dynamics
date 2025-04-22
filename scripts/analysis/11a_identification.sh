@@ -27,6 +27,9 @@ head -1 $outputsPath"/09a_quantified_all/r1_S1_L001_in_r1_S1_L001_counts_plot_ta
 for i in $outputsPath"/09a_quantified_all/"*_counts_plot_table.csv; do cat $i | tail -n+2 >> $seqsFile; done
 cat $seqsFile | grep -v "doped" > $countsFile
 
+# create the split sequence data files for each round
+
+
 # loop over each input run num
 for runNum in {1..8}; do 
 	# retrieve the input round number
