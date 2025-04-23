@@ -8,7 +8,6 @@
 # usage ex: bash 09c_quantify.sh r8_S8_L001
 # usage ex: for i in /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted\.fa//g"); echo $runInput; bash 09c_quantify.sh $runInput; done
 # usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted.fa; do runInput=$(basename $i | sed "s/_formatted\.fa//g"); echo $runInput; qsub 09c_quantify.sh $runInput; done
-## jobs 1541842 to 1541853
 
 # retrieve input run name
 inputRun=$1

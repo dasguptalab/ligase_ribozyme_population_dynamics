@@ -4,22 +4,7 @@
 #$ -q largemem
 
 # script to count the number of sequences shared across runs
-# usage: qsub 09a_quantify.sh inputRun runName
-# usage ex: bash 09a_quantify.sh r8_S8_L001 r8_S8_L001
-## quantification of all sequencess
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 09a_quantify.sh $runInput; done
-## jobs 1273266 to 1273292
-## job 1273266 -> doped21-r1_S10_L001 -> 10:02:45:26
-## job 1273269 -> doped21-r2_S11_L001 -> 9:00:13:10
-## job 1273272 -> doped21-r3_S12_L001 -> 11:19:46:49
-## job 1273275 -> r1_S1_L001 -> 12:01:53:05
-## job 1273278 -> r2_S2_L001 -> 12:09:43:07
-## job 1273281 -> r3_S3_L001 -> 12:01:09:05
-## job 1273284 -> r4_S4_L001 -> 10:04:20:18
-## job 1273287 -> r5_S5_L001 -> 11:07:11:50
-## job 1273289 -> r6_S6_L001 -> 6:01:08:18
-## job 1273290 -> r7_S7_L001 -> 1:02:34:23
-## job 1273292 -> r8_S8_L001 -> 1:07:36:44
+# usage: qsub 09a_quantify.sh inputRun runName inputSeqs splitNum
 
 # retrieve input run name
 inputRun=$1
@@ -39,8 +24,12 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 inputData=$outputsPath"/05_combined/"$runName"_combined.RC.fa"
 
 # retrieve input sequences
-inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
+#inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
 #inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted_above2.fa"
+inputSeqs=$3
+
+# retrieve input split number
+splitNum=$4
 
 # name of a new directory for analysis
 tablesOut=$outputsPath"/09a_quantified_all"
@@ -66,7 +55,7 @@ echo "" >> $fmtSeqs
 
 # name output file
 #countsOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_table.csv"
-countsPlotOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_plot_table.csv"
+countsPlotOut=$tablesOut"/"$inputRun"_in_"$runName"_split"$splitNum"_counts_plot_table.csv"
 
 # retrieve header
 inputHeader="run_name,sequence_ID,read_counts,sequence"
@@ -109,6 +98,7 @@ while read data; do
 done < $fmtSeqs
 
 # clean up
+rm $inputSeqs
 rm $fmtSeqs
 rm $inputRunData
 
