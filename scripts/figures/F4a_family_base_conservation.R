@@ -12,7 +12,10 @@ library(rcartocolor)
 library(stringr)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2_r8"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2_unique"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2_r8_unique"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -25,6 +28,10 @@ fam_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures
 
 # read in cluster family data
 cluster_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11b_family_identification_above2/family_identities_max_atLeast90.csv")
+
+# subset the counts data
+cluster_data <- cluster_data[cluster_data$run_name == 8 & cluster_data$counts_run_name == "r8_S8_L001",]
+cluster_data <- cluster_data[!duplicated(cluster_data$sequence),]
 
 # loop over each cluster
 for (cluster_num in 0:9) {
@@ -44,7 +51,8 @@ base_counts <- data.frame(
   fam_ID = rep(NA, 40*4),
   base_ID = rep(NA, 40*4),
   base = rep(NA, 40*4),
-  conservation = rep(NA, 40*4)
+  conservation = rep(NA, 40*4),
+  read_conservation = rep(NA, 40*4)
 )
 base_counts_out <- data.frame()
 
@@ -75,6 +83,12 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
     base_counts$conservation[index+1] <- 100*sum(str_count(seqs_matrix[,base_num], "C"))/nrow(seqs_matrix)
     base_counts$conservation[index+2] <- 100*sum(str_count(seqs_matrix[,base_num], "G"))/nrow(seqs_matrix)
     base_counts$conservation[index_max] <- 100*sum(str_count(seqs_matrix[,base_num], "T"))/nrow(seqs_matrix)
+    # to-do: update read conservation
+    # add percent read conservation of each base character
+    base_counts$read_conservation[index] <- 100*sum(str_count(seqs_matrix[,base_num], "A"))/nrow(seqs_matrix)
+    base_counts$read_conservation[index+1] <- 100*sum(str_count(seqs_matrix[,base_num], "C"))/nrow(seqs_matrix)
+    base_counts$read_conservation[index+2] <- 100*sum(str_count(seqs_matrix[,base_num], "G"))/nrow(seqs_matrix)
+    base_counts$read_conservation[index_max] <- 100*sum(str_count(seqs_matrix[,base_num], "T"))/nrow(seqs_matrix)
     # add each base character
     base_counts$base[index] <- "A"
     base_counts$base[index+1] <- "C"

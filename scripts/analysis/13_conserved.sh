@@ -28,7 +28,7 @@ seqsFile=$3
 echo "Beginning analysis of round $roundNum ..."
 
 # run the R script
-Rscript 13_overhang_conservation.R	$roundNum $outDir $seqsFile
+Rscript 13_round_overhang_conservation.R $roundNum $outDir $seqsFile
 
 # status message
 echo "Analysis complete!"

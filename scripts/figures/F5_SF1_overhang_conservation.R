@@ -13,8 +13,8 @@ library(rcartocolor)
 safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_overhang_conservation_above2"
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_overhang_conservation_all"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_SF1_overhang_conservation_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_SF1_overhang_conservation_all"
 #out_dir <- args[2]
 dir.create(out_dir, showWarnings = FALSE)
 
@@ -24,7 +24,6 @@ seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13b_overhang_con
 #seqsFile <- args[3]
 complement_counts_sorted <- read.csv(seqsFile)
 
-# to-do: fix outputs of 13a
 # clean up columns
 complement_counts_sorted$identity_color <- NULL
 complement_counts_sorted$identity_type_color <- NULL
@@ -59,6 +58,10 @@ for (label_num in 1:nrow(identity_mappings)) {
     NA
   )
 }
+
+# setup data for plotting
+complement_counts_sorted$bases <- as.factor(complement_counts_sorted$bases)
+complement_counts_sorted <- complement_counts_sorted[complement_counts_sorted$bases != 4,]
 
 # subset counts by type
 complement_counts_total <- complement_counts_sorted[complement_counts_sorted$type == "T",]
@@ -95,7 +98,7 @@ base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.characte
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/overhang_percent_abundance_consecutive.png", sep = "")
+exportFile <- paste(out_dir, "/overhang_percent_abundance_non_gaped.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
@@ -110,6 +113,48 @@ base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_na
   xlab("Round Number")
 # save the plot
 exportFile <- paste(out_dir, "/overhang_percent_abundance_gaped.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of total overhang identity percent
+base_counts_plot <- ggplot(complement_counts_total, aes(fill=bases, y=perc_abundance, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_total_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of non gaped overhang identity percent
+base_counts_plot <- ggplot(complement_counts_consecutive, aes(fill=bases, y=perc_abundance, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 14) +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+exportFile <- paste(out_dir, "/overhang_percent_abundance_non_gaped_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of gaped overhang identity percent
+base_counts_plot <- ggplot(complement_counts_gap, aes(fill=bases, y=perc_abundance, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_gaped_chart.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
@@ -139,7 +184,7 @@ base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.characte
   ylab("Percent Abundance") +
   xlab("Round Number")
 # save the plot
-exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_consecutive.png", sep = "")
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_non_gaped.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
@@ -158,10 +203,52 @@ png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
 
+# create line plot of total overhang identity percent
+base_counts_plot <- ggplot(complement_counts_total, aes(fill=bases, y=perc_abundance_unique, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_total_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of non gaped overhang identity percent
+base_counts_plot <- ggplot(complement_counts_consecutive, aes(fill=bases, y=perc_abundance_unique, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 14) +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_non_gaped_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of gaped overhang identity percent
+base_counts_plot <- ggplot(complement_counts_gap, aes(fill=bases, y=perc_abundance_unique, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_gaped_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
 # to-do: double check
 # subset complement data by similarity
-#complement_data_similar <- complement_data
-#complement_data_disimilar <- complement_data[complement_data$identity < 37.5 | complement_data$identity_subset < 37.5,]
+#complement_data_similar <- complement_counts_sorted
+#complement_data_disimilar <- complement_counts_sorted[complement_counts_sorted$identity < 37.5 | complement_counts_sorted$identity_subset < 37.5,]
 
 # subset the round 8 data
 #complement_data_disimilar_r8 <- complement_data_disimilar[complement_data_disimilar$run_name == "8" & complement_data_disimilar$counts_run_name == "8",]
@@ -176,10 +263,4 @@ dev.off()
 
 # export data
 write.csv(complement_counts_sorted, file = paste(out_dir, "/overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_similar, file = paste(out_dir, "/overhang_data_similar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_disimilar, file = paste(out_dir, "/overhang_data_disimilar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_disimilar_r8, file = paste(out_dir, "/overhang_data_round8_disimilar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_similar_seqs, file = paste(out_dir, "/overhang_data_similar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_disimilar_seqs, file = paste(out_dir, "/overhang_data_disimilar_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_similar_seqs_unique, file = paste(out_dir, "/overhang_data_similar_unique_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-#write.csv(complement_data_disimilar_seqs_unique, file = paste(out_dir, "/overhang_data_disimilar_unique_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(complement_counts_total, file = paste(out_dir, "/overhang_conservation_wobble_total.csv", sep = ""), row.names = FALSE, quote = FALSE)
