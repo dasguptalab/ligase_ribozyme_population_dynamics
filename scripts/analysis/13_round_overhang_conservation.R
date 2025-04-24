@@ -82,7 +82,7 @@ complement_seq <- unlist(strsplit(complement_seq, ""))
 #quality_doped <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374, 865509, 807849, 1143871)
 quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 #unique_reads <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
-filtered_reads <- c(18, 19, 26, 27, 1585, 10626, 7230, 6315)
+#filtered_reads <- c(18, 19, 26, 27, 1585, 10626, 7230, 6315)
 
 # list of round IDs
 round_list <- unique(seqs_input$run_name)
@@ -315,8 +315,16 @@ plot_bins <- c(paste(identity_bins, "T", sep = "_"), paste(identity_bins, "C", s
 data_length <- length(plot_bins)
 
 # keep sequences with at least a 3bp consecutive match (100*3/8 = 37.5)
-#complement_data_subset <- complement_data[complement_data$identity_subset >= 37.5,]
-complement_data_subset <- complement_data
+complement_data_subset <- complement_data[complement_data$identity_subset >= 37.5,]
+#complement_data_subset <- complement_data
+
+# keep dissimilar sequences
+complement_data_dissimilar <- complement_data[complement_data$identity_subset < 37.5, c("sequence", "counts", "counts_run_name")]
+complement_data_dissimilar_round8 <- complement_data_dissimilar[complement_data_dissimilar$counts_run_name == "r8_S8_L001", c("sequence", "counts")]
+
+# output dissimilar sequence data
+write.csv(complement_data_dissimilar, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(complement_data_dissimilar_round8, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar_round8.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # initialize data frame for identity bin counts
 complement_counts <- data.frame(
@@ -368,7 +376,8 @@ for (run_num in min(round_list):max(round_list)) {
       complement_counts$counts_unique[bin_index] <- nrow(complement_data_subset[complement_data_subset$identity == cur_identity & complement_data_subset$gap == "yes" & complement_data_subset$run_name == run_num & complement_data_subset$counts_run_name == counts_run_num,])
     }
     # add fraction abundance
-    complement_counts$frac_abundance_unique[bin_index] <- complement_counts$counts_unique[bin_index]/filtered_reads[run_num]
+    #complement_counts$frac_abundance_unique[bin_index] <- complement_counts$counts_unique[bin_index]/filtered_reads[run_num]
+    complement_counts$frac_abundance_unique[bin_index] <- complement_counts$counts_unique[bin_index]/seq_data_length
     complement_counts$frac_abundance[bin_index] <- complement_counts$counts[bin_index]/quality[run_num]
     # add identity plotting color
     #complement_counts$identity_type_color[bin_index] <- safe_colors[bin_index]

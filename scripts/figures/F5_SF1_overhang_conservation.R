@@ -12,6 +12,10 @@ library(rcartocolor)
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
 
+# numbers of high quality reads
+#quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
+unique_reads <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
+
 # set outputs directory
 out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_SF1_overhang_conservation_above2"
 #out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_SF1_overhang_conservation_all"
@@ -24,10 +28,33 @@ seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13b_overhang_con
 #seqsFile <- args[3]
 complement_counts_sorted <- read.csv(seqsFile)
 
+# loop over each run
+#for (run_num in 1:8) {
+  # calculate fraction abundance
+#  complement_counts_sorted[complement_counts_sorted$run_name == run_num, "frac_abundance_unique"] <- complement_counts_sorted[complement_counts_sorted$run_name == run_num, "counts_unique"]/unique_reads[run_num]
+#}
+# calculate percent abundance
+#complement_counts_sorted$perc_abundance_unique <- complement_counts_sorted$frac_abundance_unique*100
+
+# read in identity data
+identityFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13b_overhang_conservation_above2/overhang_data_wobble.csv"
+#identityFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13a_overhang_conservation_all/overhang_data_wobble.csv"
+#seqsFile <- args[3]
+complement_data <- read.csv(identityFile)
+
+#keep sequences with at least a 3bp consecutive match (100*3/8 = 37.5)
+#complement_data_similar <- complement_data[complement_data$identity_subset >= 37.5, c("sequence", "counts", "counts_run_name")]
+complement_data_dissimilar <- complement_data[complement_data$identity_subset < 37.5, c("sequence", "counts", "counts_run_name")]
+complement_data_dissimilar_round8 <- complement_data_dissimilar[complement_data_dissimilar$counts_run_name == "r8_S8_L001", c("sequence", "counts")]
+
+# output dissimilar sequence data
+write.csv(complement_data_dissimilar, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(complement_data_dissimilar_round8, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar_round8.csv", sep = ""), row.names = FALSE, quote = FALSE)
+
 # clean up columns
-complement_counts_sorted$identity_color <- NULL
-complement_counts_sorted$identity_type_color <- NULL
-complement_counts_sorted$identity_label <- NULL
+#complement_counts_sorted$identity_color <- NULL
+#complement_counts_sorted$identity_type_color <- NULL
+#complement_counts_sorted$identity_label <- NULL
 
 # get lists of identities and types
 identity_list <- unique(complement_counts_sorted$identity)
@@ -61,7 +88,8 @@ for (label_num in 1:nrow(identity_mappings)) {
 
 # setup data for plotting
 complement_counts_sorted$bases <- as.factor(complement_counts_sorted$bases)
-complement_counts_sorted <- complement_counts_sorted[complement_counts_sorted$bases != 4,]
+complement_counts_sorted <- complement_counts_sorted[complement_counts_sorted$bases != 3,]
+#complement_counts_sorted <- complement_counts_sorted[complement_counts_sorted$bases != 4,]
 
 # subset counts by type
 complement_counts_total <- complement_counts_sorted[complement_counts_sorted$type == "T",]
@@ -159,6 +187,7 @@ png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
 
+# to-do: fix the "all" data abundance calculation
 ## plots using unique sequence counts
 
 # create line plot of total overhang identity percent

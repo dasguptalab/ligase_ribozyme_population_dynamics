@@ -4,6 +4,7 @@
 # usage: bash 13b_conservation.sh
 ## run 6
 ## jobs 1654298 to 1654305
+## jobs 
 
 # retrieve analysis outputs absolute path
 #outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"

@@ -41,7 +41,10 @@ seqsFile <- args[4]
 seqs_input <- read.csv(seqsFile, colClasses=c("run_name"="character", "counts_run_name"="character"))
 
 # subset to the round data
-seqs_input <- seqs_input[seqs_input$run_name == round_num & seqs_input$counts_run_name == round_name,]
+#seqs_input <- seqs_input[seqs_input$run_name == round_num & seqs_input$counts_run_name == round_name,]
+
+# retrieve input split number
+split_num <- args[5]
 
 # remove NAs
 #seqs_input <- na.omit(seqs_input)
@@ -100,29 +103,29 @@ for (seq_num in 0:(data_length-1)) {
 }
 
 # export data
-write.csv(seqs_data, file = paste(out_dir, "/", round_name, "_family_identities.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_data, file = paste(out_dir, "/", round_name, "_split", split_num, "_family_identities.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # data frame to track how many sequences have >= 90% identity to each peak
-identity_check <- data.frame(
-  cluster = rep(NA, nrow(r8_peaks)),
-  identity_count = rep(NA, nrow(r8_peaks))
-)
+#identity_check <- data.frame(
+#  cluster = rep(NA, nrow(r8_peaks)),
+#  identity_count = rep(NA, nrow(r8_peaks))
+#)
 
 # check how many sequences have >= 90% identity to each peak
-for (cluster_num in 0:(nrow(r8_peaks)-1)) {
-  clusterIndex <- cluster_num+1
-  identity_check$cluster[clusterIndex] <- cluster_num
-  clusterSize <- 0
-  clusterSize <- clusterSize + nrow(seqs_data[seqs_data[seqs_data$peak_cluster_ID == cluster_num,]$peak_identity >= 90,])
-  identity_check$identity_count[clusterIndex] <- clusterSize
-}
-identity_check
+#for (cluster_num in 0:(nrow(r8_peaks)-1)) {
+#  clusterIndex <- cluster_num+1
+#  identity_check$cluster[clusterIndex] <- cluster_num
+#  clusterSize <- 0
+#  clusterSize <- clusterSize + nrow(seqs_data[seqs_data[seqs_data$peak_cluster_ID == cluster_num,]$peak_identity >= 90,])
+#  identity_check$identity_count[clusterIndex] <- clusterSize
+#}
+#identity_check
 
 # keep sequences that have >= 90% identity to any peak
 seqs_out <- seqs_data[seqs_data$peak_identity >= 90,]
 
 # export data
-write.csv(seqs_out, file = paste(out_dir, "/", round_name, "_family_identities_atLeast90.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(seqs_out, file = paste(out_dir, "/", round_name, "_split", split_num, "_family_identities_atLeast90.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # subset to the round 8 data
 #r8_seqs_family <- seqs_data[seqs_data$run_name == "8" & seqs_data$counts_run_name == "r8_S8_L001",]
@@ -132,7 +135,7 @@ write.csv(seqs_out, file = paste(out_dir, "/", round_name, "_family_identities_a
 unique_seqs <- seqs_data %>% distinct(sequence)
 
 # data frame for sequence counts and identities
-r8_family_data <- data.frame()
+family_data <- data.frame()
 
 # loop over each unique sequence
 for (seq in 1:nrow(unique_seqs)) {
@@ -142,14 +145,14 @@ for (seq in 1:nrow(unique_seqs)) {
   # retrieve max identity data
   max_id_data <- curr_seq_data[which.max(curr_seq_data$peak_identity),]
   # add data for current sequence to the outputs
-  r8_family_data <- rbind(r8_family_data, max_id_data)
+  family_data <- rbind(family_data, max_id_data)
 }
 
 # export data
-write.csv(r8_family_data, file = paste(out_dir, "/", round_name, "_family_identities_max.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(family_data, file = paste(out_dir, "/", round_name, "_split", split_num, "_family_identities_max.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # keep sequences that have >= 90% identity to any peak
-r8_family_data_out <- r8_family_data[r8_family_data$peak_identity >= 90,]
+family_data_out <- family_data[family_data$peak_identity >= 90,]
 
 # export data
-write.csv(r8_family_data_out, file = paste(out_dir, "/", round_name, "_family_identities_max_atLeast90.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(family_data_out, file = paste(out_dir, "/", round_name, "_split", split_num, "_family_identities_max_atLeast90.csv", sep = ""), row.names = FALSE, quote = FALSE)

@@ -32,11 +32,17 @@ peaksFile=$3
 #seqsFile="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified_all/counts_plot_table.csv"
 seqsFile=$4
 
+# retrieve input split num
+splitNum=$5
+
 # status message
 echo "Beginning analysis of round $roundNum ..."
 
 # run the R script
-Rscript 11_family_identification.R	$roundNum $outDir $peaksFile $seqsFile
+Rscript 11a_family_identification.R	$roundNum $outDir $peaksFile $seqsFile $splitNum
+
+# clean up
+rm $seqsFile
 
 # status message
 echo "Analysis complete!"
