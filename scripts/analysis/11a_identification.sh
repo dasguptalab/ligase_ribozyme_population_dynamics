@@ -4,6 +4,7 @@
 # usage: bash 11a_identification.sh
 ## run 6
 ## jobs 1621144 to 1621151
+## run 7
 ## jobs 
 
 # retrieve analysis outputs absolute path
@@ -23,10 +24,16 @@ peaksFile=$outputsPath"/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv"
 seqsFileAll=$outputsPath"/09a_quantified_all/counts_plot_table.csv"
 seqsFile=$outputsPath"/09a_quantified_all/counts_plot_table_noDoped.csv"
 
+# status message
+echo "Preparing data for analysis..."
+
 # create the combined counts plotting data
 head -1 $outputsPath"/09a_quantified_all/r1_S1_L001_in_r1_S1_L001_counts_plot_table.csv" > $seqsFileAll
 for i in $outputsPath"/09a_quantified_all/"*_counts_plot_table.csv; do cat $i | tail -n+2 >> $seqsFileAll; done
 cat $seqsFileAll | grep -v "doped" > $seqsFile
+
+# status message
+echo "Data prepared!"
 
 # loop over each input run num
 for runNum in {1..8}; do 
@@ -53,6 +60,7 @@ for runNum in {1..8}; do
 		# submit job script
 		qsub 11a_identify.sh $roundNum $outDir $peaksFile $inputSeqs $splitNum
 	done
+	
 done
 
 # status message
