@@ -48,7 +48,7 @@ for runNum in {1..8}; do
 	cat $seqsFile | grep $runTag > $roundFile
 	# create the split sequence data files for each round
 	inputSeqsData=$outDir"/"$runTag"_counts_plot_table_noDoped.tmp"
-	split --lines=10000 $roundFile $inputSeqsData".split.csv"
+	split --lines=10000 $roundFile $inputSeqsData".split.fa"
 	# clean up
 	rm $roundFile
 	# initialize split counter
@@ -60,7 +60,7 @@ for runNum in {1..8}; do
 		# submit job script
 		qsub 11a_identify.sh $roundNum $outDir $peaksFile $inputSeqs $splitNum
 	done
-	
+
 done
 
 # status message
