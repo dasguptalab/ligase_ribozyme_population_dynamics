@@ -36,7 +36,7 @@ seqsFile=$outputsPath"/09a_quantified_all/counts_plot_table_noDoped.csv"
 #echo "Data prepared!"
 
 # loop over each input run num
-f#or runNum in {1..8}; do 
+#for runNum in {1..8}; do 
 	# retrieve the input round number
 	#roundNum=$runNum
 	roundNum=1
