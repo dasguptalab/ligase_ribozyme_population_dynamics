@@ -3,8 +3,7 @@
 # script to run job scripts that count the number of sequences in sequence families
 # usage: bash 13b_conservation.sh
 ## run 6
-## jobs 1654298 to 1654305
-## jobs 
+## jobs 1658215 to 1658222
 
 # retrieve analysis outputs absolute path
 #outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"

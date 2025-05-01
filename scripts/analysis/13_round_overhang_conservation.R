@@ -318,14 +318,6 @@ data_length <- length(plot_bins)
 complement_data_subset <- complement_data[complement_data$identity_subset >= 37.5,]
 #complement_data_subset <- complement_data
 
-# keep dissimilar sequences
-complement_data_dissimilar <- complement_data[complement_data$identity_subset < 37.5, c("sequence", "counts", "counts_run_name")]
-complement_data_dissimilar_round8 <- complement_data_dissimilar[complement_data_dissimilar$counts_run_name == "r8_S8_L001", c("sequence", "counts")]
-
-# output dissimilar sequence data
-write.csv(complement_data_dissimilar, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar.csv", sep = ""), row.names = FALSE, quote = FALSE)
-write.csv(complement_data_dissimilar_round8, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar_round8.csv", sep = ""), row.names = FALSE, quote = FALSE)
-
 # initialize data frame for identity bin counts
 complement_counts <- data.frame(
   run_name = rep(NA, data_length),

@@ -6,13 +6,14 @@
 options(scipen=10000)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10_peak_comparison"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/10b_peak_comparison"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in cluster family sequence data
-r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv")
+#r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv")
+r8_peaks <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/07_clustered_cd_hit/r8_S8_L001_formatted_above2.clstr_peak_data.txt")
 
 # set the sequence length
 seqLength <- 40

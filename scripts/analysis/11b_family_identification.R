@@ -55,15 +55,6 @@ data_length <- nrow(seqs_input)
 
 # data frame of sequence data
 seqs_data <- data.frame()
-  #run_name = rep(NA, data_length),
-  #sequence_ID = rep(NA, data_length),
-  #read_counts = rep(NA, data_length),
-  #sequence = rep(NA, data_length),
-  #counts = rep(NA, data_length),
-  #counts_run_name = rep(NA, data_length),
-  #peak_cluster_ID = rep(NA, data_length),
-  #peak_identity = rep(NA, data_length)
-#)
 
 # loop over each sequence and compare with the peak sequences
 for (seq_num in 0:(data_length-1)) {
@@ -80,18 +71,7 @@ for (seq_num in 0:(data_length-1)) {
     )
     # determine identity percent
     identity_perc <- 100*numMatch/seqLength
-    # set the index
-    #index <- ((seq_num)*nrow(r8_peaks)) + peak_num
-    # To-do: change to rbind of c(seqs_input[seq_num+1], r8_peaks$cluster_ID[peak_num], identity_perc)
     # record data
-    #seqs_data$run_name[index] <- seqs_input$run_name[seq_num+1]
-    #seqs_data$sequence_ID[index] <- seqs_input$sequence_ID[seq_num+1]
-    #seqs_data$read_counts[index] <- seqs_input$read_counts[seq_num+1]
-    #seqs_data$sequence[index] <- seqs_input$sequence[seq_num+1]
-    #seqs_data$counts[index] <- seqs_input$counts[seq_num+1]
-    #seqs_data$counts_run_name[index] <- seqs_input$counts_run_name[seq_num+1]
-    #seqs_data$peak_cluster_ID[index] <- r8_peaks$cluster_ID[peak_num]
-    #seqs_data$peak_identity[index] <- identity_perc
     curr_data <- seqs_input[seq_num+1,]
     curr_data$peak_cluster_ID <- r8_peaks$cluster_ID[peak_num]
     curr_data$peak_identity <- identity_perc

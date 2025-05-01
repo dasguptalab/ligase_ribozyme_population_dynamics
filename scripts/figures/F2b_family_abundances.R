@@ -23,10 +23,17 @@ quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 #unique <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
 
 # read in family data
-fam_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/ST2_family_table/r8_family_count_data.csv")
+fam_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/T2_ST2_family_table/r8_family_count_data.csv")
 
 # read in sequences that have at least 90% identity to any peak
 seqs_identities <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11b_family_identification_above2/family_identities_max_atLeast90.csv")
+
+# data exploration
+r8_id <- seqs_identities[seqs_identities$run_name == 8,]
+r8_id_similar <- r8_id[r8_id$peak_identity >= 90,]
+r8_id_dissimilar <- r8_id[r8_id$peak_identity < 90,]
+write.csv(r8_id_similar, file = paste(out_dir, "/round8_family_sequence_data.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(r8_id_dissimilar, file = paste(out_dir, "/round8_orphan_sequence_data.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # list of cluster and run IDs
 cluster_list <- unique(seqs_identities$peak_cluster_ID)

@@ -11,18 +11,17 @@ The code repository for the analysis pipeline can be found [HERE][1].
 #### Assignment of sequence families
 Sequencing reads from each round were pre-processed using custom BASH and R scripts that are available on GitHub (https://github.com/ElizabethBrooks/RNA_selection_amplification.git). Paired reads were merged using FLASh (v1.2.11) (Magoč & Salzberg, 2011). The merged sequence files were combined with the unmerged forward read files, since reverse reads were low in quality. Read sequences were filtered by quality (AVGQUAL:30) and adapter content was removed using Trimmomatic (v0.39) (Bolger et al., 2014). Sequences were filtered to keep only those that contain the predefined constant up- and down-stream stem regions (Figure 1) and with 40 bp in-between. The filtered sequences were trimmed to the 40-nt randomized region by removing constant regions on both 5′ and 3′ ends. The resulting trimmed sequences were filtered to remove sequences that appeared less than 10 times, then de-replicated to keep only the unique sequences. After pre-processing, between 92,366 and 1,063,996 unique sequences remained per round. Unique sequences from rounds 6 to 8 were clustered into sequence families using Clustal Omega (v1.2.4) (Sievers & Higgins, 2018), which uses mBed-like clustering for a given maximum number of sequences per cluster (N = 500). Since we were interested in tracking conservation or sustained variability of all nucleotide positions across all rounds of selection, sequences from all eight rounds of selection with greater than or equal to  90% similarity to the most abundant peak sequences in the final selection round (round 8) were quantified.
 
-#### Progress of selection across eight rounds (17 April 2025)
+#### Progress of selection across eight rounds (25 April 2025)
 
-| | Round 1 | Round 2 | Round 3 | Round 4 | Round 5 | Round 6 | Round 7 | Round 8 |
+| Statistic | Round 1 | Round 2 | Round 3 | Round 4 | Round 5 | Round 6 | Round 7 | Round 8 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Reaction Time (min)| 120 | 60 |30 | 20 | 30 | 10 | 10 |10 |
+| Reaction Time (min)| 120 | 60 | 30 | 20 | 30 | 10 | 10 |10 |
 | \[Mg<sup>2+</sup>] (mM) | 20 | 20 | 20 | 20 | 20 | 20 | 10 | 5 |
 | Total Raw Reads | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 |
 | High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
 | Unique Sequences | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
 | Percent Diversity | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
 | Sequences with > 2 Reads | 18 | 19 | 26 | 27 | 1,585 | 10,626 | 7,230 | 6,315 |
-| Sequence Families | NA | NA | NA | NA | 2 | 17 | 14 | 10 |
 
 #### Supplemental
 
@@ -132,6 +131,19 @@ The following steps were taken to reproduce tables and plots from the slides (se
 For analysis steps 01 to 07 use BASH to:<br>
 <b>00a.</b>  create QC reports for each set of raw and processed data using FastQC and MultiQC<br>
 <b>00b.</b>  analyze read numbers, read lengths, counts of unique reads, and counts of read names
+
+#### Progress of selection across eight rounds (17 April 2025)
+
+| | Round 1 | Round 2 | Round 3 | Round 4 | Round 5 | Round 6 | Round 7 | Round 8 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Reaction Time (min)| 120 | 60 |30 | 20 | 30 | 10 | 10 |10 |
+| \[Mg<sup>2+</sup>] (mM) | 20 | 20 | 20 | 20 | 20 | 20 | 10 | 5 |
+| Total Raw Reads | 1,485,536 | 1,533,916 | 1,649,680 | 1,436,328 | 1,937,410 | 2,336,945 | 1,229,247 | 1,756,169 |
+| High Quality Reads | 1,039,660 | 1,067,585 | 1,033,048 | 866,423 | 981,844 | 916,485 | 582,260 | 889,374 |
+| Unique Sequences | 1,036,229 | 1,063,996 | 1,029,483 | 863,123 | 966,495 | 500,507 | 92,366 | 108,529 |
+| Percent Diversity | 99.67 | 99.66 | 99.65 | 99.62 | 98.44 | 54.61 | 15.86 | 12.20 |
+| Sequences with > 2 Reads | 18 | 19 | 26 | 27 | 1,585 | 10,626 | 7,230 | 6,315 |
+| Sequence Families | NA | NA | NA | NA | 2 | 17 | 14 | 10 |
 
 #### Progress of selection across eight rounds (27 March 2025)
 
