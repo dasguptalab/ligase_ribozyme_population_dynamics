@@ -40,7 +40,10 @@ r8_peaks <- read.csv(peaksFile)
 #seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified_all/counts_plot_table.csv"
 seqsFile <- args[4]
 #seqs_input <- read.csv(seqsFile, colClasses=c("run_name"="character", "counts_run_name"="character"))
-seqs_input <- read.csv(seqsFile, colClasses=c(rep("numeric",3), "character", "numeric", "character"))
+seqs_input <- read.csv(seqsFile, header = FALSE, colClasses=c(rep("numeric",3), "character", "numeric", "character"))
+
+# add header
+colnames(seqs_input) <- c("run_name", "sequence_ID", "read_counts", "sequence", "counts", "counts_run_name")
 
 # subset to the round data
 #seqs_input <- seqs_input[seqs_input$run_name == round_num & seqs_input$counts_run_name == round_name,]
