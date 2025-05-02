@@ -42,7 +42,7 @@ echo "Beginning analysis of round $roundNum ..."
 Rscript 11a_family_identification.R	$roundNum $outDir $peaksFile $seqsFile $splitNum
 
 # clean up
-#rm $seqsFile
+rm $seqsFile
 
 # status message
 echo "Analysis complete!"

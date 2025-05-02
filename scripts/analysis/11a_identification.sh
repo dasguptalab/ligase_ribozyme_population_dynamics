@@ -4,8 +4,9 @@
 # usage: bash 11a_identification.sh
 ## run 6
 ## jobs 1621144 to 1621151
-## run 7
+## tests
 ## jobs 1684071 to 1688785
+## jobs 1688794 to 
 
 # retrieve analysis outputs absolute path
 #outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"
@@ -45,13 +46,13 @@ seqsFile=$outputsPath"/09a_quantified_all/counts_plot_table_noDoped.csv"
 	# create run name tage
 	runTag="r"$roundNum"_S"$roundNum"_L001"
 	# subset the seqs file for the current round
-	roundFile=$outDir"/r1_S1_L001_counts_plot_table_noDoped.tmp.csv"
+	roundFile=$outDir"/"$runTag"_counts_plot_table_noDoped.tmp.csv"
 	cat $seqsFile | grep $runTag > $roundFile
 	# create the split sequence data files for each round
 	inputSeqsData=$outDir"/"$runTag"_counts_plot_table_noDoped.tmp"
-	split --lines=10000 $roundFile $inputSeqsData".split.fa"
+	split --lines=50000 $roundFile $inputSeqsData".split.fa"
 	# clean up
-	#rm $roundFile
+	rm $roundFile
 	# initialize split counter
 	splitNum=0
 	# loop over each split file
@@ -61,7 +62,6 @@ seqsFile=$outputsPath"/09a_quantified_all/counts_plot_table_noDoped.csv"
 		# submit job script
 		qsub 11a_identify.sh $roundNum $outDir $peaksFile $inputSeqs $splitNum
 	done
-
 #done
 
 # status message

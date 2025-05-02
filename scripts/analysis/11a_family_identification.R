@@ -33,12 +33,14 @@ dir.create(out_dir, showWarnings = FALSE)
 peaksFile <- args[3]
 r8_peaks <- read.csv(peaksFile)
 
+# to-do: update reading in w/o header or add headers to tmp input files
 # read in sequence count data for the specified round
 #seqsFile <- "/scratch365/ebrooks5/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv"
 #seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv"
 #seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09a_quantified_all/counts_plot_table.csv"
 seqsFile <- args[4]
-seqs_input <- read.csv(seqsFile, colClasses=c("run_name"="character", "counts_run_name"="character"))
+#seqs_input <- read.csv(seqsFile, colClasses=c("run_name"="character", "counts_run_name"="character"))
+seqs_input <- read.csv(seqsFile, colClasses=c(rep("numeric",3), "character", "numeric", "character"))
 
 # subset to the round data
 #seqs_input <- seqs_input[seqs_input$run_name == round_num & seqs_input$counts_run_name == round_name,]
