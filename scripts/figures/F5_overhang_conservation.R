@@ -88,7 +88,7 @@ for (label_num in 1:nrow(identity_mappings)) {
 
 # setup data for plotting
 complement_counts_sorted$bases <- as.factor(complement_counts_sorted$bases)
-complement_counts_sorted <- complement_counts_sorted[complement_counts_sorted$bases != 3,]
+#complement_counts_sorted <- complement_counts_sorted[complement_counts_sorted$bases != 3,]
 #complement_counts_sorted <- complement_counts_sorted[complement_counts_sorted$bases != 4,]
 
 # subset counts by type
@@ -106,7 +106,7 @@ complement_counts_gap <- complement_counts_gap[order(complement_counts_gap$bases
 # create line plot of total overhang identity percent
 base_counts_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=colors))+
   geom_line(size = 1.25) +
-  geom_point() +
+  geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Matched Bases", labels = complement_counts_total$bases, breaks = complement_counts_total$colors, guide = "legend") +
   ylab("Percent Abundance") +
@@ -120,7 +120,7 @@ dev.off()
 # create line plot of consecutive overhang identity percent
 base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=colors))+
   geom_line(size = 1.25) +
-  geom_point() +
+  geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Matched Bases", labels = complement_counts_consecutive$bases, breaks = complement_counts_consecutive$colors, guide = "legend") +
   ylab("Percent Abundance") +
@@ -134,7 +134,7 @@ dev.off()
 # create line plot of gaped overhang identity percent
 base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_name), y=perc_abundance, group=identity, color=colors))+
   geom_line(size = 1.25) +
-  geom_point() +
+  geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Matched Bases", labels = complement_counts_gap$bases, breaks = complement_counts_gap$colors, guide = "legend") +
   ylab("Percent Abundance") +
@@ -193,7 +193,7 @@ dev.off()
 # create line plot of total overhang identity percent
 base_counts_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_name), y=perc_abundance_unique, group=identity, color=colors))+
   geom_line(size = 1.25) +
-  geom_point() +
+  geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Matched Bases", labels = complement_counts_total$bases, breaks = complement_counts_total$colors, guide = "legend") +
   ylab("Percent Abundance") +
@@ -207,7 +207,7 @@ dev.off()
 # create line plot of consecutive overhang identity percent
 base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.character(run_name), y=perc_abundance_unique, group=identity, color=colors))+
   geom_line(size = 1.25) +
-  geom_point() +
+  geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Matched Bases", labels = complement_counts_consecutive$bases, breaks = complement_counts_consecutive$colors, guide = "legend") +
   ylab("Percent Abundance") +
@@ -221,7 +221,7 @@ dev.off()
 # create line plot of gaped overhang identity percent
 base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_name), y=perc_abundance_unique, group=identity, color=colors))+
   geom_line(size = 1.25) +
-  geom_point() +
+  geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Matched Bases", labels = complement_counts_gap$bases, breaks = complement_counts_gap$colors, guide = "legend") +
   ylab("Percent Abundance") +

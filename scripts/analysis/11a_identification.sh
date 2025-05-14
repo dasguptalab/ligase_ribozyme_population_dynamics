@@ -5,7 +5,8 @@
 ## run 6
 ## jobs 1621144 to 1621151
 ## tests
-## jobs  
+### run 1
+## jobs 1689673 to 1689787
 
 # retrieve analysis outputs absolute path
 #outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"

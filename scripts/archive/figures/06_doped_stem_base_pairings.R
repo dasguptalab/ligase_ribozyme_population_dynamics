@@ -26,9 +26,8 @@ peakSeq <- "GAATGCTGCCAACCGTGCGGGCTAATTGGCAGACTGAGCT"
 # read in doped sequence data
 seqs_family <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/doped21-r3_S12_L001_table.csv")
 
-# TO-DO
 # reverse complement the sequences
-seqs_family$sequence <- rev(chartr("ATGC","TACG",seqs_family$sequence))
+#seqs_family$sequence <- rev(chartr("ATGC","TACG",seqs_family$sequence))
 
 # set number of bases
 num_base_pairs <- 7
