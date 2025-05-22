@@ -12,6 +12,9 @@ library(rcartocolor)
 library(dplyr)
 #library(plyr)
 
+# color blind safe plotting palette
+safe_colors <- c(carto_pal(name="Safe"), "#000000", "#D55E00", "#0072B2", "#F0E442", "#E69F00", "#009E73", "#999999")
+
 # set outputs directory
 out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F2_family_abundances_above2"
 
@@ -87,40 +90,37 @@ for (run_num in min(run_list):max(run_list)) {
 # sort cluster data
 cluster_data <- cluster_data[order(cluster_data$family_ID, decreasing = FALSE),]  
 
-# line plot with ligation rates per round
+# setup ligation rates and diversity data for plotting
 ligation_rates_data <- cbind(ligation_rates[ligation_rates$stat == "rate",], ligation_rates[ligation_rates$stat == "error", "value"])
 ligation_rates_data <- ligation_rates_data[ , !(names(ligation_rates_data) %in% c("stat", "stat_color"))]
 colnames(ligation_rates_data) <- c("run_name","rate","error")
-ligation_rates_plot <- ggplot(data = ligation_rates_data, aes(x = run_name, y = rate)) + 
-  geom_line(size = 1.25) +
-  geom_errorbar(aes(ymin=rate-error, ymax=rate+error), width=.2,
-                position=position_dodge(0.05)) +
-  geom_point(size = 2.25) +
-  theme_classic(base_size = 16) +
-  scale_x_continuous("Round Number", labels = as.character(ligation_rates_data$run_name), breaks = ligation_rates_data$run_name) +
-  #scale_color_identity(name = "Family", labels = cluster_data$family_ID, breaks = cluster_data$cluster_color, guide = "legend") +
-  ylab("Ligation Rate") +
-  xlab("Round Number")
-# save the plot
-exportFile <- paste(out_dir, "/ligation_rates.png", sep = "")
-png(exportFile, units="in", width=5, height=4, res=300)
-print(ligation_rates_plot)
-dev.off()
-
-# line plot with diversity per round
 diversity_data <- ligation_rates[ligation_rates$stat == "diversity",]
-diversity_plot <- ggplot(data = diversity_data, aes(x = run_name, y = value)) + 
-  geom_line(size = 1.25) +
-  geom_point(size = 2.25) +
+ligation_driversity_data <- merge(ligation_rates_data, diversity_data)
+colnames(ligation_driversity_data) <- c("run_name","rate","error","diversity","stat","stat_color")
+ligation_driversity_data <- ligation_driversity_data[,c("run_name","rate","error","diversity")]
+#coeff <- (max(ligation_driversity_data$rate)+max(ligation_driversity_data$error))/max(ligation_driversity_data$diversity)
+coeff <- 0.05/max(ligation_driversity_data$diversity)
+
+# combined line plot of ligation rates with diversity
+ligation_rates_diversity <- ggplot(ligation_driversity_data, aes(run_name)) +
+  geom_line(aes(y = diversity), size = 1.25, color = safe_colors[15]) +
+  geom_point(aes(y = diversity), size = 2.25, color = safe_colors[15]) +
+  geom_line(aes(y = rate/coeff), size = 1.25, color = safe_colors[2]) + 
+  geom_point(aes(y = rate/coeff), size = 2.25, color = safe_colors[2]) +
+  geom_errorbar(aes(ymin=(rate-error)/coeff, ymax=(rate+error)/coeff), width=.2,
+                position=position_dodge(0.05), color = safe_colors[2]) +
   theme_classic(base_size = 16) +
-  scale_x_continuous("Round Number", labels = as.character(diversity_data$run_name), breaks = diversity_data$run_name) +
-  #scale_color_identity(name = "Family", labels = cluster_data$family_ID, breaks = cluster_data$cluster_color, guide = "legend") +
-  ylab("Percent Diversity")
-  #xlab("Round Number")
+  guides(y = guide_axis(cap = "upper")) +
+  scale_y_continuous(
+    name = "Diversity", breaks=seq(0, 100, 20), labels = function(x) paste0(x, "%"),
+    sec.axis = sec_axis(~.*coeff, name="Ligation Rate", guide = guide_axis(cap = "upper"))
+  ) +
+  scale_x_continuous("Round", labels = as.character(ligation_driversity_data$run_name), breaks = ligation_driversity_data$run_name) +
+  xlab("Round")
 # save the plot
-exportFile <- paste(out_dir, "/round_diversity.png", sep = "")
+exportFile <- paste(out_dir, "/sequence_diversity_ligation_rates.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
-print(diversity_plot)
+print(ligation_rates_diversity)
 dev.off()
 
 # line plot with percent abundance per round for each of the families
@@ -129,8 +129,11 @@ cluster_abundances_plot <- ggplot(data=cluster_data, aes(x=as.character(run_name
   geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Family", labels = cluster_data$family_ID, breaks = cluster_data$cluster_color, guide = "legend") +
-  ylab("Percent Abundance") +
-  xlab("Round Number")
+  scale_y_continuous(limits=c(0, 40), breaks=seq(0, 40, 5), labels = function(x) paste0(x, "%")) +
+  guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
+  theme(axis.line = element_line()) +
+  ylab("Abundance") +
+  xlab("Round")
 # save the plot
 exportFile <- paste(out_dir, "/family_percent_abundances.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
@@ -156,21 +159,6 @@ peaks_data <- merge(fam_data, peaks_data)
 
 # sort cluster data
 peaks_data <- peaks_data[order(peaks_data$family_ID, decreasing = FALSE),]  
-
-# line plot with percent abundance per round for each of the families
-peaks_abundances_plot <- ggplot(data=peaks_data, aes(x=as.character(run_name), y=peak_abun, group=family_ID, color=cluster_color))+
-  geom_line(size = 1.25) +
-  geom_point(size = 2.25) +
-  geom_point() +
-  theme_classic(base_size = 16) +
-  scale_color_identity(name = "Peak", labels = peaks_data$family_ID, breaks = peaks_data$cluster_color, guide = "legend") +
-  ylab("Percent Abundance") +
-  xlab("Round Number")
-# save the plot
-exportFile <- paste(out_dir, "/peaks_percent_abundances.png", sep = "")
-png(exportFile, units="in", width=5, height=4, res=300)
-print(peaks_abundances_plot)
-dev.off()
 
 # create table of peaks data
 peaks_table <- peaks_data[peaks_data$sequence %in% fam_data$sequence & peaks_data$run_name == 8,] 
@@ -215,21 +203,6 @@ for (clust in 0:9) {
 is.na(identity_table)<-sapply(identity_table, is.infinite)
 identity_table[is.na(identity_table)]<-0
 
-# line plot with average identity per round for each of the families
-family_identities_plot <- ggplot(data=identity_table, aes(x=as.character(run_num), y=avg_identity, group=family_ID, color=family_color))+
-  geom_line(size = 1.25) +
-  geom_point(size = 2.25) +
-  geom_point() +
-  theme_classic(base_size = 16) +
-  scale_color_identity(name = "Family", labels = identity_table$family_ID, breaks = identity_table$family_color, guide = "legend") +
-  ylab("Percent Identity") +
-  xlab("Round Number")
-# save the plot
-exportFile <- paste(out_dir, "/family_avg_identities.png", sep = "")
-png(exportFile, units="in", width=5, height=4, res=300)
-print(family_identities_plot)
-dev.off()
-
 # set zeros to NA
 identity_table_subset <- filter(identity_table, avg_identity > 0, min_identity > 0, max_identity > 0)
 
@@ -243,8 +216,10 @@ family_identities_subset_plot <- ggplot(data=identity_table_subset, aes(x=as.cha
   geom_point() +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Family", labels = identity_table_subset$family_ID, breaks = identity_table_subset$family_color, guide = "legend") +
-  ylab("Percent Identity") +
-  xlab("Round Number")
+  scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
+  ylab("Identity") +
+  xlab("Round")
 # save the plot
 exportFile <- paste(out_dir, "/persistent_family_avg_identities.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)

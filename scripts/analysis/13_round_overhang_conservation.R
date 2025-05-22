@@ -290,7 +290,8 @@ for (seq_num in 1:seq_data_length) {
         complement_data$gap[seq_num] <-  "no"
         # set the wobble flag
         complement_data$wobble[seq_num] <- wobble_flag
-      }else if (subset_identity != window_identity & window_identity > complement_data$identity[seq_num]){
+      #}else if (subset_identity != window_identity & window_identity > complement_data$identity[seq_num]){
+      }else if (subset_identity < window_identity & window_identity > complement_data$identity[seq_num]){
         # store the current window sequence as the complement
         complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
         # add percent identity to expected overhang complement

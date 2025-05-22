@@ -127,17 +127,17 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
     geom_tile(colour = "black") +
     # left P2
     annotate("rect", xmin = c(5.5), xmax = c(12.5), ymin = c(0.5), ymax = c(4.5), 
-             colour = safe_colors[2], fill = "transparent", linewidth = 1) +
+             colour = safe_colors[2], fill = "transparent", linewidth = 1.25) +
     # right P2
     annotate("rect", xmin = c(25.5), xmax = c(32.5), ymin = c(0.5), ymax = c(4.5), 
-             colour = safe_colors[2], fill = "transparent", linewidth = 1) +
+             colour = safe_colors[2], fill = "transparent", linewidth = 1.25) +
     # overhang compliment
     annotate("rect", xmin = c(15.5), xmax = c(23.5), ymin = c(0.5), ymax = c(4.5),
              #xmin = c(15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5), 
              #ymin = c(3.5, 2.5, 1.5, 2.5, 2.5, 0.5, 0.5, 3.5, 2.5, 1.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5, 1.5, 1.5, 4.5, 3.5, 2.5), 
              #xmin = c(15.5, 16.5, 17.5, 18.5, 19.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5), 
              #ymin = c(3.5, 2.5, 1.5, 2.5, 2.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5), 
-             colour = safe_colors[1], fill = "transparent", linewidth = 1) +
+             colour = safe_colors[1], fill = "transparent", linewidth = 1.25) +
     ylab("Base") +
     xlab("Base Number") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 10), 

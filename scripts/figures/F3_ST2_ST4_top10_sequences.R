@@ -232,7 +232,8 @@ for (seq_num in 1:data_length) {
 
 # add column of ranked seq names
 #seq_names <- paste("Rank", seq(1, 19), sep ="_")
-seq_names <- seq(1, 19)
+#seq_names <- seq(1, 19)
+seq_names <- c("Seq1_1", "Seq1_2", "Seq1_3", "Seq1_4", "Seq1_5", "Seq1_6", "Seq1_7", "Seq1_8", "Seq1_9", "Seq1_10", "Seq2_9", "Seq2_10", "Seq3_6", "Seq3_9", "Seq4_10", "Seq5_8", "Seq6_10", "Seq8_7", "Seq8_8")
 sequence_ranks$rank_ID <- seq_names
 
 # export sequence data
@@ -244,19 +245,22 @@ seqs_counts_ranked <- seqs_counts_ranked[ , !(names(seqs_counts_ranked) %in% c("
 seqs_counts_ranked <- seqs_counts_ranked %>% distinct()
 seqs_counts_ranked$rank_ID <- rep("NA", nrow(seqs_counts_ranked))
 
+# additional color pallete
+ranked_color_pallete <- c(safe_colors[1:10], palette.colors(palette = "Okabe-Ito"))
+
 # loop over each ranked sequence
 for (rank_num in 1:nrow(sequence_ranks)) {
   # add column of ranked seq names
   seqs_counts_ranked[seqs_counts_ranked$sequence == sequence_ranks$sequence[rank_num], "rank_ID"] <- sequence_ranks$rank_ID[rank_num]
   # add plotting colorss
-  seqs_counts_ranked[seqs_counts_ranked$sequence == sequence_ranks$sequence[rank_num], "rank_color"] <- safe_colors[rank_num]
+  seqs_counts_ranked[seqs_counts_ranked$sequence == sequence_ranks$sequence[rank_num], "rank_color"] <- ranked_color_pallete[rank_num]
 }
 
 # make a factor variable
 seqs_counts_ranked$rank_ID <- as.factor(seqs_counts_ranked$rank_ID)
-levels(seqs_counts_ranked$rank_ID)
+#levels(seqs_counts_ranked$rank_ID)
 seqs_counts_ranked$rank_ID <- factor(seqs_counts_ranked$rank_ID, levels = levels(seqs_counts_ranked$rank_ID)[rev(c(1, 12:19, 2:11))])
-levels(seqs_counts_ranked$rank_ID)
+#levels(seqs_counts_ranked$rank_ID)
 
 # calculate percent abundance
 quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
@@ -286,18 +290,26 @@ seqs_counts_ranked$read_abun <- as.numeric(seqs_counts_ranked$read_abun)
   #                     na.value = "white") +
   #coord_fixed()
 
-# create line plot of read abundances
-counts_plot_ranked <- ggplot(data=seqs_counts_ranked, aes(x=as.character(counts_run_name), y=read_abun, group=rank_ID, color=rank_color))+
+# create line plot of non-fam ranked seqs read abundances
+seqs_counts_ranked_subset <- seqs_counts_ranked[seqs_counts_ranked$rank_ID %in% c(seq_names[5], seq_names[6], seq_names[8], seq_names[10], seq_names[12], seq_names[13], seq_names[14], seq_names[16], seq_names[17], seq_names[19]),]
+#sequence_ranks_subset <- sequence_ranks[sequence_ranks$rank_ID %in% c(5, 6, 8, 10, 12, 13, 14, 16, 17, 19),]
+# loop over each ranked sequence
+#for (rank_num in 1:nrow(sequence_ranks_subset)) {
+#  seqs_counts_ranked_subset[seqs_counts_ranked_subset$sequence == sequence_ranks_subset$sequence[rank_num], "rank_color"] <- safe_colors[rank_num]
+#}
+counts_plot_ranked <- ggplot(data=seqs_counts_ranked_subset, aes(x=as.character(counts_run_name), y=read_abun, group=rank_ID, color=rank_color))+
   geom_line(size = 1.25) +
   geom_point(size = 2.25) +
   geom_point() +
   theme_classic(base_size = 16) +
-  scale_color_identity(name = "Rank", labels = seqs_counts_ranked$rank_ID, breaks = seqs_counts_ranked$rank_color, guide = "legend") +
-  ylab("Percent Abundance") +
-  xlab("Round Number")
+  scale_color_identity(name = "Top Seq ID", labels = seqs_counts_ranked_subset$rank_ID, breaks = seqs_counts_ranked_subset$rank_color, guide = "legend") +
+  scale_y_continuous(limits=c(0, 4), breaks=seq(0, 4, 1), labels = function(x) paste0(x, "%")) +
+  guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
+  ylab("Abundance") +
+  xlab("Round")
 # save the plot
-exportFile <- paste(out_dir, "/ranked_sequences_percent_abundances.png", sep = "")
-png(exportFile, units="in", width=6, height=6, res=300)
+exportFile <- paste(out_dir, "/ranked_sequences_non_family_percent_abundances.png", sep = "")
+png(exportFile, units="in", width=6, height=5, res=300)
 print(counts_plot_ranked)
 dev.off()
 

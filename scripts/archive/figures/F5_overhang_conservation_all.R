@@ -108,11 +108,9 @@ base_counts_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_
   geom_line(size = 1.25) +
   geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
-  scale_color_identity(name = "Complementary\nBases", labels = complement_counts_total$bases, breaks = complement_counts_total$colors, guide = "legend") +
-  scale_y_continuous(limits=c(0, 60), breaks=seq(0, 60, 10), labels = function(x) paste0(x, "%")) +
-  guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
-  ylab("Abundance") +
-  xlab("Round")
+  scale_color_identity(name = "Matched Bases", labels = complement_counts_total$bases, breaks = complement_counts_total$colors, guide = "legend") +
+  ylab("Percent Abundance") +
+  xlab("Round Number")
 # save the plot
 exportFile <- paste(out_dir, "/overhang_percent_abundance_total.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
@@ -124,11 +122,9 @@ base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.characte
   geom_line(size = 1.25) +
   geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
-  scale_color_identity(name = "Complementary\nBases", labels = complement_counts_consecutive$bases, breaks = complement_counts_consecutive$colors, guide = "legend") +
-  scale_y_continuous(limits=c(0, 30), breaks=seq(0, 30, 5), labels = function(x) paste0(x, "%")) +
-  guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
-  ylab("Abundance") +
-  xlab("Round")
+  scale_color_identity(name = "Matched Bases", labels = complement_counts_consecutive$bases, breaks = complement_counts_consecutive$colors, guide = "legend") +
+  ylab("Percent Abundance") +
+  xlab("Round Number")
 # save the plot
 exportFile <- paste(out_dir, "/overhang_percent_abundance_non_gaped.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
@@ -140,13 +136,98 @@ base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_na
   geom_line(size = 1.25) +
   geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
-  scale_color_identity(name = "Complementary\nBases", labels = complement_counts_gap$bases, breaks = complement_counts_gap$colors, guide = "legend") +
-  scale_y_continuous(limits=c(0, 50), breaks=seq(0, 50, 10), labels = function(x) paste0(x, "%")) +
-  guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
-  ylab("Abundance") +
-  xlab("Round")
+  scale_color_identity(name = "Matched Bases", labels = complement_counts_gap$bases, breaks = complement_counts_gap$colors, guide = "legend") +
+  ylab("Percent Abundance") +
+  xlab("Round Number")
 # save the plot
 exportFile <- paste(out_dir, "/overhang_percent_abundance_gaped.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of total overhang identity percent
+base_counts_plot <- ggplot(complement_counts_total, aes(fill=bases, y=perc_abundance, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_total_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of non gaped overhang identity percent
+base_counts_plot <- ggplot(complement_counts_consecutive, aes(fill=bases, y=perc_abundance, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 14) +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+exportFile <- paste(out_dir, "/overhang_percent_abundance_non_gaped_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of gaped overhang identity percent
+base_counts_plot <- ggplot(complement_counts_gap, aes(fill=bases, y=perc_abundance, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_gaped_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# to-do: fix the "all" data abundance calculation
+## plots using unique sequence counts
+
+# create line plot of total overhang identity percent
+base_counts_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_name), y=perc_abundance_unique, group=identity, color=colors))+
+  geom_line(size = 1.25) +
+  geom_point(size = 2.25) +
+  theme_classic(base_size = 16) +
+  scale_color_identity(name = "Matched Bases", labels = complement_counts_total$bases, breaks = complement_counts_total$colors, guide = "legend") +
+  ylab("Percent Abundance") +
+  xlab("Round Number")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_total.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of consecutive overhang identity percent
+base_counts_plot <- ggplot(data=complement_counts_consecutive, aes(x=as.character(run_name), y=perc_abundance_unique, group=identity, color=colors))+
+  geom_line(size = 1.25) +
+  geom_point(size = 2.25) +
+  theme_classic(base_size = 16) +
+  scale_color_identity(name = "Matched Bases", labels = complement_counts_consecutive$bases, breaks = complement_counts_consecutive$colors, guide = "legend") +
+  ylab("Percent Abundance") +
+  xlab("Round Number")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_non_gaped.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of gaped overhang identity percent
+base_counts_plot <- ggplot(data=complement_counts_gap, aes(x=as.character(run_name), y=perc_abundance_unique, group=identity, color=colors))+
+  geom_line(size = 1.25) +
+  geom_point(size = 2.25) +
+  theme_classic(base_size = 16) +
+  scale_color_identity(name = "Matched Bases", labels = complement_counts_gap$bases, breaks = complement_counts_gap$colors, guide = "legend") +
+  ylab("Percent Abundance") +
+  xlab("Round Number")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_gaped.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
@@ -156,13 +237,39 @@ base_counts_plot <- ggplot(complement_counts_total, aes(fill=bases, y=perc_abund
   geom_bar(position="stack", stat="identity") +
   theme_classic(base_size = 16) +
   scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
-  scale_y_continuous(labels = function(x) paste0(x, "%")) +
-  guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
-  labs(fill = "Complementary\nBases") +
+  labs(fill = "Matched Bases") +
   ylab("Proportion") +
   xlab("Round")
 # save the plot
 exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_total_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of non gaped overhang identity percent
+base_counts_plot <- ggplot(complement_counts_consecutive, aes(fill=bases, y=perc_abundance_unique, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 14) +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_non_gaped_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
+
+# create line plot of gaped overhang identity percent
+base_counts_plot <- ggplot(complement_counts_gap, aes(fill=bases, y=perc_abundance_unique, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_total$bases), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$bases)) +
+  labs(fill = "Matched Bases") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_gaped_chart.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
