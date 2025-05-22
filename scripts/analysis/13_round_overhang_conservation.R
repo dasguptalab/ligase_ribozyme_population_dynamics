@@ -244,7 +244,7 @@ for (seq_num in 1:seq_data_length) {
       # update all complementary locations
       complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
       # update all complementary identities
-      complement_data$all_identities[seq_num] <- paste(complement_data$all_locations[seq_num], window_identity, sep = ";")
+      complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
       # break loop and stop parsing the current sequence
       break
       # check for gaps
@@ -314,7 +314,7 @@ for (seq_num in 1:seq_data_length) {
           # update all complementary locations
           complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
           # update all complementary identities
-          complement_data$all_identities[seq_num] <- paste(complement_data$all_locations[seq_num], window_identity, sep = ";")
+          complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
         }
       #}else if (subset_identity != window_identity & window_identity > complement_data$identity[seq_num]){
       }else if (subset_identity < window_identity & window_identity > complement_data$identity[seq_num]){
@@ -333,7 +333,7 @@ for (seq_num in 1:seq_data_length) {
           # update all complementary locations
           complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
           # update all complementary identities
-          complement_data$all_identities[seq_num] <- paste(complement_data$all_locations[seq_num], window_identity, sep = ";")
+          complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
         }
       }
     }
