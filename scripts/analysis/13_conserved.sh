@@ -8,7 +8,7 @@
 # usage ex: qsub 13_conserved.sh 1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv
 
 # load the software
-#module load bio/0724
+module load bio/0724
 
 # retrieve the input round number
 #roundNum="1"
