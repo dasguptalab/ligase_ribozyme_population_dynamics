@@ -340,6 +340,10 @@ for (seq_num in 1:seq_data_length) {
   }
 }
 
+# remove initializing NAs
+complement_data$all_locations <- gsub("NA;", "", complement_data$all_locations)
+complement_data$all_identities <- gsub("NA;", "", complement_data$all_identities)
+
 # vectors of bins (total, consecutive, gaped)
 identity_bins <- unique(complement_data$identity)
 #plot_bins <- c(paste(identity_bins, "T", sep = "_"), paste(identity_bins, "C", sep = "_"), paste(identity_bins, "G", sep = "_"), paste(identity_bins, "W", sep = "_"), paste(identity_bins, "WG", sep = "_"))
