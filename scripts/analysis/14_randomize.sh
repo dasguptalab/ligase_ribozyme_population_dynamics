@@ -1,14 +1,21 @@
 #!/bin/bash
+#$ -r n
+#$ -N RNA_randomize_jobOutput
+#$ -q largemem
 
 # script to create files with randomized nucelotide sequences
-# usage: bash 14_randomize.sh
+# usage: qsub 14_randomize.sh numNum
+# usage example: qsub 14_randomize.sh 1
+
+# retrieve input run num
+runNum=$1
 
 # retrieve analysis outputs absolute path
-outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"
-#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-outDir=$outputsPath"/13_randomized_sequences"
+outDir=$outputsPath"/14_randomized_sequences"
 
 # create outputs directory
 mkdir $outDir
@@ -20,13 +27,13 @@ nucSet="ACTG"
 seqLength=40
 
 # length of file
-numSeqs=2000000
+numSeqs=1500000
 
 # name out output file
-outFile=$outDir"/randomized_sequences.fa"
+outFile=$outDir"/random_run"$runNum"_sequences.fa"
 
-# add the header
-echo > $outFile
+# pre-clean up
+rm $outFile
 
 # loop over each line of the file
 for seqNum in $(seq 1 $numSeqs); do
@@ -44,5 +51,9 @@ for seqNum in $(seq 1 $numSeqs); do
 		currSeq="$currSeq$randomNuc"
 	done
 	# add the randomized sequence to the file
+	echo "@random_$seqNum" >> $outFile
 	echo $currSeq >> $outFile
 done
+
+# status message
+echo "Analysis complete!"
