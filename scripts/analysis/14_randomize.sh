@@ -6,6 +6,7 @@
 # script to create files with randomized nucelotide sequences
 # usage: qsub 14_randomize.sh numNum
 # usage example: qsub 14_randomize.sh 1
+## jobs 1728185 to 1728188
 
 # retrieve input run num
 runNum=$1

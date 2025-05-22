@@ -4,13 +4,15 @@
 # usage: bash 13b_conservation.sh
 ## run 6
 ## jobs 1658215 to 1658222
+## test_22May2025
+## jobs 
 
 # retrieve analysis outputs absolute path
 #outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-outDir=$outputsPath"/13b_overhang_conservation_above2"
+outDir=$outputsPath"/test_22May2025/13b_overhang_conservation_above2"
 
 # create outputs directory
 mkdir $outDir
