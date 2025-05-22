@@ -3,6 +3,9 @@ args = commandArgs(trailingOnly=TRUE)
 
 # R script to identify concerved overhang sequences
 
+# set the library paths for the CRC servers
+.libPaths("/afs/crc.nd.edu/user/e/ebrooks5/R/x86_64-pc-linux-gnu-library/4.4")
+
 # turn of scientific notation
 options(scipen=10000)
 
