@@ -2,13 +2,12 @@
 
 # script to count the number of sequences shared across runs
 # usage: bash 09a_split_quantify.sh inputRun runName
-# usage ex: bash 09a_quantify.sh r8_S8_L001 r8_S8_L001
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; bash 09a_quantify.sh $runInput; done
+# usage ex: bash 09a_quantify.sh r7_S7_L001 r8_S8_L001
 
 # retrieve input run name
 inputRun=$1
 
-# retrieve input run name
+# retrieve comparison run name
 runName=$2
 
 # retrieve analysis outputs absolute path

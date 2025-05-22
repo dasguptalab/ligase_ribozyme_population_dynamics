@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# script to run job scripts that identify conserved regions
+# script to run job scripts that count the number of sequences in sequence families
 # usage: bash 13a_conservation.sh
+## run 6
+## jobs 1658226 to 1658233
 
 # retrieve analysis outputs absolute path
 #outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"
@@ -23,7 +25,7 @@ for runNum in {1..8}; do
 	# status message
 	echo "Beginning analysis of round $roundNum ..."
 	# submit job script
-	qsub 13e_conserved.sh $roundNum $outDir $countsFile	
+	qsub 13_conserved.sh $roundNum $outDir $countsFile	
 done
 
 # status message

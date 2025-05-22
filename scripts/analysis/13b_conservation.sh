@@ -1,18 +1,15 @@
 #!/bin/bash
 
-# script to run job scripts that count the number of sequences in sequence families
+# script to run job scripts that identify conserved regions
 # usage: bash 13b_conservation.sh
-## run 6
-## jobs 1658215 to 1658222
-## test_22May2025
-## jobs 1728285 to 1728292
 
 # retrieve analysis outputs absolute path
 #outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-outDir=$outputsPath"/test_22May2025/13b_overhang_conservation_above2"
+outDir=$outputsPath"/13b_overhang_conservation_above2"
+#outDir=$outputsPath"/test_22May2025/13b_overhang_conservation_above2"
 
 # create outputs directory
 mkdir $outDir
@@ -27,7 +24,7 @@ for runNum in {1..8}; do
 	# status message
 	echo "Beginning analysis of round $roundNum ..."
 	# submit job script
-	qsub 13_conserved.sh $roundNum $outDir $countsFile	
+	qsub 13e_conserved.sh $roundNum $outDir $countsFile	
 done
 
 # status message

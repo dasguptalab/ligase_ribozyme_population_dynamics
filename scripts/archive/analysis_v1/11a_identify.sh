@@ -4,7 +4,12 @@
 #$ -q largemem
 
 # script to run R scripts that count the number of sequences in sequence families
-# usage: qsub 11a_identify.sh roundNum outDir peaksFile seqsFile
+# usage: qsub 11_identify.sh roundNum outDir peaksFile seqsFile splitNum
+# usage ex: qsub 11_identify.sh 1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/08_summarized_1500/r8_S8_L001_cluster_peaks_table.csv /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv
+# above 2
+# jobs 1608856 to 1608863
+# all
+# jobs 1608867 to 1608874
 
 # load the software
 module load bio/0724
@@ -34,7 +39,7 @@ splitNum=$5
 echo "Beginning analysis of round $roundNum ..."
 
 # run the R script
-Rscript 11b_family_identification.R	$roundNum $outDir $peaksFile $seqsFile $splitNum
+Rscript 11a_family_identification.R	$roundNum $outDir $peaksFile $seqsFile $splitNum
 
 # clean up
 rm $seqsFile

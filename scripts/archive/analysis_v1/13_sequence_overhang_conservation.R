@@ -1,0 +1,271 @@
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
+
+# R script to identify concerved overhang sequences
+
+# turn of scientific notation
+options(scipen=10000)
+
+# import libraries
+#library(ggplot2)
+library(scales)
+#library(rcartocolor)
+library(stringr)
+
+# set outputs directory
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/13d_overhang_conservation_families"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/13c_overhang_conservation_top10_above2"
+#out_dir <- args[2]
+dir.create(out_dir, showWarnings = FALSE)
+
+# read in sequence data
+#seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/ST2_family_table/r8_family_count_data.csv"
+seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F3_ST4_top10_sequences_above2/top10_sequences_rankings.csv"
+#seqsFile <- args[3]
+seqs_input <- read.csv(seqsFile)
+
+# color blind safe plotting palette
+#safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
+
+# A pairs with U and G pairs with C, but G also pairs with U
+# G (C, U)
+# A (U)
+# U (A, G)
+# C (G)
+
+# overhang sequence: AUUCCGCA
+# overhang wobble positions: 2, 3, and 6
+# complement wobble positions: 3, 6, and 7
+# 3
+# 3, 6
+# 3, 7
+# 3, 6, 7
+# 6
+# 6, 7
+# 7
+
+# set the overhang sequence
+overhang <- rev(c("ATTCCGCA"))
+
+# store the overhang in an array
+overhang <- unlist(strsplit(overhang, ""))
+
+# reverse the overhang for comparing
+rev_overhang <- rev(overhang)
+
+# set expected overhang (ATTCCGCA) reverse complement (TGCGGAAT) sequence
+#complement_seq <- c("T","G","C","G","G","A","A","T","G","C")
+#complement_seq <- c("TGCGGAATGC")
+#complement_seq <- c("T","G","C","G","G")
+complement_seq <- c("TGCGGAAT")
+
+# store the expected complement in an array
+complement_seq <- unlist(strsplit(complement_seq, ""))
+
+# wobble positions (TG[C,T]GG[A,G][A,G]T)
+# TG[T]GGAAT
+# TG[T]GG[G]AT
+# TG[T]GGA[G]T
+# TG[T]GG[G][G]T
+# TGCGG[G]AT
+# TGCGG[G][G]T
+# TGCGGA[G]T
+
+# numbers of high quality reads
+#quality_doped <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374, 865509, 807849, 1143871)
+#quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
+#unique_reads <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
+#filtered_reads <- c(18, 19, 26, 27, 1585, 10626, 7230, 6315)
+
+# convert list of sequences into a matrix
+seq_matrix <- do.call(rbind, type.convert(strsplit(seqs_input$sequence, ""), as.is = TRUE))
+
+# trim the sequence to keep the bases of the overhang
+#seq_matrix <- seqs_input_matrix[,16:20]
+
+# set seqeunce and overhang complement lengths
+seq_length <- 40
+complement_length <- 8
+
+# set length for window sliding
+sliding_length <- seq_length - (complement_length-1)
+
+# set overhang data length
+seq_data_length <- nrow(seqs_input)
+
+# initialize data frame for base counts
+complement_data <- data.frame(
+  sequence = rep(NA, seq_data_length),
+  complement = rep(NA, seq_data_length),
+  identity = rep(0, seq_data_length),
+  identity_subset = rep(0, seq_data_length),
+  gap = rep(NA, seq_data_length),
+  wobble = rep(NA, seq_data_length)
+)
+
+# initialize loop variable
+wobble_flag <- NA
+
+# loop over each sequence
+for (seq_num in 1:seq_data_length) {
+  # add sequence
+  complement_data$sequence[seq_num] <- paste(seq_matrix[seq_num,], collapse="")
+  # loop over each base of the sequence
+  for (base_index in 1:sliding_length) {
+    # reset window variables
+    expected_complement <- complement_seq
+    # set end index
+    end_index <- base_index + (complement_length-1)
+    # get the next 7 bases to create the 8bp sliding window
+    slide_window <- seq_matrix[seq_num,base_index:end_index]
+    # count number of matched bases to the expected overhang complement
+    num_match <- mapply(
+      function(window, complement) {
+        len <- length(window)
+        sum(window[1:len] == complement[1:len])
+      }, 
+      slide_window, 
+      expected_complement
+    )
+    # count number of matched bases (including wobbles) to the expected overhang complement
+    num_match_wobble <- mapply(
+      function(window, rev_over) {
+        # initialize counter
+        counter <- 0
+        # retrieve sequence length
+        len <- length(window)
+        # loop over each consecutive base of the window
+        for (i in 1:len) {
+          # check if the current base is a match
+          # accounting for wobble
+          # A pairs with U and G pairs with C, but G also pairs with U
+          if (rev_over[i] == "A" & window[i] == "T") { # A (U)
+            counter <- counter +1
+          }else if (rev_over[i] == "C" & window[i] == "G"){ # C (G)
+            counter <- counter +1
+          }else if (rev_over[i] == "G" & (window[i] == "C" || window[i] == "T")){ # G (C, U)
+            counter <- counter +1
+          }else if (rev_over[i] == "T" & (window[i] == "A" || window[i] == "G")){ # U (A, G)
+            counter <- counter +1
+          }
+        }
+        # return the match count
+        counter
+      }, 
+      slide_window, 
+      rev_overhang
+    )
+    # determine percent identity to expected overhang complement
+    window_identity <- 100*sum(num_match)/complement_length
+    window_identity_wobble <- 100*sum(num_match_wobble)/complement_length
+    # check if the wobble identity is higher
+    if(window_identity_wobble > window_identity){
+      # flag that the wobble is detected
+      wobble_flag <- "yes"
+      # set window identity to the higher wobble identity
+      window_identity <- window_identity_wobble
+      # else, wobble is not necessary
+    }else{
+      # flag that the wobble is not detected
+      wobble_flag <- "no"
+    }
+    # check if window identity is not higher than last best
+    if (window_identity < complement_data$identity[seq_num]) {
+      # jump to the end of the loop and stop parsing the current window
+      next
+    }
+    # check if identity is = to 100*8/8 = 100 and wobble is not detected
+    if(window_identity == 100 && wobble_flag == "no") {
+      # store the current window sequence as the complement
+      complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
+      # add percent identity to expected overhang complement
+      complement_data$identity[seq_num] <- window_identity
+      # set the longest subset window identity
+      complement_data$identity_subset[seq_num] <-  window_identity
+      # flag that the current window does not have a gap
+      complement_data$gap[seq_num] <-  "no"
+      # set the wobble flag
+      complement_data$wobble[seq_num] <- wobble_flag
+      # break loop and stop parsing the current sequence
+      break
+      # check for gaps
+    }else{
+      # is the wobble relative to the overhang or the reverse complement? 
+      # how is binding influenced by matching to the overhang?
+      # what about the 3' to 5' orientation? <- doesn't matter... same either way
+      # initialize subset length variable and mismatch flag
+      subset_length <- 0
+      subset_longest <- 0
+      mismatch_flag <- 0
+      # loop over each consecutive base of the window
+      for (window_index in 1:complement_length) {
+        # check if the current base is a match
+        #if (slide_window[window_index] == expected_complement[window_index]) {
+        # A pairs with U and G pairs with C, but G also pairs with U
+        if (rev_overhang[window_index] == "A" & slide_window[window_index] == "T") { # A (U)
+          # increment subset length
+          subset_length <- subset_length+1
+        }else if (rev_overhang[window_index] == "C" & slide_window[window_index] == "G"){ # C (G)
+          # increment subset length
+          subset_length <- subset_length+1
+        }else if (rev_overhang[window_index] == "G" & (slide_window[window_index] == "C" || slide_window[window_index] == "T")){ # G (C, U)
+          # increment subset length
+          subset_length <- subset_length+1
+        }else if (rev_overhang[window_index] == "T" & (slide_window[window_index] == "A" || slide_window[window_index] == "G")){ # U (A, G)
+          # increment subset length
+          subset_length <- subset_length+1
+        }else{ # mismatch
+          # flag mismatch
+          mismatch_flag <- 1
+        }
+        # check if mismatch
+        if (mismatch_flag == 1){
+          # check if the current subset length is longest
+          if (subset_length > subset_longest) {
+            subset_longest <- subset_length
+          }
+          # reset subset length
+          subset_length <- 0
+          # reset mismatch flag
+          mismatch_flag <- 0
+        }else{
+          # check if the current subset length is longest
+          if (subset_length > subset_longest) {
+            subset_longest <- subset_length
+          }
+        }
+      }
+      # to-do: double check allowing of multiple gaps
+      # set longest window subset identity
+      subset_identity <- 100*subset_longest/complement_length
+      # check if the identity of the current consecutive subset matches the total
+      if (subset_identity == window_identity & window_identity >= complement_data$identity[seq_num]) {
+        # store the current window sequence as the complement
+        complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
+        # add percent identity to expected overhang complement
+        complement_data$identity[seq_num] <- window_identity
+        # add subset percent identity to expected overhang complement
+        complement_data$identity_subset[seq_num] <- subset_identity
+        # flag that the current window does not have a gap
+        complement_data$gap[seq_num] <-  "no"
+        # set the wobble flag
+        complement_data$wobble[seq_num] <- wobble_flag
+      }else if (subset_identity != window_identity & window_identity > complement_data$identity[seq_num]){
+        # store the current window sequence as the complement
+        complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
+        # add percent identity to expected overhang complement
+        complement_data$identity[seq_num] <- window_identity
+        # add subset percent identity to expected overhang complement
+        complement_data$identity_subset[seq_num] <- subset_identity
+        # flag that the current window does have a gap
+        complement_data$gap[seq_num] <-  "yes"
+        # set the wobble flag
+        complement_data$wobble[seq_num] <- wobble_flag
+      }
+    }
+  }
+}
+
+
+# export data
+write.csv(complement_data, file = paste(out_dir, "/overhang_data_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)

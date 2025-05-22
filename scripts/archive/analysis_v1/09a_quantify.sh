@@ -1,11 +1,10 @@
 #!/bin/bash
 #$ -r n
-#$ -N RNA_quantify_b_jobOutput
+#$ -N RNA_quantify_a_jobOutput
 #$ -q largemem
 
 # script to count the number of sequences shared across runs
-# usage: qsub 09a_quantify.sh inputRun runName
-# usage ex: bash 09a_quantify.sh r8_S8_L001 r8_S8_L001
+# usage: qsub 09a_quantify.sh inputRun runName inputSeqs splitNum
 
 # retrieve input run name
 inputRun=$1
@@ -26,10 +25,14 @@ inputData=$outputsPath"/05_combined/"$runName"_combined.RC.fa"
 
 # retrieve input sequences
 #inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted.fa" ## quantification of all sequencess
-inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted_above2.fa"
+#inputSeqs=$outputsPath"/06_formatted/"$inputRun"_formatted_above2.fa"
+inputSeqs=$3
+
+# retrieve input split number
+splitNum=$4
 
 # name of a new directory for analysis
-tablesOut=$outputsPath"/09b_quantified_above2"
+tablesOut=$outputsPath"/09a_quantified_all"
 
 # make a new directory for analysis
 mkdir $tablesOut
@@ -52,7 +55,7 @@ echo "" >> $fmtSeqs
 
 # name output file
 #countsOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_table.csv"
-countsPlotOut=$tablesOut"/"$inputRun"_in_"$runName"_counts_plot_table.csv"
+countsPlotOut=$tablesOut"/"$inputRun"_in_"$runName"_split"$splitNum"_counts_plot_table.csv"
 
 # retrieve header
 inputHeader="run_name,sequence_ID,read_counts,sequence"
@@ -95,6 +98,7 @@ while read data; do
 done < $fmtSeqs
 
 # clean up
+rm $inputSeqs
 rm $fmtSeqs
 rm $inputRunData
 
