@@ -1,6 +1,6 @@
 #!/bin/bash
 #$ -r n
-#$ -N RNA_cluster_jobOutput
+#$ -N RNA_conserved_t0_jobOutput
 #$ -q largemem
 
 # script to run job scripts that identify conserved regions
