@@ -23,6 +23,9 @@ outDir=$outputsPath"/13e_conservation_t0_run"$runNum
 # create outputs directory
 mkdir $outDir
 
+# status message
+echo "Processing random$runNum sequences..."
+
 # read in sequence count data for the specified round
 countsFile="/scratch365/ebrooks5/RNA_evolution/outputs/14_randomized_sequences/random"$runNum"_sequences_combined.RC.fa"
 
