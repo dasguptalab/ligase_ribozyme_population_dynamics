@@ -4,7 +4,7 @@
 #$ -q largemem
 
 # script to run R scripts that count the number of sequences in sequence families
-# usage: qsub 13e_conserved.sh roundNum outDir seqsFile
+# usage: qsub 13_conserved.sh roundNum outDir seqsFile
 
 # load the software
 module load bio/0724

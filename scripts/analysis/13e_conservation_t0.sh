@@ -7,12 +7,15 @@
 # usage: qsub 13e_conservation_t0.sh runNum
 # usage ex: qsub 13e_conservation_t0.sh 1
 
+# load the software
+module load bio/0724
+
 # retrieve input run number
 runNum=$1
 
 # retrieve analysis outputs absolute path
-#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
+outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+#outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
 outDir=$outputsPath"/13e_conservation_t0_run"$runNum
