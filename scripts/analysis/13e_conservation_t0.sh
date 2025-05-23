@@ -8,7 +8,7 @@
 # usage ex: qsub 13e_conservation_t0.sh 1
 ## jobs 1732347 to 1732447
 ## tested_23May2025
-## jobs
+## jobs 1733950 to 1733953
 
 # load the software
 module load bio/0724
@@ -21,7 +21,7 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-outDir=$outputsPath"/tested_23May2025/13e_conservation_t0_run"$runNum
+outDir=$outputsPath"/test_23May2025/13e_conservation_t0_run"$runNum
 
 # create outputs directory
 mkdir $outDir
