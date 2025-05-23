@@ -27,7 +27,7 @@ mkdir $outDir
 echo "Processing random$runNum sequences..."
 
 # read in sequence count data for the specified round
-countsFile="/scratch365/ebrooks5/RNA_evolution/outputs/14_randomized_sequences/random"$runNum"_sequences_combined.RC.fa"
+seqsFile="/scratch365/ebrooks5/RNA_evolution/outputs/14_randomized_sequences/random"$runNum"_sequences_combined.RC.fa"
 
 # run the analysis
 Rscript 13_sequence_conservation.R $outDir $seqsFile
