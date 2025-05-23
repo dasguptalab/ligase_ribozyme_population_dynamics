@@ -25,7 +25,7 @@ for runNum in {1..8}; do
 	# status message
 	echo "Beginning analysis of round $roundNum ..."
 	# submit job script
-	qsub 13e_conserved.sh $roundNum $outDir $countsFile	
+	qsub 13_conserved.sh $roundNum $outDir $countsFile	
 done
 
 # status message
