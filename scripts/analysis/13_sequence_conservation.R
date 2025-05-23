@@ -19,14 +19,14 @@ library(stringr)
 #out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13d_overhang_conservation_families"
 #out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13c_overhang_conservation_top10_above2"
 #out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13_overhang_conservation_t0"
-out_dir <- args[2]
+out_dir <- args[1]
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in sequence data
 #seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/ST2_family_table/r8_family_count_data.csv"
 #seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F3_ST4_top10_sequences_above2/top10_sequences_rankings.csv"
 #seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/14_randomized_sequences/random1_sequences_combined.RC.fa"
-seqsFile <- args[3]
+seqsFile <- args[2]
 seqs_input <- read.csv(seqsFile)
 
 # color blind safe plotting palette
