@@ -8,7 +8,7 @@
 # usage ex: qsub 13e_conservation_t0.sh 1
 ## jobs 1732347 to 1732447
 ## tested_23May2025
-## jobs 1733950 to 1733953
+## jobs 1733954 to 1733957
 
 # load the software
 module load bio/0724

@@ -186,3 +186,13 @@ dev.off()
 # export data
 write.csv(complement_counts_sorted, file = paste(out_dir, "/overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
 write.csv(complement_counts_total, file = paste(out_dir, "/overhang_conservation_wobble_total.csv", sep = ""), row.names = FALSE, quote = FALSE)
+
+# initialize data column
+complement_data$num_regions <- NA
+
+# loop over each sequence
+for (seq_num in 1:nrow(complement_data)) {
+  # count number of complementary regions >= 37.5
+  complement_data$num_regions[seq_num] <- str_count(complement_data$all_identities[seq_num],";")
+}
+
