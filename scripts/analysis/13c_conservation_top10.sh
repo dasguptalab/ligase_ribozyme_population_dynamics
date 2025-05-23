@@ -17,7 +17,7 @@ mkdir $outDir
 countsFile=$outputsPath"/09d_quantified_top10_above2/counts_plot_table_noDoped.csv"
 
 # run the analysis
-Rscript 13g_sequence_overhang_conservation.R $outDir $seqsFile
+Rscript 13_sequence_conservation.R $outDir $seqsFile
 
 # status message
 echo "Analysis complete!"

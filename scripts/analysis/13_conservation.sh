@@ -7,10 +7,11 @@
 echo "Beginning analysis of conserved regions..."
 
 # run the analysis steps
-bash 13a_conservation.sh
+qsub 13a_conservation.sh
 bash 13b_conservation.sh
 bash 13c_conservation_top10.sh
 bash 13d_conservation_families.sh
+qsub 13e_conservation_t0.sh
 
 # status message
 echo "Conservation analysis complete!"

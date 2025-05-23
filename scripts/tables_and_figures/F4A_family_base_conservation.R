@@ -12,10 +12,10 @@ library(rcartocolor)
 library(stringr)
 
 # set outputs directory
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4A_family_base_conservation_above2"
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4A_family_base_conservation_above2_r8"
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4A_family_base_conservation_above2_unique"
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4A_family_base_conservation_above2_r8_unique"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F4A_family_base_conservation_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F4A_family_base_conservation_above2_r8"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F4A_family_base_conservation_above2_unique"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F4A_family_base_conservation_above2_r8_unique"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -24,7 +24,7 @@ dir.create(out_dir, showWarnings = FALSE)
 safe_colors <- c(carto_pal(name="Safe"), "#000000")
 
 # read in family data
-fam_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/ST2_family_table/r8_family_count_data.csv")
+fam_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/ST2_family_table/r8_family_count_data.csv")
 
 # read in cluster family data
 cluster_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11b_family_identification_above2/family_identities_max_atLeast90.csv")
@@ -100,34 +100,34 @@ for (cluster_num in min(cluster_list):max(cluster_list)) {
   # change the bases to factors for plotting
   #base_counts$base <- factor(base_counts$base, levels=c("U", "G", "C", "A"))
   # set family plot title
-  run_title <- paste("Family", fam_num, "Base Conservation")
+  run_title <- paste("Family", fam_num, "Nucleotide Conservation")
   # create heatmap of base conservation
   base_counts_plot <- ggplot(data = base_counts, aes(reorder(as.character(base_ID), base_ID), base, fill= conservation_na)) + 
-    theme_classic(base_size = 16) +
+    theme_classic(base_size = 18) +
     geom_tile(colour = "black") +
     # left P2
     annotate("rect", xmin = c(5.5), xmax = c(12.5), ymin = c(0.5), ymax = c(4.5), 
-             colour = safe_colors[2], fill = "transparent", linewidth = 1) +
+             colour = safe_colors[2], fill = "transparent", linewidth = 1.5) +
     # right P2
     annotate("rect", xmin = c(25.5), xmax = c(32.5), ymin = c(0.5), ymax = c(4.5), 
-             colour = safe_colors[2], fill = "transparent", linewidth = 1) +
+             colour = safe_colors[2], fill = "transparent", linewidth = 1.5) +
     # overhang compliment
     annotate("rect", xmin = c(15.5), xmax = c(23.5), ymin = c(0.5), ymax = c(4.5),
              #xmin = c(15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5), 
              #ymin = c(3.5, 2.5, 1.5, 2.5, 2.5, 0.5, 0.5, 3.5, 2.5, 1.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5, 1.5, 1.5, 4.5, 3.5, 2.5), 
              #xmin = c(15.5, 16.5, 17.5, 18.5, 19.5), xmax = c(16.5, 17.5, 18.5, 19.5, 20.5), 
              #ymin = c(3.5, 2.5, 1.5, 2.5, 2.5), ymax = c(4.5, 3.5, 2.5, 3.5, 3.5), 
-             colour = safe_colors[1], fill = "transparent", linewidth = 1) +
-    ylab("Base") +
-    xlab("Base Number") +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 10), 
-          axis.text.y = element_text(size = 10),
+             colour = safe_colors[1], fill = "transparent", linewidth = 1.5) +
+    ylab("Nucleotide") +
+    xlab("Nucleotide Position") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1, size = 14), 
+          axis.text.y = element_text(size = 14),
           axis.title = element_text(size = 18)) +
     ggtitle(run_title) +
     theme(plot.title = element_text(hjust = 0.5, size = 18)) +
-    scale_fill_gradient2(name = "PA",
-                         low = safe_colors[3],
-                         mid = safe_colors[4],
+    scale_fill_gradient2(name = "Percent\nAbundance",
+                         low = "#F0E442",
+                         mid = safe_colors[7],
                          high = safe_colors[5],
                          midpoint = max(base_counts$conservation)/2,
                          na.value = "white") +

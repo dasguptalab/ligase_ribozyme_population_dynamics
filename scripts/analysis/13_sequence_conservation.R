@@ -3,6 +3,9 @@ args = commandArgs(trailingOnly=TRUE)
 
 # R script to identify concerved overhang sequences
 
+# set the library paths for the CRC servers
+.libPaths("/afs/crc.nd.edu/user/e/ebrooks5/R/x86_64-pc-linux-gnu-library/4.4")
+
 # turn of scientific notation
 options(scipen=10000)
 
@@ -13,15 +16,17 @@ library(scales)
 library(stringr)
 
 # set outputs directory
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/13d_overhang_conservation_families"
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/13c_overhang_conservation_top10_above2"
-#out_dir <- args[2]
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13d_overhang_conservation_families"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13c_overhang_conservation_top10_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13_overhang_conservation_t0"
+out_dir <- args[2]
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in sequence data
 #seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/ST2_family_table/r8_family_count_data.csv"
-seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F3_ST4_top10_sequences_above2/top10_sequences_rankings.csv"
-#seqsFile <- args[3]
+#seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F3_ST4_top10_sequences_above2/top10_sequences_rankings.csv"
+#seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/14_randomized_sequences/random1_sequences_combined.RC.fa"
+seqsFile <- args[3]
 seqs_input <- read.csv(seqsFile)
 
 # color blind safe plotting palette

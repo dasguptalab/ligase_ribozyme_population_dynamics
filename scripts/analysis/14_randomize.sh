@@ -7,7 +7,7 @@
 # usage: qsub 14_randomize.sh numNum
 # usage example: qsub 14_randomize.sh 1
 ## 1 to 4
-## jobs 1728816 to 1728829
+## jobs 1731224 to 1731229
 
 # retrieve input run num
 runNum=$1
