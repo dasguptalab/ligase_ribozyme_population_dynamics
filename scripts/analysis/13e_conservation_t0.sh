@@ -7,7 +7,7 @@
 # usage: qsub 13e_conservation_t0.sh runNum
 # usage ex: qsub 13e_conservation_t0.sh 1
 ## jobs 1732347 to 1732447
-## tested_23May2025
+## test_23May2025
 ## jobs 1733954 to 1733957
 
 # load the software
