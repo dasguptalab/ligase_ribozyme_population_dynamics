@@ -328,6 +328,8 @@ for (seq_num in 1:seq_data_length) {
         complement_data$gap[seq_num] <-  "yes"
         # set the wobble flag
         complement_data$wobble[seq_num] <- wobble_flag
+        # set the location
+        complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
         # check if the subset identity is at least 3/8
         if (subset_identity >= 37.5) {
           # update all complementary locations

@@ -105,7 +105,10 @@ complement_data <- data.frame(
   identity = rep(0, seq_data_length),
   identity_subset = rep(0, seq_data_length),
   gap = rep(NA, seq_data_length),
-  wobble = rep(NA, seq_data_length)
+  wobble = rep(NA, seq_data_length),
+  location = rep(NA, seq_data_length),
+  all_locations = rep(NA, seq_data_length),
+  all_identities = rep(NA, seq_data_length)
 )
 
 # initialize loop variable
@@ -191,6 +194,12 @@ for (seq_num in 1:seq_data_length) {
       complement_data$gap[seq_num] <-  "no"
       # set the wobble flag
       complement_data$wobble[seq_num] <- wobble_flag
+      # set the location
+      complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
+      # update all complementary locations
+      complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
+      # update all complementary identities
+      complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
       # break loop and stop parsing the current sequence
       break
       # check for gaps
@@ -255,7 +264,17 @@ for (seq_num in 1:seq_data_length) {
         complement_data$gap[seq_num] <-  "no"
         # set the wobble flag
         complement_data$wobble[seq_num] <- wobble_flag
-      }else if (subset_identity != window_identity & window_identity > complement_data$identity[seq_num]){
+        # set the location
+        complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
+        # check if the subset identity is at least 3/8
+        if (subset_identity >= 37.5) {
+          # update all complementary locations
+          complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
+          # update all complementary identities
+          complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
+        }
+      #}else if (subset_identity != window_identity & window_identity > complement_data$identity[seq_num]){
+      }else if (subset_identity < window_identity & window_identity > complement_data$identity[seq_num]){
         # store the current window sequence as the complement
         complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
         # add percent identity to expected overhang complement
@@ -266,6 +285,15 @@ for (seq_num in 1:seq_data_length) {
         complement_data$gap[seq_num] <-  "yes"
         # set the wobble flag
         complement_data$wobble[seq_num] <- wobble_flag
+        # set the location
+        complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
+        # check if the subset identity is at least 3/8
+        if (subset_identity >= 37.5) {
+          # update all complementary locations
+          complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
+          # update all complementary identities
+          complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
+        }
       }
     }
   }

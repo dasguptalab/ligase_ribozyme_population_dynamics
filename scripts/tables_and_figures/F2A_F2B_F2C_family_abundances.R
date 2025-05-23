@@ -16,7 +16,7 @@ library(dplyr)
 safe_colors <- c(carto_pal(name="Safe"), "#000000", "#D55E00", "#0072B2", "#F0E442", "#E69F00", "#009E73", "#999999")
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F2A_F2B_F2C_family_abundances_above2"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F2A_F2B_F2C_family_abundances_above2"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
@@ -30,7 +30,7 @@ quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 #unique <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
 
 # read in family data
-fam_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/T2_ST3_family_table/r8_family_count_data.csv")
+fam_data <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/ST2_family_table/r8_family_count_data.csv")
 
 # read in sequences that have at least 90% identity to any peak
 seqs_identities <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11b_family_identification_above2/family_identities_max_atLeast90.csv")

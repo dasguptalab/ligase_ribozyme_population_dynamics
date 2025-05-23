@@ -17,8 +17,8 @@ safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
 unique_reads <- c(1036229, 1063996, 1029483, 863123, 966495, 500507, 92366, 108529)
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_overhang_conservation_above2"
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F5_overhang_conservation_all"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F5_overhang_conservation_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F5_overhang_conservation_all"
 #out_dir <- args[2]
 dir.create(out_dir, showWarnings = FALSE)
 
