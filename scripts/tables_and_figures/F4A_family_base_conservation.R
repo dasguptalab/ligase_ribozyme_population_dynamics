@@ -12,10 +12,10 @@ library(rcartocolor)
 library(stringr)
 
 # set outputs directory
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2"
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2_r8"
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2_unique"
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4a_family_base_conservation_above2_r8_unique"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4A_family_base_conservation_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4A_family_base_conservation_above2_r8"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4A_family_base_conservation_above2_unique"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F4A_family_base_conservation_above2_r8_unique"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)

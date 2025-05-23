@@ -16,7 +16,7 @@ library(dplyr)
 safe_colors <- c(carto_pal(name="Safe"), "#000000", "#D55E00", "#0072B2", "#F0E442", "#E69F00", "#009E73", "#999999")
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F2_family_abundances_above2"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F2A_F2B_F2C_family_abundances_above2"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)

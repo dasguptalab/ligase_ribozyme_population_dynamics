@@ -17,8 +17,8 @@ library(ComplexHeatmap)
 suppressMessages( require(cowplot) )
 
 # set outputs directory
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F3_ST2_ST4_top10_sequences_above2"
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F3_ST2_ST4_top10_sequences_all"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F2D_F3_T2_top10_sequences_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/F2D_F3_T2_top10_sequences_all"
 
 # create outputs directory
 dir.create(out_dir, showWarnings = FALSE)
