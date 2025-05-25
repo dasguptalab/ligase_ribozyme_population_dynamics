@@ -6,8 +6,6 @@
 # script to create files with randomized nucelotide sequences
 # usage: qsub 14_randomize.sh numNum
 # usage example: qsub 14_randomize.sh 1
-## 1 to 4
-## jobs 1731224 to 1731229
 
 # retrieve input run num
 runNum=$1
@@ -17,7 +15,7 @@ runNum=$1
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-outDir=$outputsPath"/14_randomized_sequences"
+outDir=$outputsPath"/14_randomized_sequences_2M"
 
 # create outputs directory
 mkdir $outDir
@@ -29,7 +27,7 @@ nucSet="ACTG"
 seqLength=40
 
 # length of file
-numSeqs=1500000
+numSeqs=2000000
 
 # name out output file
 outFile=$outDir"/random"$runNum"_sequences_combined.RC.fa"
@@ -46,7 +44,8 @@ for seqNum in $(seq 1 $numSeqs); do
 	# loop over each nucleotide
 	for nucNum in $(seq 1 $seqLength); do
 		# generate a random number
-		nucIndex=$((RANDOM % 4))
+		#nucIndex=$((RANDOM % 4))
+		nucIndex=$(shuf -i 1-4 -n 1)
 		# select a random nucleotide
 		randomNuc="${nucSet:$nucIndex:1}"
 		# add the random nucelotide to the sequence

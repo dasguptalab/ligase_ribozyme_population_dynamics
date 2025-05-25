@@ -90,7 +90,7 @@ base_counts_plot <- ggplot(base_data, aes(x="", y=freq_bases, fill=num_bases)) +
   coord_polar("y", start=0) +
   theme_void() +
   scale_fill_manual(values = base_data$base_color, guide = guide_legend(reverse = TRUE)) +
-  labs(fill = "Compementary\nBases")
+  labs(fill = "Compementary\nNucleotides")
 # save the plot
 exportFile <- paste(out_dir, "/overhang_percent_abundance_total_t0.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
