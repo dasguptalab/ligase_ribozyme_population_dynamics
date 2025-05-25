@@ -8,9 +8,13 @@ options(scipen=10000)
 # import libraries
 library(ggplot2)
 library(rcartocolor)
+library(stringr)
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
+
+# set the number of rounds
+num_rounds <- 8
 
 # numbers of high quality reads
 #quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
@@ -151,7 +155,7 @@ png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
 
-# create line plot of total overhang identity percent
+# create bar plot of total overhang identity percent
 base_counts_plot <- ggplot(complement_counts_total, aes(fill=bases, y=perc_abundance_unique, x=as.character(run_name))) + 
   geom_bar(position="stack", stat="identity") +
   theme_classic(base_size = 16) +
@@ -189,10 +193,81 @@ write.csv(complement_counts_total, file = paste(out_dir, "/overhang_conservation
 
 # initialize data column
 complement_data$num_regions <- NA
+complement_data$num_exact <- NA
 
 # loop over each sequence
 for (seq_num in 1:nrow(complement_data)) {
   # count number of complementary regions >= 37.5
-  complement_data$num_regions[seq_num] <- str_count(complement_data$all_identities[seq_num],";")
+  complement_data$num_regions[seq_num] <- str_count(complement_data$all_identities[seq_num],";")+1
+  # count number of exact matching regions
+  complement_data$num_exact[seq_num] <- str_count(complement_data$all_identities[seq_num],"100")+1
 }
+
+# determine the frequency of the numbers of regions
+#max_regions <- max(complement_data$num_regions, na.rm = TRUE)
+#region_data <- data.frame(
+#  num_regions = as.character(seq(1, max_regions)),
+#  freq_regions = c(unname(table(complement_data$num_regions))),
+#region_color = safe_colors[1:max_regions]
+#  region_color = c(safe_colors[1:5], safe_colors[12])
+#)
+
+# basic piechart of region frequencies
+#ggplot(region_data, aes(x="", y=freq_regions, fill=num_regions)) +
+#  geom_bar(stat="identity", width=1, color="white") +
+#  coord_polar("y", start=0) +
+#  theme_void() +
+#  scale_fill_manual(values = region_data$region_color) +
+#  labs(fill = "Number of\nRegions")
+
+# get max number of regions 
+max_regions <- max(complement_data$num_regions, na.rm = TRUE)
+
+# setup data length
+data_length <- max_regions*num_rounds
+
+# determine the frequency of the numbers of regions
+region_data <- data.frame(
+  run_name = rep(seq(1, num_rounds), max_regions),
+  num_regions = c(rep(1, num_rounds), rep(2, num_rounds), rep(3, num_rounds), rep(4, num_rounds), rep(5, num_rounds), rep(6, num_rounds)),
+  freq_regions = rep(NA, data_length),
+  prop_regions = rep(NA, data_length),
+  region_color = rep(NA, data_length) 
+)
+
+# loop over each round
+for (round_num in 1:num_rounds) {
+  # loop over each number of regions
+  for (region_num in 1:max_regions) {
+    # set the freq of regions
+    region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "freq_regions"] <- unname(table(complement_data[complement_data$run_name == round_num, "num_regions"]))[region_num]
+    # determine the proportion of sequences
+    region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "prop_regions"] <- region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "freq_regions"]/nrow(complement_data[complement_data$run_name == round_num,])
+    # set the region color
+    region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "region_color"] <- c(safe_colors[6], "#D55E00", "#0072B2", "#F0E442", "#009E73", "#999999")[region_num]
+  }
+}
+region_data$prop_regions <- region_data$prop_regions*100
+  
+# set NAs to 0
+region_data[is.na(region_data)] <- 0
+
+# create bar plot of total overhang identity percent
+regions_counts_plot <- ggplot(region_data, aes(fill=as.character(num_regions), y=prop_regions, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = region_data$num_regions, values = region_data$region_color, labels = region_data$num_regions) +
+  #scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
+  labs(fill = "Number of\nRegions") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_regions_counts_total_chart.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(regions_counts_plot)
+dev.off()
+
+# view the exact complements
+#View(complement_data[grep("100", complement_data$all_identities), ])
 

@@ -3,7 +3,7 @@
 # script to run job scripts that identify conserved regions
 # usage: bash 13b_conservation.sh
 ## test_23May2025
-## jobs 1733982 to 1733989
+## jobs 1733990 to 1733997
 
 # retrieve analysis outputs absolute path
 #outputsPath="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs"
