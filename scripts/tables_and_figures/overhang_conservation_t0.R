@@ -9,6 +9,8 @@ options(scipen=10000)
 library(ggplot2)
 library(rcartocolor)
 library(stringr)
+library(dplyr)
+library(ggrepel)
 
 # color blind safe plotting palette
 safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
@@ -83,19 +85,38 @@ base_data <- data.frame(
   #base_color = rev(safe_colors[1:length(base_tbl)])
   base_color = rev(c(safe_colors[1:5], safe_colors[12]))
 )
+total_freq <- sum(base_data$freq_bases)
+base_data$perc_freq <- (base_data$freq_bases/total_freq)*100
+base_data_cleaned <- base_data %>% mutate(across(where(is.numeric), round, 2))
 
-# basic piechart of region frequencies
-base_counts_plot <- ggplot(base_data, aes(x="", y=freq_bases, fill=num_bases)) +
-  geom_bar(stat="identity", width=1, color="white") +
-  coord_polar("y", start=0) +
-  theme_void() +
-  scale_fill_manual(values = base_data$base_color, guide = guide_legend(reverse = TRUE)) +
-  labs(fill = "Compementary\nNucleotides")
+# bar chart of region frequencies
+base_counts_plot <- ggplot(base_data_cleaned, aes(x=num_bases, y=perc_freq)) +
+  geom_bar(stat="identity", fill = base_data_cleaned$base_color) +
+  theme_classic(base_size = 16) +
+  scale_y_continuous(limits=c(0, 50), breaks=seq(0, 50, 10), labels = function(x) paste0(x, "%")) +
+  guides(y = guide_axis(cap = "upper")) +
+  ylab("Proportion") +
+  xlab("Compementary Nucleotides")
 # save the plot
 exportFile <- paste(out_dir, "/overhang_percent_abundance_total_t0.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
+
+# basic piechart of region frequencies
+#base_counts_plot <- ggplot(base_data_cleaned, aes(x="", y=freq_bases, fill=num_bases)) +
+  #geom_bar(stat="identity", width=1, color="white") +
+  #coord_polar("y", start=0) +
+  #theme_void() +
+  #scale_fill_manual(values = base_data_cleaned$base_color, guide = guide_legend(reverse = TRUE)) +
+  #labs(fill = "Compementary\nNucleotides")
+  #geom_text(aes(x=1.7, label=paste0(perc_freq, "%")),
+  #          position = position_stack(vjust=0.5))
+# save the plot
+#exportFile <- paste(out_dir, "/overhang_percent_abundance_total_t0.png", sep = "")
+#png(exportFile, units="in", width=5, height=4, res=300)
+#print(base_counts_plot)
+#dev.off()
 
 # loop over each sequence
 #for (seq_num in 1:nrow(complement_data)) {
