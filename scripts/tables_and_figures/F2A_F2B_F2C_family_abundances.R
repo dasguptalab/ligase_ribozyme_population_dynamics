@@ -101,6 +101,9 @@ ligation_driversity_data <- ligation_driversity_data[,c("run_name","rate","error
 #coeff <- (max(ligation_driversity_data$rate)+max(ligation_driversity_data$error))/max(ligation_driversity_data$diversity)
 coeff <- 0.05/max(ligation_driversity_data$diversity)
 
+# setup axis title
+axis_title <- bquote(italic("k")[obs])
+
 # combined line plot of ligation rates with diversity
 ligation_rates_diversity <- ggplot(ligation_driversity_data, aes(run_name)) +
   geom_line(aes(y = diversity), size = 1.25, color = safe_colors[15]) +
@@ -112,8 +115,8 @@ ligation_rates_diversity <- ggplot(ligation_driversity_data, aes(run_name)) +
   theme_classic(base_size = 16) +
   guides(y = guide_axis(cap = "upper")) +
   scale_y_continuous(
-    name = "Diversity", breaks=seq(0, 100, 20), labels = function(x) paste0(x, "%"),
-    sec.axis = sec_axis(~.*coeff, name="Ligation Rate", guide = guide_axis(cap = "upper"))
+    name = "Percent Diversity", breaks=seq(0, 100, 20),# labels = function(x) paste0(x, "%"),
+    sec.axis = sec_axis(~.*coeff, name=axis_title, guide = guide_axis(cap = "upper"))
   ) +
   scale_x_continuous("Round", labels = as.character(ligation_driversity_data$run_name), breaks = ligation_driversity_data$run_name) +
   xlab("Round")
@@ -129,10 +132,10 @@ cluster_abundances_plot <- ggplot(data=cluster_data, aes(x=as.character(run_name
   geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Family", labels = cluster_data$family_ID, breaks = cluster_data$cluster_color, guide = "legend") +
-  scale_y_continuous(limits=c(0, 40), breaks=seq(0, 40, 5), labels = function(x) paste0(x, "%")) +
+  scale_y_continuous(limits=c(0, 40), breaks=seq(0, 40, 5)) +#, labels = function(x) paste0(x, "%")) +
   guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
   theme(axis.line = element_line()) +
-  ylab("Abundance") +
+  ylab("Percent Abundance") +
   xlab("Round")
 # save the plot
 exportFile <- paste(out_dir, "/family_percent_abundances.png", sep = "")
@@ -216,9 +219,9 @@ family_identities_subset_plot <- ggplot(data=identity_table_subset, aes(x=as.cha
   geom_point() +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Family", labels = identity_table_subset$family_ID, breaks = identity_table_subset$family_color, guide = "legend") +
-  scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  #scale_y_continuous(labels = function(x) paste0(x, "%")) +
   guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
-  ylab("Identity") +
+  ylab("Percent Identity") +
   xlab("Round")
 # save the plot
 exportFile <- paste(out_dir, "/persistent_family_avg_identities.png", sep = "")

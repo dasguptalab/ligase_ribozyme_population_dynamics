@@ -303,9 +303,9 @@ counts_plot_ranked <- ggplot(data=seqs_counts_ranked_subset, aes(x=as.character(
   geom_point() +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Top Seq ID", labels = seqs_counts_ranked_subset$rank_ID, breaks = seqs_counts_ranked_subset$rank_color, guide = "legend") +
-  scale_y_continuous(limits=c(0, 4), breaks=seq(0, 4, 1), labels = function(x) paste0(x, "%")) +
+  scale_y_continuous(limits=c(0, 4), breaks=seq(0, 4, 1)) +#, labels = function(x) paste0(x, "%")) +
   guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
-  ylab("Abundance") +
+  ylab("Percent Abundance") +
   xlab("Round")
 # save the plot
 exportFile <- paste(out_dir, "/ranked_sequences_non_family_percent_abundances.png", sep = "")

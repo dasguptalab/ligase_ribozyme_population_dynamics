@@ -103,6 +103,9 @@ png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
 
+# output plotting data
+write.csv(base_data_cleaned, file = paste(out_dir, "/overhang_conservation_t0.csv", sep = ""), row.names = FALSE, quote = FALSE)
+
 # basic piechart of region frequencies
 #base_counts_plot <- ggplot(base_data_cleaned, aes(x="", y=freq_bases, fill=num_bases)) +
   #geom_bar(stat="identity", width=1, color="white") +

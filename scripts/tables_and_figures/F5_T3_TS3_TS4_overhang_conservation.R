@@ -271,3 +271,38 @@ dev.off()
 # view the exact complements
 #View(complement_data[grep("100", complement_data$all_identities), ])
 
+# import t0 data
+t0File <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/overhang_conservation_t0_run1/overhang_conservation_t0.csv"
+#t0File <- args[4]
+t0_complement <- read.csv(t0File)
+colnames(t0_complement) <- c("bases", "counts_unique", "colors", "perc_abundance_unique")
+t0_complement$run_name <- "0"
+
+# subset to necessary columns
+complement_counts <- complement_counts_total[c("bases", "run_name", "perc_abundance_unique", "colors")]
+complement_counts_t0 <- t0_complement[c("bases", "run_name", "perc_abundance_unique", "colors")]
+
+# remove factors
+complement_counts$bases <- as.numeric(as.character(complement_counts$bases))
+
+# add t0 data
+complement_counts_combined <- rbind(complement_counts, complement_counts_t0)
+
+# add factors for plotting
+complement_counts_combined$bases <- as.factor(complement_counts_combined$bases)
+
+# create bar plot of total overhang identity percent
+base_counts_plot <- ggplot(complement_counts_combined, aes(fill=bases, y=perc_abundance_unique, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  theme_classic(base_size = 16) +
+  scale_fill_manual(breaks = unique(complement_counts_combined$bases), values = unique(complement_counts_combined$colors), labels = unique(complement_counts_combined$bases)) +
+  scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
+  labs(fill = "Complementary\nBases") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_total_chart_t0.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
