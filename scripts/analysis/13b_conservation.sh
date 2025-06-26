@@ -18,7 +18,7 @@ outDir=$outputsPath"/13b_overhang_conservation_above2"
 mkdir $outDir
 
 # read in sequence count data for the specified round
-countsFile=$outputsPath"/09b_quantified_above2/counts_plot_table_noDoped.csv"
+seqsFile=$outputsPath"/09b_quantified_above2/counts_plot_table_noDoped.csv"
 
 # loop over each input run num
 for runNum in {1..8}; do 
@@ -27,7 +27,7 @@ for runNum in {1..8}; do
 	# status message
 	echo "Beginning analysis of round $roundNum ..."
 	# submit job script
-	qsub 13_conserved.sh $roundNum $outDir $countsFile	
+	qsub 13_conserved.sh $roundNum $outDir $seqsFile	
 done
 
 # status message

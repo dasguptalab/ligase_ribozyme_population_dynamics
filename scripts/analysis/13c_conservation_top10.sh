@@ -14,7 +14,7 @@ outDir=$outputsPath"/13c_overhang_conservation_top10_above2"
 mkdir $outDir
 
 # read in sequence count data for the specified round
-countsFile=$outputsPath"/09d_quantified_top10_above2/counts_plot_table_noDoped.csv"
+seqsFile=$outputsPath"/09d_quantified_top10_above2/counts_plot_table_noDoped.csv"
 
 # run the analysis
 Rscript 13_sequence_conservation.R $outDir $seqsFile
