@@ -14,7 +14,8 @@ outDir=$outputsPath"/13d_overhang_conservation_families"
 mkdir $outDir
 
 # read in sequence count data for the specified round
-countsFile="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/ST2_family_table/r8_family_count_data.csv"
+countsFile="/scratch365/ebrooks5/RNA_evolution/outputs/tables_and_figures/ST2_family_table/r8_family_count_data.csv"
+#countsFile="/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/figures/ST2_family_table/r8_family_count_data.csv"
 
 # run the analysis
 Rscript 13_sequence_conservation.R $outDir $seqsFile
