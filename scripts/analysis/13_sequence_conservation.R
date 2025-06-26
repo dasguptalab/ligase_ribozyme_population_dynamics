@@ -287,7 +287,7 @@ for (seq_num in 1:seq_data_length) {
         # add percent identity to expected overhang complement
         complement_data$identity[seq_num] <- subset_total_identity
         # add subset percent identity to expected overhang complement
-        complement_data$identity_subset[seq_num] <- subset_identity
+        complement_data$identity_subset[seq_num] <- subset_longest_identity
         # flag that the current window does not have a gap
         complement_data$gap[seq_num] <-  gap_flag
         # set the wobble flag
@@ -304,7 +304,7 @@ for (seq_num in 1:seq_data_length) {
         # add percent identity to expected overhang complement
         complement_data$identity[seq_num] <- window_identity
         # add subset percent identity to expected overhang complement
-        complement_data$identity_subset[seq_num] <- subset_identity
+        complement_data$identity_subset[seq_num] <- subset_longest_identity
         # flag that the current window does have a gap
         complement_data$gap[seq_num] <-  gap_flag
         # set the wobble flag
