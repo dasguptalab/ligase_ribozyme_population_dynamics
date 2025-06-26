@@ -282,7 +282,7 @@ for (seq_num in 1:seq_data_length) {
           # check if the current subset length is longest or second longest
           if (subset_length > subset_longest) {
             subset_longest <- subset_length
-          } else if (subset_length > subset_second_longest)
+          } else if (subset_length > subset_second_longest) {
             subset_second_longest <- subset_length
           }
           # reset subset length
