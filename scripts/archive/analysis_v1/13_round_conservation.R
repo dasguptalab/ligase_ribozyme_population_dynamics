@@ -254,7 +254,6 @@ for (seq_num in 1:seq_data_length) {
       # initialize subset length variable and mismatch flag
       subset_length <- 0
       subset_longest <- 0
-      subset_second_longest <- 0
       mismatch_flag <- 0
       # loop over each consecutive base of the window
       for (window_index in 1:complement_length) {
@@ -279,61 +278,46 @@ for (seq_num in 1:seq_data_length) {
         }
         # check if mismatch
         if (mismatch_flag == 1){
-          # check if the current subset length is longest or second longest
+          # check if the current subset length is longest
           if (subset_length > subset_longest) {
             subset_longest <- subset_length
-          } else if (subset_length > subset_second_longest)
-            subset_second_longest <- subset_length
           }
           # reset subset length
           subset_length <- 0
           # reset mismatch flag
           mismatch_flag <- 0
-        } else {
-          # check if the current subset length is longest or second longest
+        }else{
+          # check if the current subset length is longest
           if (subset_length > subset_longest) {
             subset_longest <- subset_length
-          } else if (subset_length > subset_second_longest)
-            subset_second_longest <- subset_length
           }
         }
       }
-      # check if the first and second longest consecutive matches are at least 3bp
-      # reset to zero if not, since we require at least a 3bp match
-      if (subset_longest < min_length){
-        subset_longest <- 0
-      }
-      if (subset_second_longest < min_length){
-        subset_second_longest <- 0
-      }
       # set longest window subset identity
-      subset_total_identity <- 100*(subset_longest+subset_second_longest)/complement_length
-      subset_longest_identity <- 100*subset_longest/complement_length
-      # check if there is a gap
-      if (subset_longest_identity < subset_total_identity){
-        gap_flag <- "yes"
-      }else{
-        gap_flag <- "no"
-      }
-      # check if the identity of the longest consecutive subset is larger than the previous largest window identity
-      if (subset_longest_identity >= complement_data$identity[seq_num]) {
+      subset_identity <- 100*subset_longest/complement_length
+      # check if the identity of the current consecutive subset matches the total
+      if (subset_identity == window_identity & window_identity >= complement_data$identity[seq_num]) {
         # store the current window sequence as the complement
         complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
         # add percent identity to expected overhang complement
-        complement_data$identity[seq_num] <- subset_total_identity
+        complement_data$identity[seq_num] <- window_identity
         # add subset percent identity to expected overhang complement
         complement_data$identity_subset[seq_num] <- subset_identity
         # flag that the current window does not have a gap
-        complement_data$gap[seq_num] <-  gap_flag
+        complement_data$gap[seq_num] <-  "no"
         # set the wobble flag
         complement_data$wobble[seq_num] <- wobble_flag
         # set the location
         complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
-        # update all complementary locations
-        complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
-        # update all complementary identities
-        complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], subset_total_identity, sep = ";")
-      }else if (subset_total_identity > complement_data$identity[seq_num]){
+        # check if the subset identity is at least 3/8
+        if (subset_identity >= 37.5) {
+          # update all complementary locations
+          complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
+          # update all complementary identities
+          complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
+        }
+      #}else if (subset_identity != window_identity & window_identity > complement_data$identity[seq_num]){
+      }else if (subset_identity < window_identity & window_identity > complement_data$identity[seq_num]){
         # store the current window sequence as the complement
         complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
         # add percent identity to expected overhang complement
@@ -341,15 +325,18 @@ for (seq_num in 1:seq_data_length) {
         # add subset percent identity to expected overhang complement
         complement_data$identity_subset[seq_num] <- subset_identity
         # flag that the current window does have a gap
-        complement_data$gap[seq_num] <-  gap_flag
+        complement_data$gap[seq_num] <-  "yes"
         # set the wobble flag
         complement_data$wobble[seq_num] <- wobble_flag
         # set the location
         complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
-        # update all complementary locations
-        complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
-        # update all complementary identities
-        complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
+        # check if the subset identity is at least 3/8
+        if (subset_identity >= 37.5) {
+          # update all complementary locations
+          complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
+          # update all complementary identities
+          complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
+        }
       }
     }
   }

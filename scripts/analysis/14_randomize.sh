@@ -46,8 +46,8 @@ for seqNum in $(seq 1 $numSeqs); do
 	# loop over each nucleotide
 	for nucNum in $(seq 1 $seqLength); do
 		# generate a random number
-		#nucIndex=$((RANDOM % 4))
-		nucIndex=$(shuf -i 1-4 -n 1)
+		nucIndex=$((RANDOM % 4))
+		#nucIndex=$(shuf -i 1-4 -n 1)
 		# select a random nucleotide
 		randomNuc="${nucSet:$nucIndex:1}"
 		# add the random nucelotide to the sequence
