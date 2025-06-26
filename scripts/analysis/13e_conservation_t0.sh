@@ -21,7 +21,8 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-outDir=$outputsPath"/test_23May2025/13e_conservation_t0_run"$runNum
+outDir=$outputsPath"/13e_conservation_t0_run"$runNum
+#outDir=$outputsPath"/test_23May2025/13e_conservation_t0_run"$runNum
 
 # create outputs directory
 mkdir $outDir

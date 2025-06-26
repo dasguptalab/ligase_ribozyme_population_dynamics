@@ -10,9 +10,9 @@
 outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-#outDir=$outputsPath"/13b_overhang_conservation_above2"
+outDir=$outputsPath"/13b_overhang_conservation_above2"
 #outDir=$outputsPath"/test_22May2025/13b_overhang_conservation_above2"
-outDir=$outputsPath"/test_23May2025/13b_overhang_conservation_above2"
+#outDir=$outputsPath"/test_23May2025/13b_overhang_conservation_above2"
 
 # create outputs directory
 mkdir $outDir
