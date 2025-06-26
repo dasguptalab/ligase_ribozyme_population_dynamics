@@ -258,26 +258,26 @@ for (seq_num in 1:seq_data_length) {
           # check if the current subset length is longest or second longest
           if (subset_length > subset_longest) {
             subset_longest <- subset_length
-          } else if (subset_length > subset_second_longest)
+          } else if (subset_length > subset_second_longest) {
             subset_second_longest <- subset_length
           }
         }
       }
       # check if the first and second longest consecutive matches are at least 3bp
       # reset to zero if not, since we require at least a 3bp match
-      if (subset_longest < min_length){
+      if (subset_longest < min_length) {
         subset_longest <- 0
       }
-      if (subset_second_longest < min_length){
+      if (subset_second_longest < min_length) {
         subset_second_longest <- 0
       }
       # set longest window subset identity
       subset_total_identity <- 100*(subset_longest+subset_second_longest)/complement_length
       subset_longest_identity <- 100*subset_longest/complement_length
       # check if there is a gap
-      if (subset_longest_identity < subset_total_identity){
+      if (subset_longest_identity < subset_total_identity) {
         gap_flag <- "yes"
-      }else{
+      } else {
         gap_flag <- "no"
       }
       # check if the identity of the longest consecutive subset is larger than the previous largest window identity
@@ -298,7 +298,7 @@ for (seq_num in 1:seq_data_length) {
         complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
         # update all complementary identities
         complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], subset_total_identity, sep = ";")
-      }else if (subset_total_identity > complement_data$identity[seq_num]){
+      } else if (subset_total_identity > complement_data$identity[seq_num]) {
         # store the current window sequence as the complement
         complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
         # add percent identity to expected overhang complement
