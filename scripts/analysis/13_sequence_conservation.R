@@ -218,10 +218,34 @@ for (seq_num in 1:seq_data_length) {
       complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
       # set all complementary tags
       complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], num_match, sep = ";")
-      # break loop and stop parsing the current sequence
-      break
-      # check for gaps
-    }else{
+      # jump to the end of the loop and stop parsing the current window
+      next
+    } else if(window_identity == 100 && window_identity > complement_data$identity[seq_num]) { # and larger than the last best
+      # store the current window sequence as the complement
+      complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
+      # add percent identity to expected overhang complement
+      complement_data$identity[seq_num] <- window_identity
+      # set the longest subset window identity
+      complement_data$identity_subset[seq_num] <-  window_identity
+      # set the tag
+      complement_data$tag[seq_num] <- num_match
+      # set the tag subset
+      complement_data$tag_subset[seq_num] <- num_match
+      # flag that the current window does not have a gap
+      complement_data$gap[seq_num] <-  "no"
+      # set the wobble flag
+      complement_data$wobble[seq_num] <- wobble_flag
+      # set the location
+      complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
+      # update all complementary locations
+      complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
+      # update all complementary identities
+      complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
+      # set all complementary tags
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], num_match, sep = ";")
+      # jump to the end of the loop and stop parsing the current window
+      next
+    } else { # check for gaps
       # is the wobble relative to the overhang or the reverse complement? 
       # how is binding influenced by matching to the overhang?
       # what about the 3' to 5' orientation? <- doesn't matter... same either way
