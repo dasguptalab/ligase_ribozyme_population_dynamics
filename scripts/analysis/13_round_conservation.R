@@ -116,11 +116,14 @@ complement_data <- data.frame(
   complement = rep(NA, seq_data_length),
   identity = rep(0, seq_data_length),
   identity_subset = rep(0, seq_data_length),
+  tag = rep(NA, seq_data_length),
+  tag_subset = rep(NA, seq_data_length),
   gap = rep(NA, seq_data_length),
   wobble = rep(NA, seq_data_length),
   location = rep(NA, seq_data_length),
   all_locations = rep(NA, seq_data_length),
-  all_identities = rep(NA, seq_data_length)
+  all_identities = rep(NA, seq_data_length),
+  all_tags = rep(NA, seq_data_length)
 )
 
 # initialize loop variable
@@ -147,9 +150,13 @@ for (seq_num in 1:seq_data_length) {
     # set the percent identity
     complement_data$identity[seq_num] <- complement_data$identity[seq_num-1]
     # set the longest subset window identity
-    complement_data$identity_subset[seq_num] <-  complement_data$identity_subset[seq_num-1]
+    complement_data$identity_subset[seq_num] <- complement_data$identity_subset[seq_num-1]
+    # set the tag
+    complement_data$tag[seq_num] <- complement_data$tag[seq_num-1]
+    # set the tag subset
+    complement_data$tag_subset[seq_num] <- complement_data$tag_subset[seq_num-1]
     # set window gap flag
-    complement_data$gap[seq_num] <-  complement_data$gap[seq_num-1]
+    complement_data$gap[seq_num] <- complement_data$gap[seq_num-1]
     # set the wobble flag
     complement_data$wobble[seq_num] <- complement_data$wobble[seq_num-1]
     # set the location
@@ -158,6 +165,8 @@ for (seq_num in 1:seq_data_length) {
     complement_data$all_locations[seq_num] <- complement_data$all_locations[seq_num-1]
     # set all complementary identities
     complement_data$all_identities[seq_num] <- complement_data$all_identities[seq_num-1]
+    # set all complementary tags
+    complement_data$all_tags[seq_num] <- complement_data$all_tags[seq_num-1]
     # jump to the end of the loop and stop parsing the current sequence
     next
   }
@@ -235,6 +244,10 @@ for (seq_num in 1:seq_data_length) {
       complement_data$identity[seq_num] <- window_identity
       # set the longest subset window identity
       complement_data$identity_subset[seq_num] <-  window_identity
+      # set the tag
+      complement_data$tag[seq_num] <- num_match
+      # set the tag subset
+      complement_data$tag_subset[seq_num] <- num_match
       # flag that the current window does not have a gap
       complement_data$gap[seq_num] <-  "no"
       # set the wobble flag
@@ -245,6 +258,8 @@ for (seq_num in 1:seq_data_length) {
       complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
       # update all complementary identities
       complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
+      # set all complementary tags
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], num_match, sep = ";")
       # break loop and stop parsing the current sequence
       break
       # check for gaps
@@ -311,18 +326,30 @@ for (seq_num in 1:seq_data_length) {
       subset_longest_identity <- 100*subset_longest/complement_length
       # check if there is a gap
       if (subset_longest_identity < subset_total_identity) {
+        # set the gap flag
         gap_flag <- "yes"
+        # set the total and location tags
+        total_tag <- paste(subset_longest, subset_second_longest, sep = "_")
       } else {
+        # set the gap flag
         gap_flag <- "no"
+        # set the total and location tags
+        total_tag <- subset_longest
       }
+      # set the location tag
+      loc_tag <- paste(base_index, end_index, sep = "-")
       # check if the identity of the longest consecutive subset is larger than the previous largest window identity
-      if (subset_longest_identity >= complement_data$identity[seq_num]) {
+      if (subset_longest_identity >= complement_data$identity[seq_num] | subset_total_identity > complement_data$identity[seq_num]) {
         # store the current window sequence as the complement
         complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
         # add percent identity to expected overhang complement
         complement_data$identity[seq_num] <- subset_total_identity
         # add subset percent identity to expected overhang complement
         complement_data$identity_subset[seq_num] <- subset_longest_identity
+        # set the tag
+        complement_data$tag[seq_num] <- tag_total
+        # set the tag subset
+        complement_data$tag_subset[seq_num] <- subset_longest
         # flag that the current window does not have a gap
         complement_data$gap[seq_num] <-  gap_flag
         # set the wobble flag
@@ -330,26 +357,11 @@ for (seq_num in 1:seq_data_length) {
         # set the location
         complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
         # update all complementary locations
-        complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
+        complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], loc_tag, sep = ";")
         # update all complementary identities
         complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], subset_total_identity, sep = ";")
-      } else if (subset_total_identity > complement_data$identity[seq_num]) {
-        # store the current window sequence as the complement
-        complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
-        # add percent identity to expected overhang complement
-        complement_data$identity[seq_num] <- window_identity
-        # add subset percent identity to expected overhang complement
-        complement_data$identity_subset[seq_num] <- subset_longest_identity
-        # flag that the current window does have a gap
-        complement_data$gap[seq_num] <-  gap_flag
-        # set the wobble flag
-        complement_data$wobble[seq_num] <- wobble_flag
-        # set the location
-        complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
-        # update all complementary locations
-        complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
-        # update all complementary identities
-        complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
+        # set all complementary tags
+        complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], tag_total, sep = ";")
       }
     }
   }
@@ -358,6 +370,7 @@ for (seq_num in 1:seq_data_length) {
 # remove initializing NAs
 complement_data$all_locations <- gsub("NA;", "", complement_data$all_locations)
 complement_data$all_identities <- gsub("NA;", "", complement_data$all_identities)
+complement_data$all_tags <- gsub("NA;", "", complement_data$all_tags)
 
 # vectors of bins (total, consecutive, gaped)
 identity_bins <- unique(complement_data$identity)
@@ -368,7 +381,7 @@ plot_bins <- c(paste(identity_bins, "T", sep = "_"), paste(identity_bins, "C", s
 data_length <- length(plot_bins)
 
 # keep sequences with at least a 3bp consecutive match (100*3/8 = 37.5)
-complement_data_subset <- complement_data[complement_data$identity_subset >= 37.5,]
+#complement_data_subset <- complement_data[complement_data$identity_subset >= 37.5,]
 #complement_data_subset <- complement_data
 
 # initialize data frame for identity bin counts
