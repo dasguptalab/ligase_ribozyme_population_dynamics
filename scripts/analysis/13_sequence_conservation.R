@@ -306,7 +306,7 @@ for (seq_num in 1:seq_data_length) {
         # add subset percent identity to expected overhang complement
         complement_data$identity_subset[seq_num] <- subset_longest_identity
         # set the tag
-        complement_data$tag[seq_num] <- tag_total
+        complement_data$tag[seq_num] <- total_tag
         # set the tag subset
         complement_data$tag_subset[seq_num] <- subset_longest
         # flag that the current window does not have a gap
@@ -320,7 +320,7 @@ for (seq_num in 1:seq_data_length) {
         # update all complementary identities
         complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], subset_total_identity, sep = ";")
         # set all complementary tags
-        complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], tag_total, sep = ";")
+        complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], total_tag, sep = ";")
       }
     }
   }
