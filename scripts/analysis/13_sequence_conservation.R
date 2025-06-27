@@ -217,7 +217,7 @@ for (seq_num in 1:seq_data_length) {
       # update all complementary identities
       complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
       # set all complementary tags
-      complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], num_match, sep = ";")
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], num_match, sep = ";")
       # jump to the end of the loop and stop parsing the current window
       next
     } else if(window_identity == 100 && window_identity > complement_data$identity[seq_num]) { # and larger than the last best
@@ -242,7 +242,7 @@ for (seq_num in 1:seq_data_length) {
       # update all complementary identities
       complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
       # set all complementary tags
-      complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], num_match, sep = ";")
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], num_match, sep = ";")
       # jump to the end of the loop and stop parsing the current window
       next
     } else { # check for gaps
@@ -331,7 +331,7 @@ for (seq_num in 1:seq_data_length) {
         # update all complementary identities
         complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], subset_total_identity, sep = ";")
         # set all complementary tags
-        complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], total_tag, sep = ";")
+        complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], total_tag, sep = ";")
       }
     }
   }
