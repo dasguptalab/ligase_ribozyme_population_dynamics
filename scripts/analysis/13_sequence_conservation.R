@@ -170,9 +170,12 @@ for (seq_num in 1:seq_data_length) {
       slide_window, 
       rev_overhang
     )
+    # sum number of matches
+    sum_matches <- sum(num_match)
+    sum_matches_wobble <- sum(num_match_wobble)
     # determine percent identity to expected overhang complement
-    window_identity <- 100*sum(num_match)/complement_length
-    window_identity_wobble <- 100*sum(num_match_wobble)/complement_length
+    window_identity <- 100*sum_matches/complement_length
+    window_identity_wobble <- 100*sum_matches_wobble/complement_length
     # check if the wobble identity is higher
     if(window_identity_wobble > window_identity){
       # flag that the wobble is detected
@@ -203,9 +206,9 @@ for (seq_num in 1:seq_data_length) {
       # set the longest subset window identity
       complement_data$identity_subset[seq_num] <-  window_identity
       # set the tag
-      complement_data$tag[seq_num] <- num_match
+      complement_data$tag[seq_num] <- sum_matches
       # set the tag subset
-      complement_data$tag_subset[seq_num] <- num_match
+      complement_data$tag_subset[seq_num] <- sum_matches
       # flag that the current window does not have a gap
       complement_data$gap[seq_num] <-  "no"
       # set the wobble flag
@@ -217,7 +220,7 @@ for (seq_num in 1:seq_data_length) {
       # update all complementary identities
       complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
       # set all complementary tags
-      complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], num_match, sep = ";")
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], sum_matches, sep = ";")
       # jump to the end of the loop and stop parsing the current window
       next
     } else if(window_identity == 100 && window_identity > complement_data$identity[seq_num]) { # and larger than the last best
@@ -228,9 +231,9 @@ for (seq_num in 1:seq_data_length) {
       # set the longest subset window identity
       complement_data$identity_subset[seq_num] <-  window_identity
       # set the tag
-      complement_data$tag[seq_num] <- num_match
+      complement_data$tag[seq_num] <- sum_matches
       # set the tag subset
-      complement_data$tag_subset[seq_num] <- num_match
+      complement_data$tag_subset[seq_num] <- sum_matches
       # flag that the current window does not have a gap
       complement_data$gap[seq_num] <-  "no"
       # set the wobble flag
@@ -242,7 +245,7 @@ for (seq_num in 1:seq_data_length) {
       # update all complementary identities
       complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
       # set all complementary tags
-      complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], num_match, sep = ";")
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], sum_matches, sep = ";")
       # jump to the end of the loop and stop parsing the current window
       next
     } else { # check for gaps
