@@ -100,6 +100,10 @@ seq_matrix <- do.call(rbind, type.convert(strsplit(seqs_input$sequence, ""), as.
 seq_length <- 40
 complement_length <- 8
 
+# set minimum length and identity
+min_length <- 3
+min_identity <- 100*min_length/8
+
 # set length for window sliding
 sliding_length <- seq_length - (complement_length-1)
 
