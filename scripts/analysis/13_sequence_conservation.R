@@ -251,6 +251,7 @@ for (seq_num in 1:seq_data_length) {
       # what about the 3' to 5' orientation? <- doesn't matter... same either way
       # initialize subset length variable and mismatch flag
       subset_length <- 0
+      subset_length_list <- 0
       subset_longest <- 0
       subset_second_longest <- 0
       mismatch_flag <- 0
@@ -272,34 +273,16 @@ for (seq_num in 1:seq_data_length) {
           # increment subset length
           subset_length <- subset_length+1
         }else{ # mismatch
-          # flag mismatch
-          mismatch_flag <- 1
-        }
-        # check if mismatch
-        if (mismatch_flag == 1){
-          # check if the current subset length is longest
-          if (subset_length > subset_longest & subset_length > subset_second_longest) {
-            subset_longest <- subset_length
-          } 
-          # check if the current subset length is second longest
-          if (subset_length < subset_longest & subset_length > subset_second_longest) {
-            subset_second_longest <- subset_length
-          }
+          # store current subset length
+          subset_length_list <- c(subset_length_list, subset_length)
           # reset subset length
           subset_length <- 0
-          # reset mismatch flag
-          mismatch_flag <- 0
-        } else if (window_index == complement_length) { # check if end of the window
-          # check if the current subset length is longest
-          if (subset_length > subset_longest & subset_length > subset_second_longest) {
-            subset_longest <- subset_length
-          } 
-          # check if the current subset length is second longest
-          if (subset_length < subset_longest & subset_length > subset_second_longest) {
-            subset_second_longest <- subset_length
-          }
         }
       }
+      # sort and retrieve the longest and second longest subset lengths
+      subset_length_list <- sort(subset_length_list, decreasing = TRUE)
+      subset_longest <- subset_length_list[1]
+      subset_second_longest <- subset_length_list[2]
       # check if the first and second longest consecutive matches are at least 3bp
       # reset to zero if not, since we require at least a 3bp match
       if (subset_longest < min_length) {
@@ -353,6 +336,11 @@ for (seq_num in 1:seq_data_length) {
     }
   }
 }
+
+# remove initializing NAs
+complement_data$all_locations <- gsub("NA;", "", complement_data$all_locations)
+complement_data$all_identities <- gsub("NA;", "", complement_data$all_identities)
+complement_data$all_tags <- gsub("NA;", "", complement_data$all_tags)
 
 # export data
 write.csv(complement_data, file = paste(out_dir, "/overhang_data_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
