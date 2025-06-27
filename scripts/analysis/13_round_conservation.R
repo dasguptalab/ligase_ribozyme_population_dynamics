@@ -245,9 +245,9 @@ for (seq_num in 1:seq_data_length) {
       # set the longest subset window identity
       complement_data$identity_subset[seq_num] <-  window_identity
       # set the tag
-      complement_data$tag[seq_num] <- 8
+      complement_data$tag[seq_num] <- num_match
       # set the tag subset
-      complement_data$tag_subset[seq_num] <- 8
+      complement_data$tag_subset[seq_num] <- num_match
       # flag that the current window does not have a gap
       complement_data$gap[seq_num] <-  "no"
       # set the wobble flag
@@ -259,7 +259,7 @@ for (seq_num in 1:seq_data_length) {
       # update all complementary identities
       complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
       # set all complementary tags
-      complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], 8, sep = ";")
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], num_match, sep = ";")
       # jump to the end of the loop and stop parsing the current window
       next
     } else if(window_identity == 100 && window_identity > complement_data$identity[seq_num]) { # and larger than the last best
@@ -270,9 +270,9 @@ for (seq_num in 1:seq_data_length) {
       # set the longest subset window identity
       complement_data$identity_subset[seq_num] <-  window_identity
       # set the tag
-      complement_data$tag[seq_num] <- 8
+      complement_data$tag[seq_num] <- num_match
       # set the tag subset
-      complement_data$tag_subset[seq_num] <- 8
+      complement_data$tag_subset[seq_num] <- num_match
       # flag that the current window does not have a gap
       complement_data$gap[seq_num] <-  "no"
       # set the wobble flag
@@ -284,7 +284,7 @@ for (seq_num in 1:seq_data_length) {
       # update all complementary identities
       complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
       # set all complementary tags
-      complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], 8, sep = ";")
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_identities[seq_num], num_match, sep = ";")
       # jump to the end of the loop and stop parsing the current window
       next
     } else { # check for gaps
@@ -318,26 +318,30 @@ for (seq_num in 1:seq_data_length) {
         }
         # check if mismatch
         if (mismatch_flag == 1){
-          # check if the current subset length is longest or second longest
-          if (subset_length > subset_longest) {
+          # check if the current subset length is longest
+          if (subset_length > subset_longest & subset_length > subset_second_longest) {
             subset_longest <- subset_length
-          } else if (subset_length > subset_second_longest) {
+          } 
+          # check if the current subset length is second longest
+          if (subset_length < subset_longest & subset_length > subset_second_longest) {
             subset_second_longest <- subset_length
           }
           # reset subset length
           subset_length <- 0
           # reset mismatch flag
           mismatch_flag <- 0
-        } else {
-          # check if the current subset length is longest or second longest
-          if (subset_length > subset_longest) {
+        } else if (window_index == complement_length) { # check if end of the window
+          # check if the current subset length is longest
+          if (subset_length > subset_longest & subset_length > subset_second_longest) {
             subset_longest <- subset_length
-          } else if (subset_length > subset_second_longest) {
+          } 
+          # check if the current subset length is second longest
+          if (subset_length < subset_longest & subset_length > subset_second_longest) {
             subset_second_longest <- subset_length
           }
         }
       }
-      # check if the first and second longest consecutive matches are at least 3bp
+      # check if the first and second longest consecutive matches are not at least 3bp
       # reset to zero if not, since we require at least a 3bp match
       if (subset_longest < min_length) {
         subset_longest <- 0
