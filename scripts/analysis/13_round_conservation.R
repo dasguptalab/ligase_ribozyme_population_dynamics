@@ -400,7 +400,7 @@ data_length <- length(plot_bins)
 
 # keep sequences with at least a 3bp consecutive match (100*3/8 = 37.5)
 #complement_data_subset <- complement_data[complement_data$identity_subset >= 37.5,]
-#complement_data_subset <- complement_data
+complement_data_subset <- complement_data
 
 # initialize data frame for identity bin counts
 complement_counts <- data.frame(
