@@ -339,8 +339,15 @@ for (seq_num in 1:seq_data_length) {
       if (subset_second_longest < min_length) {
         subset_second_longest <- 0
       }
+      # determine the total length
+      subset_total_length <- subset_longest + subset_second_longest
+      # check if the total length is not at least 3 bp
+      if (subset_total_length < min_length) {
+        # jump to the end of the loop and stop parsing the current window
+        next
+      }
       # set longest window subset identity
-      subset_total_identity <- 100*(subset_longest+subset_second_longest)/complement_length
+      subset_total_identity <- 100*(subset_total_length)/complement_length
       subset_longest_identity <- 100*subset_longest/complement_length
       # check if there is a gap
       if (subset_longest_identity < subset_total_identity) {
