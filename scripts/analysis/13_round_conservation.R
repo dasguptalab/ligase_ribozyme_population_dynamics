@@ -299,7 +299,7 @@ for (seq_num in 1:seq_data_length) {
       # what about the 3' to 5' orientation? <- doesn't matter... same either way
       # initialize subset length variable and mismatch flag
       subset_length <- 0
-      subset_length_list <- 0
+      subset_length_list <- c(0,0)
       subset_longest <- 0
       subset_second_longest <- 0
       mismatch_flag <- 0
