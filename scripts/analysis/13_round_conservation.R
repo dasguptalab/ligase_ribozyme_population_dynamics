@@ -474,28 +474,29 @@ complement_counts_out$perc_abundance_unique <- 100*complement_counts_out$frac_ab
 complement_counts_out$perc_abundance <- 100*complement_counts_out$frac_abundance
 
 # get lists of identities and types
-identity_list <- unique(complement_counts_out$identity)
-identity_list <- sort(as.numeric(identity_list), decreasing=TRUE)
-type_list <- unique(complement_counts_out$type)
+#identity_list <- unique(complement_counts_out$identity)
+#identity_list <- sort(as.numeric(identity_list), decreasing=TRUE)
+#type_list <- unique(complement_counts_out$type)
 
 # add mapping table
-identity_mappings <- data.frame(
-  identity = c(100, 87.5, 75, 62.5, 50, 37.5),
-  bases = c(8, 7, 6, 5, 4, 3)
-)
+#identity_mappings <- data.frame(
+#  identity = c(100, 87.5, 75, 62.5, 50, 37.5),
+#  bases = c(8, 7, 6, 5, 4, 3)
+#)
 
 # list of identity labels
-identity_labels <- identity_mappings[identity_mappings$identity %in% identity_list, "bases"]
+#identity_labels <- identity_mappings[identity_mappings$identity %in% identity_list, "bases"]
 
 # set identity colors for plotting
 #complement_counts_out[complement_counts_out$identity %in% identity_list, "identity_color"] <- safe_colors[1:length(identity_list)]
 
 # set identity labels for plotting
-complement_counts_out[complement_counts_out$identity %in% identity_list, "identity_label"] <- identity_labels
+#complement_counts_out[complement_counts_out$identity %in% identity_list, "identity_label"] <- identity_labels
 
 # sort the data for plotting
-complement_counts_sorted <- complement_counts_out[order(complement_counts_out$identity_label, decreasing = TRUE),]
+#complement_counts_sorted <- complement_counts_out[order(complement_counts_out$identity_label, decreasing = TRUE),]
 
 # export data
 write.csv(complement_data, file = paste(out_dir, "/", round_name, "_overhang_data_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-write.csv(complement_counts_sorted, file = paste(out_dir, "/", round_name, "_overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(complement_counts_out, file = paste(out_dir, "/", round_name, "_overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
+#write.csv(complement_counts_sorted, file = paste(out_dir, "/", round_name, "_overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)

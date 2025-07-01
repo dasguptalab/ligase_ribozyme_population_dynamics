@@ -2,8 +2,8 @@
 
 # script to run the sequence of scripts that identify conserved regions
 # usage: bash 13_conservation.sh
-## 30 June 2025
-## jobs 1820228 to 1820248
+## 1 July 2025
+## jobs 
 
 # status message 
 echo "Beginning analysis of conserved regions..."
