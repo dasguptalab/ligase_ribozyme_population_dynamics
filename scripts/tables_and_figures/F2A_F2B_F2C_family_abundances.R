@@ -22,7 +22,7 @@ out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figure
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in ligation rates
-ligation_rates <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/data/ligation_rates_table.csv")
+ligation_rates <- read.csv("/Users/bamflappy/PfrenderLab/RNA_evolution/ligation_rates_table.csv")
 
 # numbers of high quality reads
 #quality_doped <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374, 865509, 807849, 1143871)

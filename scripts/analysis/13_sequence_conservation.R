@@ -197,8 +197,8 @@ for (seq_num in 1:seq_data_length) {
       # jump to the end of the loop and stop parsing the current window
       next
     }
-    # check if identity is = to 100*8/8 = 100 and wobble is not detected
-    if(window_identity == 100 && wobble_flag == "no") {
+    # check if identity is = to 100*8/8 = 100  
+    if(window_identity == 100 && wobble_flag == "no") { # wobble is not detected
       # store the current window sequence as the complement
       complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
       # add percent identity to expected overhang complement
@@ -286,7 +286,7 @@ for (seq_num in 1:seq_data_length) {
       subset_length_list <- sort(subset_length_list, decreasing = TRUE)
       subset_longest <- subset_length_list[1]
       subset_second_longest <- subset_length_list[2]
-      # check if the first and second longest consecutive matches are at least 3bp
+      # check if the first and second longest consecutive matches are not at least 3bp
       # reset to zero if not, since we require at least a 3bp match
       if (subset_longest < min_length) {
         subset_longest <- 0

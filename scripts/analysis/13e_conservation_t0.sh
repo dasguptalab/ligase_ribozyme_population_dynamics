@@ -36,5 +36,8 @@ seqsFile="/scratch365/ebrooks5/RNA_evolution/outputs/14_randomized_sequences/ran
 # run the analysis
 Rscript 13_sequence_conservation.R $outDir $seqsFile
 
+# characterize and summarize the results
+Rscript 13e_conservation_t0.R$outDir $outDir"/overhang_data_wobble.csv"
+
 # status message
 echo "Analysis complete!"

@@ -100,6 +100,10 @@ seq_matrix <- do.call(rbind, type.convert(strsplit(seqs_input$sequence, ""), as.
 seq_length <- 40
 complement_length <- 8
 
+# set minimum length and identity
+min_length <- 3
+min_identity <- 100*min_length/8
+
 # set length for window sliding
 sliding_length <- seq_length - (complement_length-1)
 
@@ -116,11 +120,14 @@ complement_data <- data.frame(
   complement = rep(NA, seq_data_length),
   identity = rep(0, seq_data_length),
   identity_subset = rep(0, seq_data_length),
+  tag = rep(NA, seq_data_length),
+  tag_subset = rep(NA, seq_data_length),
   gap = rep(NA, seq_data_length),
   wobble = rep(NA, seq_data_length),
   location = rep(NA, seq_data_length),
   all_locations = rep(NA, seq_data_length),
-  all_identities = rep(NA, seq_data_length)
+  all_identities = rep(NA, seq_data_length),
+  all_tags = rep(NA, seq_data_length)
 )
 
 # initialize loop variable
@@ -147,9 +154,13 @@ for (seq_num in 1:seq_data_length) {
     # set the percent identity
     complement_data$identity[seq_num] <- complement_data$identity[seq_num-1]
     # set the longest subset window identity
-    complement_data$identity_subset[seq_num] <-  complement_data$identity_subset[seq_num-1]
+    complement_data$identity_subset[seq_num] <- complement_data$identity_subset[seq_num-1]
+    # set the tag
+    complement_data$tag[seq_num] <- complement_data$tag[seq_num-1]
+    # set the tag subset
+    complement_data$tag_subset[seq_num] <- complement_data$tag_subset[seq_num-1]
     # set window gap flag
-    complement_data$gap[seq_num] <-  complement_data$gap[seq_num-1]
+    complement_data$gap[seq_num] <- complement_data$gap[seq_num-1]
     # set the wobble flag
     complement_data$wobble[seq_num] <- complement_data$wobble[seq_num-1]
     # set the location
@@ -158,6 +169,8 @@ for (seq_num in 1:seq_data_length) {
     complement_data$all_locations[seq_num] <- complement_data$all_locations[seq_num-1]
     # set all complementary identities
     complement_data$all_identities[seq_num] <- complement_data$all_identities[seq_num-1]
+    # set all complementary tags
+    complement_data$all_tags[seq_num] <- complement_data$all_tags[seq_num-1]
     # jump to the end of the loop and stop parsing the current sequence
     next
   }
@@ -208,9 +221,12 @@ for (seq_num in 1:seq_data_length) {
       slide_window, 
       rev_overhang
     )
+    # sum number of matches
+    sum_matches <- sum(num_match)
+    sum_matches_wobble <- sum(num_match_wobble)
     # determine percent identity to expected overhang complement
-    window_identity <- 100*sum(num_match)/complement_length
-    window_identity_wobble <- 100*sum(num_match_wobble)/complement_length
+    window_identity <- 100*sum_matches/complement_length
+    window_identity_wobble <- 100*sum_matches_wobble/complement_length
     # check if the wobble identity is higher
     if(window_identity_wobble > window_identity){
       # flag that the wobble is detected
@@ -227,14 +243,18 @@ for (seq_num in 1:seq_data_length) {
       # jump to the end of the loop and stop parsing the current window
       next
     }
-    # check if identity is = to 100*8/8 = 100 and wobble is not detected
-    if(window_identity == 100 && wobble_flag == "no") {
+    # check if identity is = to 100*8/8 = 100 
+    if(window_identity == 100 && wobble_flag == "no") { # and wobble is not detected
       # store the current window sequence as the complement
       complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
       # add percent identity to expected overhang complement
       complement_data$identity[seq_num] <- window_identity
       # set the longest subset window identity
       complement_data$identity_subset[seq_num] <-  window_identity
+      # set the tag
+      complement_data$tag[seq_num] <- sum_matches
+      # set the tag subset
+      complement_data$tag_subset[seq_num] <- sum_matches
       # flag that the current window does not have a gap
       complement_data$gap[seq_num] <-  "no"
       # set the wobble flag
@@ -245,15 +265,43 @@ for (seq_num in 1:seq_data_length) {
       complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
       # update all complementary identities
       complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
-      # break loop and stop parsing the current sequence
-      break
-      # check for gaps
-    }else{
+      # set all complementary tags
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], sum_matches, sep = ";")
+      # jump to the end of the loop and stop parsing the current window
+      next
+    } else if(window_identity == 100 && window_identity > complement_data$identity[seq_num]) { # and larger than the last best
+      # store the current window sequence as the complement
+      complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
+      # add percent identity to expected overhang complement
+      complement_data$identity[seq_num] <- window_identity
+      # set the longest subset window identity
+      complement_data$identity_subset[seq_num] <-  window_identity
+      # set the tag
+      complement_data$tag[seq_num] <- sum_matches
+      # set the tag subset
+      complement_data$tag_subset[seq_num] <- sum_matches
+      # flag that the current window does not have a gap
+      complement_data$gap[seq_num] <-  "no"
+      # set the wobble flag
+      complement_data$wobble[seq_num] <- wobble_flag
+      # set the location
+      complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
+      # update all complementary locations
+      complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
+      # update all complementary identities
+      complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
+      # set all complementary tags
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], sum_matches, sep = ";")
+      # jump to the end of the loop and stop parsing the current window
+      next
+    } else { # check for gaps
       # how is binding influenced by matching to the overhang?
       # what about the 3' to 5' orientation? <- doesn't matter... same either way
       # initialize subset length variable and mismatch flag
       subset_length <- 0
+      subset_length_list <- c(0,0)
       subset_longest <- 0
+      subset_second_longest <- 0
       mismatch_flag <- 0
       # loop over each consecutive base of the window
       for (window_index in 1:complement_length) {
@@ -273,70 +321,72 @@ for (seq_num in 1:seq_data_length) {
           # increment subset length
           subset_length <- subset_length+1
         }else{ # mismatch
-          # flag mismatch
-          mismatch_flag <- 1
-        }
-        # check if mismatch
-        if (mismatch_flag == 1){
-          # check if the current subset length is longest
-          if (subset_length > subset_longest) {
-            subset_longest <- subset_length
-          }
+          # store current subset length
+          subset_length_list <- c(subset_length_list, subset_length)
           # reset subset length
           subset_length <- 0
-          # reset mismatch flag
-          mismatch_flag <- 0
-        }else{
-          # check if the current subset length is longest
-          if (subset_length > subset_longest) {
-            subset_longest <- subset_length
-          }
         }
       }
+      # sort and retrieve the longest and second longest subset lengths
+      subset_length_list <- sort(subset_length_list, decreasing = TRUE)
+      subset_longest <- subset_length_list[1]
+      subset_second_longest <- subset_length_list[2]
+      # check if the first and second longest consecutive matches are not at least 3bp
+      # reset to zero if not, since we require at least a 3bp match
+      if (subset_longest < min_length) {
+        subset_longest <- 0
+      }
+      if (subset_second_longest < min_length) {
+        subset_second_longest <- 0
+      }
+      # determine the total length
+      subset_total_length <- subset_longest + subset_second_longest
+      # check if the total length is not at least 3 bp
+      if (subset_total_length < min_length) {
+        # jump to the end of the loop and stop parsing the current window
+        next
+      }
       # set longest window subset identity
-      subset_identity <- 100*subset_longest/complement_length
-      # check if the identity of the current consecutive subset matches the total
-      if (subset_identity == window_identity & window_identity >= complement_data$identity[seq_num]) {
+      subset_total_identity <- 100*(subset_total_length)/complement_length
+      subset_longest_identity <- 100*subset_longest/complement_length
+      # check if there is a gap
+      if (subset_longest_identity < subset_total_identity) {
+        # set the gap flag
+        gap_flag <- "yes"
+        # set the total and location tags
+        total_tag <- paste(subset_longest, subset_second_longest, sep = "_")
+      } else {
+        # set the gap flag
+        gap_flag <- "no"
+        # set the total and location tags
+        total_tag <- subset_longest
+      }
+      # set the location tag
+      loc_tag <- paste(base_index, end_index, sep = "-")
+      # check if the identity of the longest consecutive subset is larger than the previous largest window identity
+      if (subset_longest_identity >= complement_data$identity[seq_num] | subset_total_identity > complement_data$identity[seq_num]) {
         # store the current window sequence as the complement
         complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
         # add percent identity to expected overhang complement
-        complement_data$identity[seq_num] <- window_identity
+        complement_data$identity[seq_num] <- subset_total_identity
         # add subset percent identity to expected overhang complement
-        complement_data$identity_subset[seq_num] <- subset_identity
+        complement_data$identity_subset[seq_num] <- subset_longest_identity
+        # set the tag
+        complement_data$tag[seq_num] <- total_tag
+        # set the tag subset
+        complement_data$tag_subset[seq_num] <- subset_longest
         # flag that the current window does not have a gap
-        complement_data$gap[seq_num] <-  "no"
+        complement_data$gap[seq_num] <-  gap_flag
         # set the wobble flag
         complement_data$wobble[seq_num] <- wobble_flag
         # set the location
         complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
-        # check if the subset identity is at least 3/8
-        if (subset_identity >= 37.5) {
-          # update all complementary locations
-          complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
-          # update all complementary identities
-          complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
-        }
-      #}else if (subset_identity != window_identity & window_identity > complement_data$identity[seq_num]){
-      }else if (subset_identity < window_identity & window_identity > complement_data$identity[seq_num]){
-        # store the current window sequence as the complement
-        complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
-        # add percent identity to expected overhang complement
-        complement_data$identity[seq_num] <- window_identity
-        # add subset percent identity to expected overhang complement
-        complement_data$identity_subset[seq_num] <- subset_identity
-        # flag that the current window does have a gap
-        complement_data$gap[seq_num] <-  "yes"
-        # set the wobble flag
-        complement_data$wobble[seq_num] <- wobble_flag
-        # set the location
-        complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
-        # check if the subset identity is at least 3/8
-        if (subset_identity >= 37.5) {
-          # update all complementary locations
-          complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], paste(base_index, end_index, sep = "-"), sep = ";")
-          # update all complementary identities
-          complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], window_identity, sep = ";")
-        }
+        # update all complementary locations
+        complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], loc_tag, sep = ";")
+        # update all complementary identities
+        complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], subset_total_identity, sep = ";")
+        # set all complementary tags
+        complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], total_tag, sep = ";")
       }
     }
   }
@@ -345,6 +395,7 @@ for (seq_num in 1:seq_data_length) {
 # remove initializing NAs
 complement_data$all_locations <- gsub("NA;", "", complement_data$all_locations)
 complement_data$all_identities <- gsub("NA;", "", complement_data$all_identities)
+complement_data$all_tags <- gsub("NA;", "", complement_data$all_tags)
 
 # vectors of bins (total, consecutive, gaped)
 identity_bins <- unique(complement_data$identity)
@@ -355,8 +406,8 @@ plot_bins <- c(paste(identity_bins, "T", sep = "_"), paste(identity_bins, "C", s
 data_length <- length(plot_bins)
 
 # keep sequences with at least a 3bp consecutive match (100*3/8 = 37.5)
-complement_data_subset <- complement_data[complement_data$identity_subset >= 37.5,]
-#complement_data_subset <- complement_data
+#complement_data_subset <- complement_data[complement_data$identity_subset >= 37.5,]
+complement_data_subset <- complement_data
 
 # initialize data frame for identity bin counts
 complement_counts <- data.frame(
@@ -423,28 +474,29 @@ complement_counts_out$perc_abundance_unique <- 100*complement_counts_out$frac_ab
 complement_counts_out$perc_abundance <- 100*complement_counts_out$frac_abundance
 
 # get lists of identities and types
-identity_list <- unique(complement_counts_out$identity)
-identity_list <- sort(as.numeric(identity_list), decreasing=TRUE)
-type_list <- unique(complement_counts_out$type)
+#identity_list <- unique(complement_counts_out$identity)
+#identity_list <- sort(as.numeric(identity_list), decreasing=TRUE)
+#type_list <- unique(complement_counts_out$type)
 
 # add mapping table
-identity_mappings <- data.frame(
-  identity = c(100, 87.5, 75, 62.5, 50, 37.5),
-  bases = c(8, 7, 6, 5, 4, 3)
-)
+#identity_mappings <- data.frame(
+#  identity = c(100, 87.5, 75, 62.5, 50, 37.5),
+#  bases = c(8, 7, 6, 5, 4, 3)
+#)
 
 # list of identity labels
-identity_labels <- identity_mappings[identity_mappings$identity %in% identity_list, "bases"]
+#identity_labels <- identity_mappings[identity_mappings$identity %in% identity_list, "bases"]
 
 # set identity colors for plotting
 #complement_counts_out[complement_counts_out$identity %in% identity_list, "identity_color"] <- safe_colors[1:length(identity_list)]
 
 # set identity labels for plotting
-complement_counts_out[complement_counts_out$identity %in% identity_list, "identity_label"] <- identity_labels
+#complement_counts_out[complement_counts_out$identity %in% identity_list, "identity_label"] <- identity_labels
 
 # sort the data for plotting
-complement_counts_sorted <- complement_counts_out[order(complement_counts_out$identity_label, decreasing = TRUE),]
+#complement_counts_sorted <- complement_counts_out[order(complement_counts_out$identity_label, decreasing = TRUE),]
 
 # export data
 write.csv(complement_data, file = paste(out_dir, "/", round_name, "_overhang_data_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
-write.csv(complement_counts_sorted, file = paste(out_dir, "/", round_name, "_overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
+write.csv(complement_counts_out, file = paste(out_dir, "/", round_name, "_overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
+#write.csv(complement_counts_sorted, file = paste(out_dir, "/", round_name, "_overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)

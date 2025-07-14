@@ -66,14 +66,14 @@ identity_list <- sort(as.numeric(identity_list), decreasing=TRUE)
 
 # add mapping table
 identity_mappings <- data.frame(
-  identity = c(100, 87.5, 75, 62.5, 50, 37.5),
-  bases = c(8, 7, 6, 5, 4, 3),
-  colors = safe_colors[1:6]
+  identity = c(100, 87.5, 75, 62.5, 50, 37.5, 0),
+  bases = c("8", "7", "6", "5", "4", "3", "<3"),
+  colors = c(safe_colors[1:6], "#888")
 )
 
 # add placeholder columns
-complement_counts_sorted$bases <- NA
-complement_counts_sorted$colors <- NA
+complement_counts_sorted$bases <- "<3"
+complement_counts_sorted$colors <- "#888"
 
 # loop over each possible identity label
 for (label_num in 1:nrow(identity_mappings)) {
@@ -223,28 +223,35 @@ for (seq_num in 1:nrow(complement_data)) {
 # get max number of regions 
 max_regions <- max(complement_data$num_regions, na.rm = TRUE)
 
-# setup data length
-data_length <- max_regions*num_rounds
+# setup data lengths
+data_length <- max_regions*(num_rounds+1)
+num_t0 <- 1500000
 
 # determine the frequency of the numbers of regions
 region_data <- data.frame(
-  run_name = rep(seq(1, num_rounds), max_regions),
-  num_regions = c(rep(1, num_rounds), rep(2, num_rounds), rep(3, num_rounds), rep(4, num_rounds), rep(5, num_rounds), rep(6, num_rounds)),
+  run_name = rep(seq(0, num_rounds), max_regions),
+  num_regions = c(rep(seq(1, max_regions), each = (num_rounds+1))),
   freq_regions = rep(NA, data_length),
   prop_regions = rep(NA, data_length),
   region_color = rep(NA, data_length) 
 )
 
 # loop over each round
-for (round_num in 1:num_rounds) {
+for (round_num in 0:num_rounds) {
   # loop over each number of regions
   for (region_num in 1:max_regions) {
     # set the freq of regions
     region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "freq_regions"] <- unname(table(complement_data[complement_data$run_name == round_num, "num_regions"]))[region_num]
-    # determine the proportion of sequences
-    region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "prop_regions"] <- region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "freq_regions"]/nrow(complement_data[complement_data$run_name == round_num,])
+    # check the round number
+    if (round_num == 0) {
+      # determine the proportion of sequences
+      region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "prop_regions"] <- region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "freq_regions"]/num_t0
+    }else{
+      # determine the proportion of sequences
+      region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "prop_regions"] <- region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "freq_regions"]/nrow(complement_data[complement_data$run_name == round_num,])
+    }
     # set the region color
-    region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "region_color"] <- c(safe_colors[6], "#D55E00", "#0072B2", "#F0E442", "#009E73", "#999999")[region_num]
+    region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "region_color"] <- c("#999", safe_colors[6], "#D55E00", "#0072B2", "#F0E442", "#009E73", "#000")[region_num]
   }
 }
 region_data$prop_regions <- region_data$prop_regions*100
@@ -252,11 +259,32 @@ region_data$prop_regions <- region_data$prop_regions*100
 # set NAs to 0
 region_data[is.na(region_data)] <- 0
 
+# loop over each round
+freq_regions_rounds <- rep(NA, (num_rounds+1))
+prop_regions_rounds <- rep(NA, (num_rounds+1))
+for (round_num in 0:num_rounds) {
+  # combine rows for number of regions >5
+  freq_regions_rounds[round_num+1] <- sum(region_data[region_data$run_name == round_num & region_data$num_regions >= 6, "freq_regions"])
+  prop_regions_rounds[round_num+1] <- sum(region_data[region_data$run_name == round_num & region_data$num_regions >= 6, "prop_regions"])
+  
+}
+
+# create updated data frame for plotting
+region_data_out <- region_data[region_data$num_regions <= 5,]
+region_data_subset <- cbind(
+  run_name = region_data[region_data$num_regions == 6, "run_name"],
+  num_regions = rep(">5", (num_rounds+1)),
+  freq_regions = freq_regions_rounds,
+  prop_regions = prop_regions_rounds,
+  region_color = rep(region_data[region_data$num_regions == 6, "region_color"][1], (num_rounds+1))
+  )
+region_data_out <- rbind(region_data_out, region_data_subset)
+
 # create bar plot of total overhang identity percent
-regions_counts_plot <- ggplot(region_data, aes(fill=as.character(num_regions), y=prop_regions, x=as.character(run_name))) + 
+regions_counts_plot <- ggplot(region_data_out, aes(fill=as.character(num_regions), y=as.numeric(prop_regions), x=as.character(run_name))) + 
   geom_bar(position="stack", stat="identity") +
   theme_classic(base_size = 16) +
-  scale_fill_manual(breaks = region_data$num_regions, values = region_data$region_color, labels = region_data$num_regions) +
+  scale_fill_manual(breaks = region_data_out$num_regions, values = region_data_out$region_color, labels = region_data_out$num_regions) +
   #scale_y_continuous(labels = function(x) paste0(x, "%")) +
   guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
   labs(fill = "Number of\nRegions") +
@@ -281,6 +309,9 @@ t0_complement$run_name <- "0"
 # subset to necessary columns
 complement_counts <- complement_counts_total[c("bases", "run_name", "perc_abundance_unique", "colors")]
 complement_counts_t0 <- t0_complement[c("bases", "run_name", "perc_abundance_unique", "colors")]
+
+# replace NAs with 0s
+complement_counts[is.na(complement_counts)] <- 0
 
 # remove factors
 complement_counts$bases <- as.numeric(as.character(complement_counts$bases))
