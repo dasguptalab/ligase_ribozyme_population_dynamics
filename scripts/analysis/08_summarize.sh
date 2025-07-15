@@ -5,13 +5,7 @@
 
 # script to summarize clustering information
 # usage: qsub 08_summarize.sh sampleTag
-# usage: bash 08_summarize.sh r8_S8_L001
-## 1500 -> default
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
-## jobs 1541820 to 1541830
-# above 2, 1500
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted_above2.fa; do runInput=$(basename $i | sed "s/_formatted_above2\.fa//g"); echo $runInput; qsub 08_summarize.sh $runInput; done
-## jobs 1602457 to 1602467
+# usage ex: bash 08_summarize.sh r8_S8_L001
 
 # retrieve input sample tag
 sampleTag=$1

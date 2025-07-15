@@ -6,6 +6,9 @@
 # script to run job scripts that identify conserved regions
 # usage: qsub 13e_conservation_t0.sh runNum
 # usage ex: qsub 13e_conservation_t0.sh 1
+## jobs 1732347 to 1732447
+## test_23May2025
+## jobs 1733954 to 1733957
 
 # load the software
 module load bio/0724
@@ -34,7 +37,7 @@ seqsFile="/scratch365/ebrooks5/RNA_evolution/outputs/14_randomized_sequences/ran
 Rscript 13_sequence_conservation.R $outDir $seqsFile
 
 # characterize and summarize the results
-Rscript 13f_characterize_t0.R $outDir $outDir"/overhang_data_wobble.csv"
+Rscript 13e_conservation_t0.R$outDir $outDir"/overhang_data_wobble.csv"
 
 # status message
 echo "Analysis complete!"

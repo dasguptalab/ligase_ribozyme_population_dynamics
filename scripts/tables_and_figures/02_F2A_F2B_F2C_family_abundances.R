@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
-# R script to create analysis plots for the RNA evolution project
+# R script to create family abundance plots
+# usage: 02_F2A_F2B_F2C_family_abundances.R
 
 # turn of scientific notation
 options(scipen=10000)

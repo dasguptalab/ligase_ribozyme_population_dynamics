@@ -1,50 +1,50 @@
 #!/bin/bash
-#$ -r n
-#$ -N RNA_cluster_jobOutput
-#$ -pe smp 8
-#$ -q largemem
 
-# script to cluster sequences using clustalo
-# usage: qsub 07_cluster.sh sampleTag
-# above 2, 1500 -> default
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_above2\.fa; do echo $i; qsub 07_cluster.sh $i; done
-## jobs 1541791 to 1541805
-# all, 1500
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_formatted\.fa; do echo $i; qsub 07_cluster.sh $i; done
-## jobs 1582635 to 1582645
-# above 2, 1500
-# usage ex: for i in /scratch365/ebrooks5/RNA_evolution/outputs/06_formatted/*_above2\.fa; do echo $i; qsub 07_cluster.sh $i; done
-## jobs 1602434 to 1602444
+# script to perform CD-Hit clustering of RNA sequence data
+# usage: bash 07_cluster.sh
 
-# load the software module
-module load bio/0724
+# perform clustering
+#cd-hit-est -i /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/r8_S8_L001_formatted_above2.fa -o /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/07_clustered/r8_S8_L001_formatted_above2  -c 0.90 -n 8
 
-# set the sample file
-sampleFile=$1
+# summarize the results
+#plot_len1.pl /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/07_clustered_cd_hit/r8_S8_L001_formatted_above2.clstr 1,2-4,5-9,10-19,20-49,50-99,100-299,500-99999 > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/07_clustered_cd_hit/r8_S8_L001_formatted_above2.clstr_data.txt
 
-# retrieve the sample tag
-sampleTag=$(basename $sampleFile | sed 's/_formatted_above2\.fa//')
-#sampleTag=$(basename $sampleFile | sed 's/_formatted\.fa//')
-sampleTag=$sampleTag
+# add header to the output results
+echo "run_name,sequence_ID,read_counts,cluster_ID,sequence_counts,sequence" > /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/07_clustered_cd_hit/r8_S8_L001_formatted_above2.clstr_peak_data.txt
 
-# retrieve analysis outputs absolute path
-outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | sed "s/outputs://g")
+# initialize counters and flags
+clustFlag=0
+seqCount=0
 
-# make a new directory for analysis
-outputsPath=$outputsPath"/07_clustered_1500"
-mkdir $outputsPath
-
-# move to the new directory
-cd $outputsPath
-
-# status message
-echo "Processing $sampleFile ..."
-
-# cluster sequences
-#clustalo --threads=$NSLOTS -i $inputsPath"/"$sampleFile --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=500 
-#clustalo -i $inputsPath"/"$sampleFile --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=500 --full --percent-id --distmat-out=$outputsPath"/"$sampleTag"_distances.txt"
-#clustalo --full --percent-id --threads=$NSLOTS -i $inputsPath"/"$sampleFile --guidetree-out=$outputsPath"/"$sampleTag"_guide_tree.txt" --distmat-out=$outputsPath"/"$sampleTag"_distance_matrix.txt" --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=1500
-clustalo --threads=$NSLOTS -i $inputsPath"/"$sampleFile --clustering-out=$outputsPath"/"$sampleTag"_clustered.aux" -o $outputsPath"/"$sampleTag"_aligned.fa" --cluster-size=1500
-
-# status message
-echo "Analysis complete!"
+# loop over each cluster
+while read LINE; do
+	# check if the current line is the cluster header
+	if [[ $LINE == ">Cluster"* ]]; then
+		# check if the current cluster is not the first
+		if [[ $clustFlag -eq 1 ]]; then
+			# format the peak sequnece data
+			outData=$peakData","$currCluster","$seqCount","$peakSeq
+			# output the previous cluster data
+			echo $outData >> /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/07_clustered_cd_hit/r8_S8_L001_formatted_above2.clstr_peak_data.txt
+		fi
+		# record current cluster
+		currCluster=$(echo $LINE | sed "s/>//g" | cut -d" " -f2)
+		# trigger cluster flag for outputs
+		clustFlag=1
+		# re-set the sequence counter
+		seqCount=0
+	else
+		# check if the current sequence is a representative peak sequence
+		if [[ $LINE == *"... *" ]]; then
+			# retrieve the peak sequence data
+			peakData=$(echo $LINE | cut -d">" -f2 | cut -d"." -f1)
+			# retrieve the peak sequence
+			peakSeq=$(cat /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/06_formatted/r8_S8_L001_formatted_above2.fa | grep -A1 $peakData | tail -n+2)
+			# increment the sequence counter
+			seqCount=$(($seqCount+1))
+		else
+			# increment the sequence counter
+			seqCount=$(($seqCount+1))
+		fi
+	fi
+done < /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/07_clustered_cd_hit/r8_S8_L001_formatted_above2.clstr

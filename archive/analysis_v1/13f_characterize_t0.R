@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-# R script to characterize the round 0 sequences
+# R script to create analysis plots for the RNA evolution project
 
 # turn of scientific notation
 options(scipen=10000)

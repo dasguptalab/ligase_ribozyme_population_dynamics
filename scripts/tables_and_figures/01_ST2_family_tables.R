@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
-# R script to create analysis plots for the RNA evolution project
+# R script to create family data tables for plotting
+# usage: 01_ST2_family_tables.R
 
 # turn of scientific notation
 options(scipen=10000)

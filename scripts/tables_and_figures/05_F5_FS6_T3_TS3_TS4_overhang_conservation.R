@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
-# R script to create analysis plots for the RNA evolution project
+# R script to create overhang conservation plots
+# usage: 05_F5_FS6_T3_TS3_TS4_overhang_conservation.R
 
 # turn of scientific notation
 options(scipen=10000)

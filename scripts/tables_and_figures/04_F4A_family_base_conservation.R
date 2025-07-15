@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
-# R script to create analysis plots for the RNA evolution project
+# R script to create family base conservation plots
+# usage: 04_F4A_family_base_conservation.R
 
 # turn of scientific notation
 options(scipen=10000)

@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
-# R script to create analysis plots for the RNA evolution project
+# R script to identifiy the top 10 most abundant sequneces
+# and their similarity to the peak sequences
 
 # turn of scientific notation
 options(scipen=10000)

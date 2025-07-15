@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
-# R script to create analysis plots for the RNA evolution project
+# R script to create top 10 sequence abundance plots
+# usage: 03_F2D_F3_T2_top10_sequences.R
 
 # turn of scientific notation
 options(scipen=10000)

@@ -5,7 +5,6 @@
 
 # script to run R scripts that count the number of sequences in sequence families
 # usage: qsub 13_conserved.sh roundNum outDir seqsFile
-# usage ex: qsub 13_conserved.sh 1 /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/11a_family_identification /Users/bamflappy/PfrenderLab/RNA_evolution/outputs/09b_quantified_above2/counts_plot_table.csv
 
 # load the software
 module load bio/0724
@@ -28,7 +27,7 @@ seqsFile=$3
 echo "Beginning analysis of round $roundNum ..."
 
 # run the R script
-Rscript 13_round_overhang_conservation.R $roundNum $outDir $seqsFile
+Rscript 13_round_conservation.R $roundNum $outDir $seqsFile
 
 # status message
 echo "Analysis complete!"
