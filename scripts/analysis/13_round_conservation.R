@@ -101,8 +101,8 @@ seq_length <- 40
 complement_length <- 8
 
 # set minimum length and identity
-min_length <- 3
-min_identity <- 100*min_length/8
+min_length <- 4
+min_identity <- 100*min_length/complement_length
 
 # set length for window sliding
 sliding_length <- seq_length - (complement_length-1)
@@ -295,7 +295,6 @@ for (seq_num in 1:seq_data_length) {
       # jump to the end of the loop and stop parsing the current window
       next
     } else { # check for gaps
-      # how is binding influenced by matching to the overhang?
       # what about the 3' to 5' orientation? <- doesn't matter... same either way
       # initialize subset length variable and mismatch flag
       subset_length <- 0
@@ -320,6 +319,9 @@ for (seq_num in 1:seq_data_length) {
         }else if (rev_overhang[window_index] == "T" & (slide_window[window_index] == "A" || slide_window[window_index] == "G")){ # U (A, G)
           # increment subset length
           subset_length <- subset_length+1
+        }else if (window_index == complement_length){ # end of window
+          # store current subset length
+          subset_length_list <- c(subset_length_list, subset_length)
         }else{ # mismatch
           # store current subset length
           subset_length_list <- c(subset_length_list, subset_length)
@@ -341,7 +343,7 @@ for (seq_num in 1:seq_data_length) {
       }
       # determine the total length
       subset_total_length <- subset_longest + subset_second_longest
-      # check if the total length is not at least 3 bp
+      # check if the total length is not at least the minimum length
       if (subset_total_length < min_length) {
         # jump to the end of the loop and stop parsing the current window
         next

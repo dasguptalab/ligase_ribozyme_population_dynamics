@@ -22,14 +22,14 @@ quality <- c(1039660, 1067585, 1033048, 866423, 981844, 916485, 582260, 889374)
 #above_two_reads <- c(18, 19, 26, 27, 1585, 10626, 7230, 6315)
 
 # set outputs directory
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F5_overhang_conservation_above2"
-out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F5_overhang_conservation_all"
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F5_overhang_conservation_above2"
+#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/F5_overhang_conservation_all"
 #out_dir <- args[2]
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in identity data
-#identityFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13b_overhang_conservation_above2/overhang_data_wobble.csv"
-identityFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13a_overhang_conservation_all/overhang_data_wobble.csv"
+identityFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13b_overhang_conservation_above2/overhang_data_wobble.csv"
+#identityFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13a_overhang_conservation_all/overhang_data_wobble.csv"
 #seqsFile <- args[3]
 complement_data_rounds <- read.csv(identityFile)
 
@@ -39,9 +39,9 @@ complement_data_rounds[is.na(complement_data_rounds)] <- 0
 # copy data frame for later plotting
 complement_data <- complement_data_rounds
 
-#keep sequences with at least a 3bp consecutive match (100*3/8 = 37.5)
-#complement_data_similar <- complement_data[complement_data$identity_subset >= 37.5, c("sequence", "counts", "counts_run_name")]
-complement_data_dissimilar <- complement_data[complement_data$identity_subset < 37.5, c("sequence", "counts", "counts_run_name")]
+#keep sequences with at least a 4bp consecutive match (100*4/8 = 50)
+#complement_data_similar <- complement_data[complement_data$identity >= 50, c("sequence", "counts", "counts_run_name")]
+complement_data_dissimilar <- complement_data[complement_data$identity < 50, c("sequence", "counts", "counts_run_name")]
 complement_data_dissimilar_round8 <- complement_data_dissimilar[complement_data_dissimilar$counts_run_name == "r8_S8_L001", c("sequence", "counts")]
 
 # output dissimilar sequence data
