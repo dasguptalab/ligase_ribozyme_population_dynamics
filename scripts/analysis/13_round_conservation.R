@@ -335,8 +335,8 @@ for (seq_num in 1:seq_data_length) {
       }
       # sort and retrieve the longest and second longest subset lengths
       subset_lengths <- subset_length_list[subset_length_list >= min_length]
-      subset_longest <- subset_lengths[1]
-      subset_second_longest <- subset_lengths[2]
+      subset_longest <- ifelse(is.na(subset_lengths[1]), 0, subset_lengths[1])
+      subset_second_longest <- ifelse(is.na(subset_lengths[2]), 0, subset_lengths[2])
       # check if the first and second longest consecutive matches are not at least 3bp
       # reset to zero if not, since we require at least a 3bp match
       if (subset_longest < min_length) {
