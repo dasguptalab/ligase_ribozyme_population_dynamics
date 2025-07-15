@@ -319,9 +319,6 @@ for (seq_num in 1:seq_data_length) {
         }else if (rev_overhang[window_index] == "T" & (slide_window[window_index] == "A" || slide_window[window_index] == "G")){ # U (A, G)
           # increment subset length
           subset_length <- subset_length+1
-        }else if (window_index == complement_length){ # end of window
-          # store current subset length
-          subset_length_list <- c(subset_length_list, subset_length)
         }else{ # mismatch
           # flag mismatch
           mismatch_flag <- 1
