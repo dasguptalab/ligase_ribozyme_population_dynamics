@@ -283,6 +283,8 @@ for (seq_num in 1:seq_data_length) {
           subset_length_list <- c(subset_length_list, subset_length)
           # reset subset length
           subset_length <- 0
+          # reset flag mismatch
+          mismatch_flag <- 0
         }
       }
       # sort and retrieve the longest and second longest subset lengths
