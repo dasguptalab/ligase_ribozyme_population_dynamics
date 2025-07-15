@@ -278,7 +278,7 @@ for (seq_num in 1:seq_data_length) {
           mismatch_flag <- 1
         }
         # check if end of window or mismatch
-        if (window_index == complement_length | mismatch_flag == 1){ 
+        if (window_index == complement_length || mismatch_flag == 1){ 
           # store current subset length
           subset_length_list <- c(subset_length_list, subset_length)
           # reset subset length
