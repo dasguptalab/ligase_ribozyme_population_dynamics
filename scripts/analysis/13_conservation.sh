@@ -5,7 +5,7 @@
 ## 1 July 2025
 ## jobs 1821099 to 1821118
 ## 14 July 2025
-## jobs
+## jobs 1886124 to 1886144
 
 # status message 
 echo "Beginning analysis of conserved regions..."

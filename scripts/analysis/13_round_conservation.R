@@ -101,7 +101,7 @@ seq_length <- 40
 complement_length <- 8
 
 # set minimum length and identity
-min_length <- 4
+min_length <- 3
 min_identity <- 100*min_length/complement_length
 
 # set length for window sliding
