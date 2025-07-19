@@ -159,7 +159,7 @@ for (seq_num in 1:seq_data_length) {
       }else if (rev_overhang[window_index] == "G" & slide_window[window_index] == "C"){ # G (C)
         # increment subset length
         subset_length <- subset_length+1
-      }else if (rev_overhang[window_index] == "G" & slide_window[window_index] == "T")){ # G (U), wobble
+      }else if (rev_overhang[window_index] == "G" & slide_window[window_index] == "T"){ # G (U), wobble
         # increment subset length
         subset_length <- subset_length+1
         # flag wobble
@@ -167,7 +167,7 @@ for (seq_num in 1:seq_data_length) {
       }else if (rev_overhang[window_index] == "T" & slide_window[window_index] == "A"){ # U (A)
         # increment subset length
         subset_length <- subset_length+1
-      }else if (rev_overhang[window_index] == "T" & slide_window[window_index] == "G")){ # U (G), wobble
+      }else if (rev_overhang[window_index] == "T" & slide_window[window_index] == "G"){ # U (G), wobble
         # increment subset length
         subset_length <- subset_length+1
         # flag wobble
