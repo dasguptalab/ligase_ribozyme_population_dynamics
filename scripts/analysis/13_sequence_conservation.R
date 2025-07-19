@@ -127,8 +127,6 @@ for (seq_num in 1:seq_data_length) {
   complement_data$sequence[seq_num] <- paste(seq_matrix[seq_num,], collapse="")
   # loop over each base of the sequence
   for (base_index in 1:sliding_length) {
-    # reset window variables
-    expected_complement <- complement_seq
     # set end index
     end_index <- base_index + (complement_length-1)
     # get the next 7 bases to create the 8bp sliding window
@@ -145,10 +143,6 @@ for (seq_num in 1:seq_data_length) {
     # loop over each consecutive base of the window
     for (window_index in 1:complement_length) {
       # check if the current base is a match
-      # AUUCCGCA
-      # TGCGGAAT
-      # TG[C,T]GG[A,G][A,G]T
-      #if (slide_window[window_index] == expected_complement[window_index]) {
       # A pairs with U and G pairs with C, but G also pairs with U
       if (rev_overhang[window_index] == "A" & slide_window[window_index] == "T") { # A (U)
         # increment subset length

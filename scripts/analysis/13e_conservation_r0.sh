@@ -1,11 +1,11 @@
 #!/bin/bash
 #$ -r n
-#$ -N RNA_conserved_t0_jobOutput
+#$ -N RNA_conserved_r0_jobOutput
 #$ -q largemem
 
 # script to run job scripts that identify conserved regions
-# usage: qsub 13e_conservation_t0.sh runNum
-# usage ex: qsub 13e_conservation_t0.sh 1
+# usage: qsub 13e_conservation_r0.sh runNum
+# usage ex: qsub 13e_conservation_r0.sh 1
 
 # load the software
 module load bio/0724
@@ -18,8 +18,7 @@ outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_HPC.txt" | tr -d " " | se
 #outputsPath=$(grep "outputs:" ../../"inputs/inputPaths_local.txt" | tr -d " " | sed "s/outputs://g")
 
 # set outputs directory
-outDir=$outputsPath"/13e_conservation_t0_run"$runNum
-#outDir=$outputsPath"/test_23May2025/13e_conservation_t0_run"$runNum
+outDir=$outputsPath"/13e_conservation_r0_run"$runNum
 
 # create outputs directory
 mkdir $outDir
@@ -34,7 +33,7 @@ seqsFile="/scratch365/ebrooks5/RNA_evolution/outputs/14_randomized_sequences/ran
 Rscript 13_sequence_conservation.R $outDir $seqsFile
 
 # characterize and summarize the results
-Rscript 13f_characterize_t0.R $outDir $outDir"/overhang_data_wobble.csv"
+Rscript 13f_characterize_r0.R $outDir $outDir"/overhang_data_wobble.csv"
 
 # status message
 echo "Analysis complete!"
