@@ -30,7 +30,7 @@ out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figure
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in identity data
-identityFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13b_overhang_conservation_above2/overhang_data_wobble_atLeast50.csv"
+identityFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13b_overhang_conservation_above2/overhang_data_wobble.csv"
 #identityFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13a_overhang_conservation_all/overhang_data_wobble.csv"
 #seqsFile <- args[3]
 complement_data_rounds <- read.csv(identityFile)

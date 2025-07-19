@@ -266,7 +266,7 @@ for (seq_num in 1:seq_data_length) {
     # set the location tag
     loc_tag <- paste(base_index, end_index, sep = "-")
     # check if the identity of the longest consecutive subset is larger than the previous largest window identity
-    if (subset_longest_identity >= complement_data$identity[seq_num] | subset_total_identity > complement_data$identity[seq_num]) {
+    if (subset_total_identity > complement_data$identity[seq_num]) {
       # store the current window sequence as the complement
       complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
       # add percent identity to expected overhang complement
