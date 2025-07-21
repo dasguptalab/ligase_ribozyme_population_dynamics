@@ -5,7 +5,7 @@ Project for analyzing RNA sequences from in vitro selection-amplification to iso
 ### Data Analysis Workflow Steps
 
 | Step | Description | Script | Directory | Input Data |
-| -- | -------- | ---- | ---- | ---- |
+| ---- | ---- | ---- | ---- | ---- |
 | 1 | Merge the paired-end reads for each round (maximum overlap of 81-bp) | 01\_merge.sh | analysis | Raw |
 | 2 | Filter reads by quality (Q>30) and remove adapter sequences | 02\_trim.sh | analysis | Step 1 |
 | 3 | Filter reads to keep only those that contain the constant 8-bp region flanking the 40 nt variable region | 03\_filter.sh | analysis | Step 2 |
