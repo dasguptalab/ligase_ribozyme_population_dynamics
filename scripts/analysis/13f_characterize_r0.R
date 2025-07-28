@@ -19,14 +19,13 @@ safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
 num_rounds <- 1
 
 # set outputs directory
-#out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/overhang_conservation_t0_run1"
-out_dir <- args[1]
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/overhang_conservation_t0_run1"
+#out_dir <- args[1]
 dir.create(out_dir, showWarnings = FALSE)
 
 # read in complement data
-#seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13e_conservation_t0/overhang_data_wobble_run1.csv"
-#seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13e_conservation_t0_run1/overhang_data_wobble.csv"
-seqsFile <- args[2]
+seqsFile <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/13e_conservation_r0_run1/overhang_data_wobble.csv"
+#seqsFile <- args[2]
 complement_data <- read.csv(seqsFile)
 
 # replace NAs with zeros
@@ -35,24 +34,24 @@ complement_data[is.na(complement_data)] <- 0
 # numbers of high quality reads
 quality <- nrow(complement_data)
 
-# keep sequences with at least a 3bp consecutive match (100*3/8 = 37.5)
-complement_data_dissimilar <- complement_data[complement_data$identity_subset < 37.5, c("sequence")]
+# keep sequences with at least a 4bp consecutive match
+complement_data_dissimilar <- complement_data[complement_data$identity < 50, c("sequence")]
 
 # output dissimilar sequence data
 write.csv(complement_data_dissimilar, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar_t0.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
+# replace 0's and 3's with <4
+complement_data[complement_data$tag == 0, "tag"] <- "<4"
+complement_data[complement_data$tag == 3, "tag"] <- "<4"
+
 # get lists of identities and types
-#identity_list <- unique(complement_data$identity)
-#identity_list <- sort(as.numeric(identity_list), decreasing=TRUE)
-identity_list <- c(100, 87.5, 75, 75, 62.5, 50, 37.5, 0)
 #tag_list <- unique(complement_data$tag)
-tag_list <- c("8", "7", "6", "3_3", "5", "4", "3", "0")
+tag_list <- c("8", "7", "4_3", "3_4", "6", "3_3", "5", "4", "3", "0")
 
 # add mapping table
 identity_mappings <- data.frame(
   tag = tag_list,
-  identity = identity_list,
-  colors = safe_colors[1:8]
+  colors = safe_colors[1:10]
 )
 
 # add placeholder columns
@@ -74,39 +73,43 @@ for (label_num in 1:nrow(identity_mappings)) {
 # determine the frequency of the numbers of bases (tags)
 max_bases <- max(complement_data$tag, na.rm = TRUE)
 min_bases <- min(complement_data$tag, na.rm = TRUE)
-base_names <- c("0", "3", "4", "5", "3_3", "6", "7", "8")
 base_tbl <- table(complement_data$tag)
+#base_names <- c("<4", "4", "5", "3_3", "6", "3_4", "4_3", "7", "8")
+base_names <- names(base_tbl)
 base_data <- data.frame(
   num_bases = as.character(base_names),
   freq_bases = c(unname(base_tbl)),
   #base_color = rev(safe_colors[1:length(base_tbl)])
-  base_color = rev(c("#000", safe_colors[1:5], safe_colors[11:12]))
+  base_color = rev(c("#000", safe_colors[1:5], safe_colors[10:12]))
 )
 total_freq <- sum(base_data$freq_bases)
 base_data$perc_freq <- (base_data$freq_bases/total_freq)*100
 base_data_cleaned <- base_data %>% mutate(across(where(is.numeric), round, 2))
 
 # bar chart of region frequencies
-#base_counts_plot <- ggplot(base_data_cleaned, aes(x=num_bases, y=perc_freq)) +
-#  geom_bar(stat="identity", fill = base_data_cleaned$base_color) +
-#  theme_classic(base_size = 16) +
-#  scale_y_continuous(limits=c(0, 50), breaks=seq(0, 50, 10), labels = function(x) paste0(x, "%")) +
-#  guides(y = guide_axis(cap = "upper")) +
-#  ylab("Proportion") +
-#  xlab("Compementary Nucleotides")
+base_counts_plot <- ggplot(base_data_cleaned, aes(x=num_bases, y=perc_freq)) +
+  #geom_bar(stat="identity", fill = base_data_cleaned$base_color) +
+  geom_bar(stat="identity") +
+  theme_classic(base_size = 16) +
+  theme(panel.background = element_rect(fill = 'black')) +
+  #scale_y_continuous(limits=c(0, 50), breaks=seq(0, 50, 10), labels = function(x) paste0(x, "%")) +
+  #guides(y = guide_axis(cap = "upper")) +
+  geom_text(aes(label=paste0(sprintf("%1.1f", perc_freq),"%")),
+            position=position_stack(vjust=0.5), size = 3, color = "white") +
+  ylab("Proportion") +
+  xlab("Complementarity")
 # save the plot
-#exportFile <- paste(out_dir, "/overhang_percent_abundance_total_t0.png", sep = "")
-#png(exportFile, units="in", width=5, height=4, res=300)
-#print(base_counts_plot)
-#dev.off()
+exportFile <- paste(out_dir, "/overhang_percent_abundance_total_t0_perc.png", sep = "")
+png(exportFile, units="in", width=5, height=4, res=300)
+print(base_counts_plot)
+dev.off()
 
 # output plotting data
 write.csv(base_data_cleaned, file = paste(out_dir, "/overhang_conservation_t0.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # vectors of bins (total, consecutive, gaped)
 #identity_bins <- unique(complement_data$identity)
-#identity_bins <- c(0.0, 37.5, 50.0, 75.0, 75.0, 87.5, 62.5, 100.0)
-tag_bins <- c("0", "3", "4", "5", "3_3", "6", "7", "8")
+tag_bins <- c("0", "3", "4", "5", "3_3", "6", "3_4", "4_3", "7", "8")
 plot_bins <- c(paste(tag_bins, "T", sep = "-"), paste(tag_bins, "C", sep = "-"), paste(tag_bins, "G", sep = "-"))
 
 # set data lengths
@@ -187,3 +190,19 @@ complement_data_out <- data.frame(
 # export data
 write.csv(complement_data_out, file = paste(out_dir, "/", counts_run_num, "_overhang_data_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
 write.csv(complement_counts, file = paste(out_dir, "/", counts_run_num, "_overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
+
+# create bar plot of total overhang identity percent
+#base_counts_plot <- ggplot(complement_counts, aes(y=perc_abundance_unique, x=tag)) + 
+#  geom_bar(stat="identity") +
+#  theme_classic(base_size = 16) +
+  #scale_fill_manual(breaks = unique(complement_counts$tag), values = unique(complement_counts$colors), labels = unique(complement_counts$tag)) +
+  #scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  #guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
+#  labs(fill = "Complementary\nBases") +
+#  ylab("Proportion") +
+#  xlab("Complementarity")
+# save the plot
+#exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_r0_chart.png", sep = "")
+#png(exportFile, units="in", width=5, height=4, res=300)
+#print(base_counts_plot)
+#dev.off()

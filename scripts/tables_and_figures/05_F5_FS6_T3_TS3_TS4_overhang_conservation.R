@@ -184,7 +184,7 @@ base_abun_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_na
   geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
   scale_color_identity(name = "Complementary\nBases", labels = complement_counts_total$tag, breaks = complement_counts_total$colors, guide = "legend") +
-  scale_y_continuous(limits=c(0, 60), breaks=seq(0, 60, 10)) +
+  scale_y_continuous(limits=c(0, 70), breaks=seq(0, 70, 10)) +
   guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
   ylab("Abundance") +
   xlab("Round")

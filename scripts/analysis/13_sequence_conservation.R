@@ -29,6 +29,9 @@ dir.create(out_dir, showWarnings = FALSE)
 seqsFile <- args[2]
 seqs_input <- read.csv(seqsFile)
 
+# pad the sequences for the sliding window
+seqs_input$sequence <- paste0("XXXXXX", seqs_input$sequence, "XXXXXX")
+
 # color blind safe plotting palette
 #safe_colors <- c(carto_pal(name="Safe"), palette.colors(palette = "Okabe-Ito"))
 
@@ -93,7 +96,7 @@ seq_length <- 40
 complement_length <- 8
 
 # set minimum length and identity
-min_length <- 3
+min_length <- 2
 min_identity <- 100*min_length/complement_length
 
 # set length for window sliding
