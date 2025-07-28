@@ -92,7 +92,7 @@ seq_matrix <- do.call(rbind, type.convert(strsplit(seqs_input$sequence, ""), as.
 #seq_matrix <- seqs_input_matrix[,16:20]
 
 # set seqeunce and overhang complement lengths
-seq_length <- 40
+seq_length <- 6 + 40 + 6
 complement_length <- 8
 
 # set minimum length and identity
