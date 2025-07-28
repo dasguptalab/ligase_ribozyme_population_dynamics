@@ -97,7 +97,7 @@ complement_length <- 8
 
 # set minimum length and identity
 min_length <- 2
-min_identity <- 100*min_length/complement_length
+min_subset_length <- 3
 
 # set length for window sliding
 sliding_length <- seq_length - (complement_length-1)
@@ -127,7 +127,7 @@ wobble_flag <- NA
 # loop over each sequence
 for (seq_num in 1:seq_data_length) {
   # add sequence
-  complement_data$sequence[seq_num] <- paste(seq_matrix[seq_num,], collapse="")
+  complement_data$sequence[seq_num] <- str_remove_all(paste(seq_matrix[seq_num,], collapse=""), "X")
   # loop over each base of the sequence
   for (base_index in 1:sliding_length) {
     # set end index
@@ -187,20 +187,18 @@ for (seq_num in 1:seq_data_length) {
     subset_lengths <- subset_length_list[subset_length_list >= min_length]
     subset_longest <- ifelse(is.na(subset_lengths[1]), 0, subset_lengths[1])
     subset_second_longest <- ifelse(is.na(subset_lengths[2]), 0, subset_lengths[2])
-    # check if the first and second longest consecutive matches are not at least 3bp
-    # reset to zero if not, since we require at least a 3bp match
-    if (subset_longest < min_length) {
-      subset_longest <- 0
-    }
-    if (subset_second_longest < min_length) {
-      subset_second_longest <- 0
-    }
-    # determine the total length
-    subset_total_length <- subset_longest + subset_second_longest
     # check if the total length is not at least the minimum length
-    if (subset_total_length < min_length) {
+    if (subset_longest < min_length) {
       # jump to the end of the loop and stop parsing the current window
       next
+    }
+    # check if the first and second longest consecutive matches are not at least 3bp
+    if (subset_longest >= min_subset_length & subset_second_longest >= min_subset_length) {
+      # set the total length
+      subset_total_length <- subset_longest + subset_second_longest
+    } else {
+      # set the total length
+      subset_total_length <- subset_longest
     }
     # set longest window subset identity
     subset_total_identity <- 100*(subset_total_length)/complement_length
