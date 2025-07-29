@@ -216,7 +216,30 @@ for (seq_num in 1:seq_data_length) {
     # set the location tag
     loc_tag <- paste(base_index, end_index, sep = "-")
     # check if the identity of the longest consecutive subset is larger than the previous largest window identity
-    if (subset_total_identity >= complement_data$identity[seq_num]) {
+    if (subset_total_identity >= complement_data$identity[seq_num] & gap_flag == "no") {
+      # store the current window sequence as the complement
+      complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
+      # add percent identity to expected overhang complement
+      complement_data$identity[seq_num] <- subset_total_identity
+      # add subset percent identity to expected overhang complement
+      complement_data$identity_subset[seq_num] <- subset_longest_identity
+      # set the tag
+      complement_data$tag[seq_num] <- total_tag
+      # set the tag subset
+      complement_data$tag_subset[seq_num] <- subset_longest
+      # flag that the current window does not have a gap
+      complement_data$gap[seq_num] <-  gap_flag
+      # set the wobble flag
+      complement_data$wobble[seq_num] <- wobble_flag
+      # set the location
+      complement_data$location[seq_num] <- paste(base_index, end_index, sep = "-")
+      # update all complementary locations
+      complement_data$all_locations[seq_num] <- paste(complement_data$all_locations[seq_num], loc_tag, sep = ";")
+      # update all complementary identities
+      complement_data$all_identities[seq_num] <- paste(complement_data$all_identities[seq_num], subset_total_identity, sep = ";")
+      # set all complementary tags
+      complement_data$all_tags[seq_num] <- paste(complement_data$all_tags[seq_num], total_tag, sep = ";")
+    } else if (subset_total_identity > complement_data$identity[seq_num]){
       # store the current window sequence as the complement
       complement_data$complement[seq_num] <- paste(seq_matrix[seq_num,base_index:end_index], collapse="")
       # add percent identity to expected overhang complement

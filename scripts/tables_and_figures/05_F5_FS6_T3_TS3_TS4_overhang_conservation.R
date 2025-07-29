@@ -77,13 +77,14 @@ colnames(complement_data_dissimilar_round8_out) <- c("counts", "sequence", "fami
 write.csv(complement_data_dissimilar_round8_identities, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar_round8_identities.csv", sep = ""), row.names = FALSE, quote = FALSE)
 write.csv(complement_data_dissimilar_round8_out, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar_round8.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
-# replace 0's and 3's with <4
-complement_data[complement_data$tag == 0, "tag"] <- "<4"
-complement_data[complement_data$tag == 3, "tag"] <- "<4"
+# replace 0's and 3's with <5
+complement_data[complement_data$tag == 0, "tag"] <- "<5"
+complement_data[complement_data$tag == 3, "tag"] <- "<5"
+complement_data[complement_data$tag == 4, "tag"] <- "<5"
 
 # vectors of bins (total, consecutive, gaped)
 #tag_bins <- unique(complement_data$tag)
-tag_bins <- c("<4", "4", "5", "3_3", "6", "4_3", "3_4", "7", "8")
+tag_bins <- c("<5", "5", "3_3", "6", "4_3", "3_4", "7", "8")
 
 # set data lengths
 data_length <- length(tag_bins)
@@ -146,12 +147,12 @@ write.csv(complement_counts_out, file = paste(out_dir, "/", counts_run_num, "_ov
 
 # get lists of tags
 #tag_list <- unique(complement_counts_out$tag)
-tag_list <- c("8", "7", "4_3", "3_4", "6", "3_3", "5", "4", "<4")
+tag_list <- c("8", "7", "4_3", "3_4", "6", "3_3", "5", "<5")
 
 # add mapping table
 identity_mappings <- data.frame(
   tag = tag_list,
-  colors = safe_colors[1:9]
+  colors = safe_colors[1:8]
 )
 
 # add placeholder columns
@@ -174,7 +175,7 @@ complement_counts_out$tag <- as.factor(complement_counts_out$tag)
 
 # sort the data for plotting
 complement_counts_total <-  complement_counts_out %>% arrange(factor(tag, levels = tag_list))
-complement_counts_total$tag <- factor(complement_counts_total$tag, levels = c("8", "7", "4_3", "3_4", "6", "3_3", "5", "4", "<4"))
+complement_counts_total$tag <- factor(complement_counts_total$tag, levels = c("8", "7", "4_3", "3_4", "6", "3_3", "5", "<5"))
 
 ## plots using sequencing read counts
 
