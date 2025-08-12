@@ -35,23 +35,27 @@ complement_data[is.na(complement_data)] <- 0
 quality <- nrow(complement_data)
 
 # keep sequences with at least a 4bp consecutive match
-complement_data_dissimilar <- complement_data[complement_data$identity < 50, c("sequence")]
+complement_data_dissimilar <- complement_data[complement_data$identity < 25, c("sequence")]
 
 # output dissimilar sequence data
 write.csv(complement_data_dissimilar, file = paste(out_dir, "/overhang_conservation_wobble_dissimilar_t0.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # replace 0's and 3's with <4
-complement_data[complement_data$tag == 0, "tag"] <- "<4"
-complement_data[complement_data$tag == 3, "tag"] <- "<4"
+complement_data[complement_data$tag == 0, "tag"] <- "<5"
+complement_data[complement_data$tag == 3, "tag"] <- "<5"
+complement_data[complement_data$tag == 4, "tag"] <- "<5"
+complement_data[complement_data$tag == 2, "tag"] <- "<5"
 
 # get lists of identities and types
 #tag_list <- unique(complement_data$tag)
-tag_list <- c("8", "7", "4_3", "3_4", "6", "3_3", "5", "4", "3", "0")
+tag_list <- c("8", "7", "4_3", "3_4", "6", "3_3", "5", "<5")
+#tag_list <- c("8", "7", "4_3", "3_4", "6", "3_3", "5", "4", "3", "2", "0")
 
 # add mapping table
 identity_mappings <- data.frame(
   tag = tag_list,
-  colors = safe_colors[1:10]
+  colors = safe_colors[1:8]
+  #colors = safe_colors[1:11]
 )
 
 # add placeholder columns
@@ -80,7 +84,8 @@ base_data <- data.frame(
   num_bases = as.character(base_names),
   freq_bases = c(unname(base_tbl)),
   #base_color = rev(safe_colors[1:length(base_tbl)])
-  base_color = rev(c("#000", safe_colors[1:5], safe_colors[10:12]))
+  base_color = rev(c("#000", safe_colors[1:5], safe_colors[11:12]))
+  #base_color = rev(c("#000", safe_colors[1:5], safe_colors[9:12]))
 )
 total_freq <- sum(base_data$freq_bases)
 base_data$perc_freq <- (base_data$freq_bases/total_freq)*100
@@ -100,16 +105,18 @@ base_counts_plot <- ggplot(base_data_cleaned, aes(x=num_bases, y=perc_freq)) +
   xlab("Complementarity")
 # save the plot
 exportFile <- paste(out_dir, "/overhang_percent_abundance_total_t0_perc.png", sep = "")
+#exportFile <- paste(out_dir, "/overhang_percent_abundance_total_t0_perc_all.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
 print(base_counts_plot)
 dev.off()
 
 # output plotting data
 write.csv(base_data_cleaned, file = paste(out_dir, "/overhang_conservation_t0.csv", sep = ""), row.names = FALSE, quote = FALSE)
+#write.csv(base_data_cleaned, file = paste(out_dir, "/overhang_conservation_t0_all.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # vectors of bins (total, consecutive, gaped)
 #identity_bins <- unique(complement_data$identity)
-tag_bins <- c("0", "3", "4", "5", "3_3", "6", "3_4", "4_3", "7", "8")
+tag_bins <- c("0", "2", "3", "4", "5", "3_3", "6", "3_4", "4_3", "7", "8")
 plot_bins <- c(paste(tag_bins, "T", sep = "-"), paste(tag_bins, "C", sep = "-"), paste(tag_bins, "G", sep = "-"))
 
 # set data lengths

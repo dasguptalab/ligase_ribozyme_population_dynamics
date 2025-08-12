@@ -13,6 +13,12 @@ library(rcartocolor)
 #library(plyr)
 
 # set outputs directory
+out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures"
+
+# create outputs directory
+dir.create(out_dir, showWarnings = FALSE)
+
+# set outputs directory
 out_dir <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/ST2_family_table"
 
 # create outputs directory

@@ -41,9 +41,9 @@ complement_data_rounds[is.na(complement_data_rounds)] <- 0
 # copy data frame for later plotting
 complement_data <- complement_data_rounds
 
-#keep sequences with at least a 4bp consecutive match (100*4/8 = 50)
-#complement_data_similar <- complement_data[complement_data$identity >= 50, c("sequence", "counts", "counts_run_name")]
-complement_data_dissimilar <- complement_data[complement_data$identity < 50, c("run_name", "sequence_ID", "sequence", "counts", "counts_run_name", "complement", "identity")]
+#keep sequences with at least a 4bp consecutive match (100*2/8 = 25)
+#complement_data_similar <- complement_data[complement_data$identity >= 25, c("sequence", "counts", "counts_run_name")]
+complement_data_dissimilar <- complement_data[complement_data$identity <= 25, c("run_name", "sequence_ID", "sequence", "counts", "counts_run_name", "complement", "identity")]
 complement_data_dissimilar_round8 <- complement_data_dissimilar[complement_data_dissimilar$counts_run_name == "r8_S8_L001", c("run_name", "sequence_ID", "sequence", "counts", "complement", "identity")]
 
 # read in sequences that have at least 90% identity to any peak
@@ -79,6 +79,7 @@ write.csv(complement_data_dissimilar_round8_out, file = paste(out_dir, "/overhan
 
 # replace 0's and 3's with <5
 complement_data[complement_data$tag == 0, "tag"] <- "<5"
+complement_data[complement_data$tag == 2, "tag"] <- "<5"
 complement_data[complement_data$tag == 3, "tag"] <- "<5"
 complement_data[complement_data$tag == 4, "tag"] <- "<5"
 
@@ -184,7 +185,7 @@ base_abun_plot <- ggplot(data=complement_counts_total, aes(x=as.character(run_na
   geom_line(size = 1.25) +
   geom_point(size = 2.25) +
   theme_classic(base_size = 16) +
-  scale_color_identity(name = "Complementary\nBases", labels = complement_counts_total$tag, breaks = complement_counts_total$colors, guide = "legend") +
+  scale_color_identity(name = "Complementarity", labels = complement_counts_total$tag, breaks = complement_counts_total$colors, guide = "legend") +
   scale_y_continuous(limits=c(0, 70), breaks=seq(0, 70, 10)) +
   guides(y = guide_axis(cap = "upper"), x = guide_axis(cap = "upper")) +
   ylab("Abundance") +
@@ -202,7 +203,7 @@ base_counts_plot <- ggplot(complement_counts_total, aes(fill=tag, y=perc_abundan
   scale_fill_manual(breaks = unique(complement_counts_total$tag), values = unique(complement_counts_total$colors), labels = unique(complement_counts_total$tag)) +
   #scale_y_continuous(labels = function(x) paste0(x, "%")) +
   guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
-  labs(fill = "Complementary\nBases") +
+  labs(fill = "Complementarity") +
   ylab("Proportion") +
   xlab("Round")
 # save the plot
@@ -221,7 +222,7 @@ base_counts_plot <- ggplot(complement_counts_total, aes(fill=tag, y=perc_abundan
   guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
   geom_text(aes(label=paste0(sprintf("%1.1f", perc_abundance_unique),"%")),
             position=position_stack(vjust=0.5), size = 3, color = "white") +
-  labs(fill = "Complementary\nBases") +
+  labs(fill = "Complementarity") +
   ylab("Proportion") +
   xlab("Round")
 # save the plot
@@ -234,95 +235,94 @@ dev.off()
 write.csv(complement_counts_sorted, file = paste(out_dir, "/overhang_conservation_wobble.csv", sep = ""), row.names = FALSE, quote = FALSE)
 write.csv(complement_counts_total, file = paste(out_dir, "/overhang_conservation_wobble_total.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
-# initialize data column
-complement_data$num_regions <- NA
-complement_data$num_exact <- NA
+# import t0 data
+t0File <- "/Users/bamflappy/PfrenderLab/RNA_evolution/outputs/tables_and_figures/overhang_conservation_t0_run1/overhang_conservation_t0.csv"
+#t0File <- args[4]
+t0_complement <- read.csv(t0File)
+colnames(t0_complement) <- c("tag", "counts_unique", "colors", "perc_abundance_unique")
+t0_complement$run_name <- "0"
 
-# count number of complementary regions
-complement_data$num_regions <- str_count(complement_data$all_identities,";")+1
-# count number of exact matching regions
-complement_data$num_exact <- str_count(complement_data$all_identities,"100")
-# update for no matches
-complement_data[complement_data$all_identities == 0, "num_regions"] <- 0
-complement_data[complement_data$all_identities == 0, "num_exact"] <- 0
+# subset to necessary columns
+complement_counts <- complement_counts_total[c("tag", "run_name", "perc_abundance_unique", "colors")]
+complement_counts_t0 <- t0_complement[c("tag", "run_name", "perc_abundance_unique", "colors")]
 
-# get min and max number of regions 
-#min_regions <- min(complement_data$num_regions, na.rm = TRUE)
-min_regions <- 0
-max_regions <- max(complement_data$num_regions, na.rm = TRUE)
+# replace NAs with 0s
+complement_counts[is.na(complement_counts)] <- 0
 
-# setup data lengths
-data_length <- (max_regions+1)*num_rounds
-min_rounds <- 1
+# remove factors
+#complement_counts$bases <- as.numeric(as.character(complement_counts$bases))
 
-# determine the frequency of the numbers of regions
-region_data <- data.frame(
-  run_name = rep(seq(1, num_rounds), (max_regions+1)),
-  num_regions = c(rep(seq(0, max_regions), each = num_rounds)),
-  freq_regions = rep(NA, data_length),
-  prop_regions = rep(NA, data_length),
-  region_color = rep(NA, data_length) 
-)
+# add t0 data
+complement_counts_combined <- rbind(complement_counts, complement_counts_t0)
 
-# loop over each round
-for (round_num in min_rounds:num_rounds) {
-  # loop over each number of regions
-  for (region_num in min_regions:max_regions) {
-    # set the freq of regions
-    region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "freq_regions"] <- unname(table(complement_data[complement_data$run_name == round_num, "num_regions"]))[region_num+1]
-    # check the round number
-    if (round_num == 0) {
-      # determine the proportion of sequences
-      region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "prop_regions"] <- region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "freq_regions"]/num_t0
-    }else{
-      # determine the proportion of sequences
-      region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "prop_regions"] <- region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "freq_regions"]/nrow(complement_data[complement_data$run_name == round_num,])
-    }
-    # set the region color
-    region_data[region_data$run_name == round_num & region_data$num_regions == region_num, "region_color"] <- c(safe_colors[6], "#D55E00", "#0072B2", "#CC79A7", "#F0E442", "#009E73", "#56B4E9")[region_num+1]
-  }
-}
-region_data$prop_regions <- region_data$prop_regions*100
-
-# set NAs to 0
-region_data[is.na(region_data)] <- 0
-
-# loop over each round
-freq_regions_rounds <- rep(NA, num_rounds)
-prop_regions_rounds <- rep(NA, num_rounds)
-for (round_num in 0:num_rounds) {
-  # combine rows for number of regions >5
-  freq_regions_rounds[round_num] <- sum(region_data[region_data$run_name == round_num & region_data$num_regions >= 6, "freq_regions"])
-  prop_regions_rounds[round_num] <- sum(region_data[region_data$run_name == round_num & region_data$num_regions >= 6, "prop_regions"])
-  
-}
-
-# create updated data frame for plotting
-region_data_out <- region_data[region_data$num_regions <= 5,]
-region_data_subset <- cbind(
-  run_name = region_data[region_data$num_regions == 6, "run_name"],
-  num_regions = rep(">5", num_rounds),
-  freq_regions = freq_regions_rounds,
-  prop_regions = prop_regions_rounds,
-  region_color = rep(region_data[region_data$num_regions == 6, "region_color"][1], num_rounds)
-)
-region_data_out <- rbind(region_data_out, region_data_subset)
-
-# specify order of bars (from top to bottom)
-region_data_out$num_regions <- factor(region_data_out$num_regions, levels=c("0", "1", "2", "3", "4", "5", ">5"))
+# add factors for plotting
+#complement_counts_combined$bases <- as.factor(complement_counts_combined$bases)
 
 # create bar plot of total overhang identity percent
-regions_counts_plot <- ggplot(region_data_out, aes(fill=num_regions, y=as.numeric(prop_regions), x=as.character(run_name))) + 
+base_counts_plot <- ggplot(complement_counts_combined, aes(fill=tag, y=perc_abundance_unique, x=as.character(run_name))) + 
   geom_bar(position="stack", stat="identity") +
   theme_classic(base_size = 16) +
-  scale_fill_manual(breaks = region_data_out$num_regions, values = region_data_out$region_color, labels = region_data_out$num_regions) +
+  scale_fill_manual(breaks = unique(complement_counts_combined$tag), values = unique(complement_counts_combined$colors), labels = unique(complement_counts_combined$tag)) +
   #scale_y_continuous(labels = function(x) paste0(x, "%")) +
   guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
-  labs(fill = "Number of\nRegions") +
+  labs(fill = "Complementarity") +
   ylab("Proportion") +
   xlab("Round")
 # save the plot
-exportFile <- paste(out_dir, "/overhang_regions_counts_total_chart.png", sep = "")
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_total_chart_t0.png", sep = "")
 png(exportFile, units="in", width=5, height=4, res=300)
-print(regions_counts_plot)
+print(base_counts_plot)
+dev.off()
+
+# create bar plot of total overhang identity percent
+base_counts_plot_perc <- ggplot(complement_counts_combined, aes(fill=tag, y=perc_abundance_unique, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity") +
+  #geom_bar(stat = "identity", position = "stack", lwd = 1.5,
+  #         width = 0.5, colour = "black")  +
+  theme_classic(base_size = 16) +
+  theme(panel.background = element_rect(fill = 'black')) +
+  scale_fill_manual(breaks = unique(complement_counts_combined$tag), values = unique(complement_counts_combined$colors), labels = unique(complement_counts_combined$tag)) +
+  #scale_y_continuous(labels = function(x) paste0(x, "%")) +
+  guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
+  geom_text(aes(label=paste0(sprintf("%1.1f", perc_abundance_unique),"%")),
+            position=position_stack(vjust=0.5), size = 3, color = "white") +
+  labs(fill = "Complementarity") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_total_chart_t0_perc.png", sep = "")
+png(exportFile, units="in", width=6, height=4, res=300)
+print(base_counts_plot_perc)
+dev.off()
+
+# remove some tags for plotting
+complement_counts_subset <- complement_counts_combined[complement_counts_combined$tag == "<5" | 
+                                                         complement_counts_combined$tag == 5 | 
+                                                         #complement_counts_combined$tag == "3_3" | 
+                                                         complement_counts_combined$tag == 6 |
+                                                         complement_counts_combined$tag == 7 | 
+                                                         complement_counts_combined$tag == 8,]
+
+# create bar plot of total overhang identity percent
+base_counts_plot_perc_subset <- ggplot(complement_counts_subset, 
+                                       aes(fill=tag, y=perc_abundance_unique, x=as.character(run_name))) + 
+  geom_bar(position="stack", stat="identity", alpha = 0.75) +
+  #geom_bar(stat = "identity", position = "stack", lwd = 1.5,
+  #         width = 0.5, colour = "black")  +
+  theme_classic(base_size = 16) +
+  #theme(panel.background = element_rect(fill = 'black')) +
+  scale_fill_manual(breaks = unique(complement_counts_subset$tag), 
+                    values = unique(complement_counts_subset$colors), 
+                    labels = unique(complement_counts_subset$tag)) +
+  guides(y = guide_axis(cap = "upper")) +#, x = guide_axis(cap = "upper")) +
+  scale_y_continuous(limits=c(0, 90), breaks=seq(0, 90, 15)) +#, labels = function(x) paste0(x, "%")) +
+  geom_text(aes(label=paste0(sprintf("%1.1f", perc_abundance_unique),"%")),
+            position=position_stack(vjust=0.5), size = 1.5, color = "black") +
+  labs(fill = "Complementarity") +
+  ylab("Proportion") +
+  xlab("Round")
+# save the plot
+exportFile <- paste(out_dir, "/overhang_percent_abundance_unique_total_chart_t0_perc_subset.png", sep = "")
+png(exportFile, units="in", width=6, height=4, res=300)
+print(base_counts_plot_perc_subset)
 dev.off()
