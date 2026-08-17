@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 
+# created by: Elizabeth Brooks
+
 # R script to create family base conservation plots
 # usage: 04_F4A_family_base_conservation.R
 
@@ -42,6 +44,9 @@ for (cluster_num in 0:9) {
 
 # re-name cluster ID column
 names(cluster_data)[names(cluster_data) == 'peak_cluster_ID'] <- 'cluster_ID'
+
+# output sequence data with family IDs
+write.csv(cluster_data, file = paste(out_dir, "/family_sequences.csv", sep = ""), row.names = FALSE, quote = FALSE)
 
 # list of cluster IDs
 cluster_list <- unique(cluster_data$cluster_ID)
